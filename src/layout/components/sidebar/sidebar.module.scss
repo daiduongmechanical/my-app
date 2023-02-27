@@ -1,0 +1,46 @@
+.wrapper{
+    width: 30%;
+    height: calc(100vh - 60px);
+    background-color: #202124;
+    border-radius: 10px;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.avatar__cover{
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+
+}
+.avatar__username{
+
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+}
+
+.avatar{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin:0 15px;
+    
+    }
+    .avatar__logout{
+
+    font-weight: normal;
+    color:white;
+    margin-top: 20px;
+    text-decoration:underline;
+    cursor: pointer;
+    font-weight: bold;
+
+    }
+    .avatar__logout:hover{
+        font-size: 22px;
+        color: yellow;
+    }

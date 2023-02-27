@@ -1,0 +1,21 @@
+.wrapper{
+min-height: calc(100vh - 60px);
+width: 100%;
+display:  flex;
+padding: 20px 10px;
+
+
+}
+
+.sidebar{
+    width: 30%;
+
+    border-radius: 10px;
+}
+
+.main{
+width: 70%;
+border: 1px solid gray;
+border-radius: 10px;
+
+}
