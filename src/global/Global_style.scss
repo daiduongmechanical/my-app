@@ -1,13 +1,16 @@
 @import 'normalize.css';
+@import "~bootstrap/scss/bootstrap";
 @import url('https://fonts.googleapis.com/css2?family=Carter+One&family=Dancing+Script:wght@700&display=swap');
 
 :root{
 --textcolor:#565a61;
 --hovercolor:#4d3bc6;
+--headerSize:60px;
 
 }
 *{
     box-sizing: border-box;
+   
    
 }
 .all{

@@ -18,7 +18,9 @@ const SidebarLayout = ({ children }) => {
   };
   return (
     <Fragment>
-      <Header />
+      <div className={cx("header__wrapper")}>
+        <Header />
+      </div>
       <div className={cx("main")}>
         <SideBar />
         <motion.div {...props}>{children}</motion.div>

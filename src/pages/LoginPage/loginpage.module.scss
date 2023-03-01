@@ -1,0 +1,35 @@
+.wrapper{
+width: 100%;
+min-height: calc(100vh - 60px);
+padding:0 10px;
+display: flex;
+
+
+}
+
+.show__side{
+width: 50%;
+height: 100vh;
+background-color: red;
+
+}
+.login__side{
+width: 50%;
+height: 100%;
+padding: 5% 5%;
+
+}
+
+.header{
+    text-transform: uppercase;
+    font-size: 2.2857142857rem;
+    line-height: 38px;
+
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+
+
+}

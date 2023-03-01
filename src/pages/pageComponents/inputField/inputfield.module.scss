@@ -1,0 +1,42 @@
+.wrapper{
+width: 100%;
+
+    height: auto;
+    margin-top: 20px;
+   
+}
+
+
+
+
+.form__input{
+
+    background: transparent;
+    color: currentColor;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    vertical-align: bottom;
+    font-size: 20px;
+    line-height: 38px;
+    margin-top: 10px;
+    
+}
+.status__show{
+    border-top: 2px solid gray;
+    margin-bottom: 20px;
+}
+.error{
+    border-top: 2px solid red;
+    color: red;
+
+}
+.success{
+    border-top: 2px solid green;
+    color: green;
+  
+}
+

@@ -7,7 +7,7 @@ export const StatusLoginContext = createContext();
 export const AccountTypeContext = createContext();
 
 const WrapperRoutes = () => {
-  const [statusLogin, setStatusLogins] = useState(true);
+  const [statusLogin, setStatusLogins] = useState(false);
   const [type, setType] = useState(false);
   let usingRoles = [...PublicRoutes];
   if (type) {
