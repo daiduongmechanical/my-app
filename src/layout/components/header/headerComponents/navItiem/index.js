@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import classNames from "classnames/bind";
 
 import style from "./navItem.module.scss";
