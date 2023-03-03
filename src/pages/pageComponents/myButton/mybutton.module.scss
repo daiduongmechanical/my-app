@@ -1,0 +1,32 @@
+.wrapper{
+    width: fit-content;
+    font-size: 20px;
+height: 45px;
+padding: 0 20px;
+margin: 10px 0;
+text-decoration: none;
+background-color: blue;
+color: white;
+border-radius: 10px;
+border: none;
+font-weight: bold;
+
+& :hover{
+    color: white;;
+
+}
+}
+.red{
+    background-color: red;
+}
+
+
+.full{
+    width: 100%;
+  border-radius: 50px;
+}
+
+.disabled{
+
+    background-color: gray;
+}

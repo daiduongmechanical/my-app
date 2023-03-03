@@ -1,0 +1,52 @@
+.wrapper{
+    width: 100%;
+    min-height: calc(100vh - 60px);
+    padding:0 10px;
+    display: flex;
+    
+    
+    }
+
+    .header{
+        text-transform: uppercase;
+    font-size: 2.2857142857rem;
+    line-height: 38px;
+
+    }
+    
+    .show__side{
+        width: 48%;
+        height: 100vh;
+        background-color: red;
+        
+        }
+        .login__side{
+        width: 52%;
+        height: 100%;
+        padding: 5% 5%;
+        
+        }
+        
+        .header{
+            text-transform: uppercase;
+            font-size: 2.2857142857rem;
+            line-height: 38px;
+        
+        }
+        
+        .to__signin{
+            width: 100%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            color: black;
+        
+            margin-top: 20px;
+        
+            & .to__signin--link{
+                color: black;
+                font-weight: bold;
+            font-size: 20px;
+                margin-left: 5px;
+            }
+        }

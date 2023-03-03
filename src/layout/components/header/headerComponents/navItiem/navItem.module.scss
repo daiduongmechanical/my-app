@@ -2,7 +2,7 @@
     text-decoration: none;
     font-size: 24px;
     font-weight: bold;
-    color: yellow;
+    color: black;
   
     padding:18px ;
 
@@ -10,7 +10,7 @@
 
 .itemCover:hover{
 
-    background-color: var(--hovercolor);
+
     color: red;
 }
 
@@ -25,9 +25,8 @@
     padding: 0px;
 
   }
-  .normal:hover{
-    background-color: white;
-  }
+
+  
   .space{
     margin-bottom: 10px;
     font-size: 16px;

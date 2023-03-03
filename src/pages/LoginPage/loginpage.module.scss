@@ -1,0 +1,81 @@
+.wrapper{
+width: 100%;
+min-height: calc(100vh - 60px);
+padding:0 10px;
+display: flex;
+
+
+}
+
+.show__side{
+width: 48%;
+height: 100vh;
+background-color: red;
+
+}
+.login__side{
+width: 52%;
+height: 100%;
+padding: 5% 5%;
+
+}
+
+.header{
+    text-transform: uppercase;
+    font-size: 2.2857142857rem;
+    line-height: 38px;
+
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+
+
+}
+.input__cover{
+    height: 80px;
+}
+
+.button__cover{
+margin:20px 0px 0px;
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+
+}
+
+.content__btn{
+display: flex;
+width: 100%;
+height: 100%;
+align-items: center;
+justify-content:  center;
+
+& img{
+width: 20px;
+aspect-ratio: 1/1;
+margin-right: 20px;
+}
+
+& h3{
+    font-size: 20px;
+}
+}
+.to__signin{
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+
+    margin-top: 20px;
+
+    & .to__signin--link{
+        color: black;
+        font-weight: bold;
+    font-size: 20px;
+        margin-left: 5px;
+    }
+}

@@ -1,6 +1,6 @@
 import HomePage from "../../pages/homePage";
 import MenuPage from "../../pages/menu";
-import SignInPage from "../../pages/signinPage";
+import SigUpnPage from "../../pages/signupPage";
 import LoginPage from "../../pages/LoginPage";
 import ProfilePage from "../../pages/ProfilePage";
 import CartPage from "../../pages/cartPage";
@@ -15,7 +15,7 @@ import AboutUsPage from "../../pages/aboutUsPage";
 const PublicRoutes = [
   { path: "/", component: HomePage, layout: MainLayout },
   { path: "/menu", component: MenuPage, layout: MainLayout },
-  { path: "/signin", component: SignInPage, layout: MainLayout },
+  { path: "/signup", component: SigUpnPage, layout: MainLayout },
   { path: "/login", component: LoginPage, layout: MainLayout },
   { path: "/about-us", component: AboutUsPage, layout: MainLayout },
   { path: "/cart", component: CartPage, layout: MainLayout },

@@ -1,19 +1,20 @@
-// import classNames from "classnames/bind";
-// import style from "./mainLayout.module.scss";
+import classNames from "classnames/bind";
+import style from "./mainLayout.module.scss";
 
 import Header from "./components/header";
 import Footer from "./components/footer";
-import { Fragment } from "react";
 
 const MainLayout = ({ children }) => {
-  // const cx = classNames.bind(style);
+  const cx = classNames.bind(style);
 
   return (
-    <Fragment>
-      <Header />
+    <div className={cx("wrapper")}>
+      <div className={cx("header__wrapper")}>
+        <Header />
+      </div>
       {children}
       <Footer />
-    </Fragment>
+    </div>
   );
 };
 
