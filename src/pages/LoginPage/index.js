@@ -99,27 +99,6 @@ const LoginPage = () => {
               Sign up
             </Link>
           </p>
-
-          <form className={cx("form")}>
-            <InputField
-              content="Enter your email address"
-              name="email"
-              required
-              regex={/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/}
-              notice="enter email follow type xxxx@xx.xxx"
-              type="text"
-            />
-            <InputField
-              content="Enter your email password"
-              name="password"
-              required
-              regex={/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/}
-              notice="password at least 8 characters, one number, and one case character"
-              type="password"
-            />
-
-            <MyButton content="LOGIN" to={"/"} />
-          </form>
         </div>
       </div>
     </div>
