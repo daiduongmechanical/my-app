@@ -1,5 +1,6 @@
 .wrapper{
 width: 100%;
+<<<<<<< HEAD
 height: 70px;
 
     margin:15px 0;
@@ -17,6 +18,13 @@ align-items: center;
     font-size: 18px;
     cursor: pointer;
 }
+=======
+
+    height: auto;
+    margin-top: 20px;
+   
+}
+>>>>>>> ee562d5e98d6239e75a460f99ba4953d72b76656
 
 
 
@@ -29,7 +37,11 @@ align-items: center;
     outline: none;
     padding: 0;
     margin: 0;
+<<<<<<< HEAD
     width: 90%;
+=======
+    width: 100%;
+>>>>>>> ee562d5e98d6239e75a460f99ba4953d72b76656
     max-width: 100%;
     vertical-align: bottom;
     font-size: 20px;
@@ -38,6 +50,7 @@ align-items: center;
     
 }
 .status__show{
+<<<<<<< HEAD
     border-top: 3px solid gray;
     height: 35%;
 }
@@ -55,6 +68,18 @@ font-weight: bold;
 }
 .success{
     border-top: 3px solid green;
+=======
+    border-top: 2px solid gray;
+    margin-bottom: 20px;
+}
+.error{
+    border-top: 2px solid red;
+    color: red;
+
+}
+.success{
+    border-top: 2px solid green;
+>>>>>>> ee562d5e98d6239e75a460f99ba4953d72b76656
     color: green;
   
 }
