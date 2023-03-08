@@ -30,3 +30,28 @@ font-weight: bold;
 
     background-color: gray;
 }
+.golden{
+
+    
+    border: 1px solid #c49b63;
+    background: transparent;
+    color: #c49b63;
+    padding: 5px 15px;
+    font-size: 16px;
+    border-radius: 0;
+}
+
+.golden:hover{
+
+    border: 1px solid transparent;
+    background: #c49b63;
+    color: #fff;
+}
+.goldenfit{
+    
+    border: 2px solid #c49b63;
+    background: transparent;
+    color: #c49b63;
+    height: 100%;
+    border-radius: 0;
+}

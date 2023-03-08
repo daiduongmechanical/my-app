@@ -6,6 +6,7 @@
 --textcolor:#565a61;
 --hovercolor:#4d3bc6;
 --headerSize:60px;
+--mainColor:#c49b63;
 
 }
 *{
@@ -20,4 +21,18 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+html ::-webkit-scrollbar {
+  border-radius: 0px;
+  width: 10px;
+}
+
+html ::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba($color: #c49b63, $alpha: 0.5)
+}
+html ::-webkit-scrollbar-track {
+  border-radius: 0px;
+  background-color: rgba(0, 0, 0, 0);
 }

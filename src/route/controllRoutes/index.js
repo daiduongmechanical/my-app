@@ -12,6 +12,7 @@ import ManagerMenuPage from "../../pages/managerMenuPage";
 import ManagerUserPage from "../../pages/managerUserPage";
 import ManagerOrderPage from "../../pages/managerOderPage";
 import AboutUsPage from "../../pages/aboutUsPage";
+import DetailDishPage from "../../pages/detailDish";
 const PublicRoutes = [
   { path: "/", component: HomePage, layout: MainLayout },
   { path: "/menu", component: MenuPage, layout: MainLayout },
@@ -20,6 +21,9 @@ const PublicRoutes = [
   { path: "/about-us", component: AboutUsPage, layout: MainLayout },
   { path: "/cart", component: CartPage, layout: MainLayout },
   { path: "/profile", component: ProfilePage, layout: SidebarLayout },
+  { path: "/detail-dish", component: DetailDishPage, layout: MainLayout },
+  { path: "/menu/detail-dish", component: DetailDishPage, layout: MainLayout },
+
   {
     path: "/profile/reset-password",
     component: ResetPasswordPage,

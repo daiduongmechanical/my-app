@@ -2,27 +2,48 @@ import classNames from "classnames/bind";
 import InputField from "../pageComponents/inputField";
 import MyButton from "../pageComponents/myButton";
 import style from "./loginpage.module.scss";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import Images from "../../asset/image";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FormData from "form-data";
 import axios from "axios";
+import { StatusLoginContext } from "../../route";
+import { AccountTypeContext } from "../../route";
 
 const LoginPage = () => {
   const cx = classNames.bind(style);
-
+  let history = useNavigate();
   const [edata, setEdata] = useState("");
   const [pdata, setPdata] = useState("");
   const [disabled, setDisabled] = useState(true);
+  const [loginError, setLoginError] = useState(false);
   const formRef = useRef();
+
+  //get data from    StatusLoginContext
+
+  const getStatusLoginContext = useContext(StatusLoginContext);
+  let handleLogin = getStatusLoginContext[1];
+
+  //get account type context
+  const getAccountTypeContext = useContext(AccountTypeContext);
+  let handleAccountType = getAccountTypeContext[1];
 
   const handle = (e) => {
     e.preventDefault();
     const data = new FormData(formRef.current);
     axios
-      .post("http://localhost:3000/login", data)
+      .post("http://localhost:8000/api/login", data)
       .then(function (response) {
-        console.log(response);
+        if (response.data.length === 0) {
+          setLoginError(true);
+        } else {
+          handleLogin(true);
+          response.data[0].manage === "0"
+            ? handleAccountType(false)
+            : handleAccountType(true);
+
+          history("/");
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -47,7 +68,12 @@ const LoginPage = () => {
 
       {/* login form */}
       <div className={cx("login__side")}>
-        <h1 className={cx("header")}>Log in</h1>
+        <div className={cx("header")}>
+          <h1>Log In</h1>
+          {loginError && (
+            <p>Login fail. please check email and password again</p>
+          )}
+        </div>
         <div className={cx("form__cover")}>
           <form className={cx("form")} ref={formRef}>
             <div className={cx("input__cover")}>

@@ -27,12 +27,11 @@ const SignUpPage = () => {
     e.preventDefault();
     const data = new FormData(formRef.current);
     axios
-      .post("http://localhost:3000/login", data)
+      .post("http://localhost:8000/api/register", data)
       .then(function (response) {
         console.log(response);
       })
       .catch(function (error) {
-        history("/cart");
         console.log(error);
       });
   };
@@ -59,7 +58,7 @@ const SignUpPage = () => {
         <form ref={formRef}>
           <InputField
             content="Enter your name"
-            name="UserName"
+            name="name"
             type="text"
             regex={/(?=.*[a-z]).{3,}/}
             notice="Name as least 3 characters"

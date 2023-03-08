@@ -5,8 +5,6 @@
     display: flex;
     align-items: center;
     padding: 10px;
+padding-top: var(--headerSize);
 }
 
-.header__wrapper{
-    margin-bottom:var(--headerSize);
-}

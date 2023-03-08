@@ -17,7 +17,7 @@ const SidebarLayout = ({ children }) => {
     transition: { duration: 4 },
   };
   return (
-    <Fragment>
+    <div className={cx("wrapper")}>
       <div className={cx("header__wrapper")}>
         <Header />
       </div>
@@ -26,7 +26,7 @@ const SidebarLayout = ({ children }) => {
         <motion.div {...props}>{children}</motion.div>
       </div>
       <Footer />
-    </Fragment>
+    </div>
   );
 };
 

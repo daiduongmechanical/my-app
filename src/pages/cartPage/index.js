@@ -4,7 +4,7 @@ import style from "./cartpage.module.scss";
 const CartPage = () => {
   const cx = classNames.bind(style);
 
-  return <h1>this is cart page</h1>;
+  return <div className={cx("wrapper")}></div>;
 };
 
 export default CartPage;
