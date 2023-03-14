@@ -36,7 +36,7 @@ const InputField = ({
         action(true);
       } else {
         setCheck(false);
-        action(false, e.target.value);
+        action(false);
       }
     }
   };

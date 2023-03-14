@@ -89,8 +89,8 @@ const SignUpPage = () => {
             content="Enter your password"
             name="password"
             type="password"
-            regex={/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/}
-            notice=" Password minimum 8 characters, one case letter and one number"
+            regex={/^(?=.*\d)[A-Za-z\d]{8,}$/}
+            notice=" Password minimum 8 characters and one number"
             required
             action={passwordAction}
           />

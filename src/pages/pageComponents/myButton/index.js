@@ -11,6 +11,7 @@ const MyButton = ({
   red,
   golden,
   goldenfit,
+  icon,
 }) => {
   const cx = classNames.bind(style);
 
@@ -18,10 +19,18 @@ const MyButton = ({
   if (to) {
     Type = Link;
   }
-
+  let disabled__icon = icon && disabled ? true : false;
   return (
     <Type
-      className={cx("wrapper", { full, disabled, red, golden, goldenfit })}
+      className={cx("wrapper", {
+        full,
+        disabled,
+        red,
+        golden,
+        goldenfit,
+        icon,
+        disabled__icon,
+      })}
       disabled={disabled}
       to={to}
       onClick={action}

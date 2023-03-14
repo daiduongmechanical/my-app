@@ -5,6 +5,31 @@ padding: 10px 20px ;
 
 }
 
+
+.hidden__notice{
+
+    width: 400px;
+    height: 200px;
+    background-color: black;
+    border-radius: 10px;
+    left: 30%;
+    bottom: 30vh;
+    position: absolute;
+    padding: 20px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.hidden__notice--text{
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    color: var(--mainColor);
+}
+
 .dish__cover{
 
     width: 100%;
@@ -55,6 +80,10 @@ margin-left: 100px;
     display: flex;
     align-items: center;
     justify-content: space-around;
+}
+
+.action__form{
+    width: 100%;
 }
 
 .action__input{

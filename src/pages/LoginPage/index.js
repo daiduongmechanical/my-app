@@ -6,9 +6,12 @@ import { useState, useRef, useContext } from "react";
 import Images from "../../asset/image";
 import { Link, useNavigate } from "react-router-dom";
 import FormData from "form-data";
-import axios from "axios";
-import { StatusLoginContext } from "../../route";
-import { AccountTypeContext } from "../../route";
+import userURL from "../../config/userURL";
+import {
+  StatusLoginContext,
+  AccountTypeContext,
+  AccountDetailContext,
+} from "../../route";
 
 const LoginPage = () => {
   const cx = classNames.bind(style);
@@ -28,24 +31,37 @@ const LoginPage = () => {
   const getAccountTypeContext = useContext(AccountTypeContext);
   let handleAccountType = getAccountTypeContext[1];
 
+  //get account detail context
+  const getAccountDetailContext = useContext(AccountDetailContext);
+  let handleAccountDetail = getAccountDetailContext[1];
+
+  const setCookie = (cname, cvalue, exdays) => {
+    const d = new Date();
+    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  };
+
   const handle = (e) => {
     e.preventDefault();
     const data = new FormData(formRef.current);
-    axios
-      .post("http://localhost:8000/api/login", data)
+    userURL
+      .post("/login", data)
       .then(function (response) {
         if (response.data.length === 0) {
           setLoginError(true);
         } else {
           handleLogin(true);
-          response.data[0].manage === "0"
+          setCookie("jwt", response.data.authorisation.token, 1);
+          handleAccountDetail(response.data.user);
+          history("/");
+          response.data.user.manage === "0"
             ? handleAccountType(false)
             : handleAccountType(true);
-
-          history("/");
         }
       })
       .catch(function (error) {
+        setLoginError(true);
         console.log(error);
       });
   };
@@ -94,8 +110,8 @@ const LoginPage = () => {
                 required
                 type="password"
                 action={getPData}
-                regex={/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/}
-                notice=" Password minimum 8 characters, one case letter and one number"
+                regex={/^(?=.*\d)[A-Za-z\d]{8,}$/}
+                notice=" Password at least 8 characters, and one number"
               />
             </div>
             <div className={cx("button__cover")}>

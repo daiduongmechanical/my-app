@@ -10,11 +10,11 @@ color: white;
 border-radius: 10px;
 border: none;
 font-weight: bold;
+display: flex;
+align-items: center;
+justify-content: center;
 
-& :hover{
-    color: white;;
 
-}
 }
 .red{
     background-color: red;
@@ -26,10 +26,7 @@ font-weight: bold;
   border-radius: 50px;
 }
 
-.disabled{
 
-    background-color: gray;
-}
 .golden{
 
     
@@ -49,9 +46,22 @@ font-weight: bold;
 }
 .goldenfit{
     
-    border: 2px solid #c49b63;
+    border: 1px solid #c49b63;
     background: transparent;
     color: #c49b63;
     height: 100%;
     border-radius: 0;
+}
+
+.icon{
+    width: fit-content;
+    height: fit-content;
+    padding: 0;
+    background-color: transparent;
+    color: blue;
+
+}
+
+.disabled__icon{
+    color: gray;
 }

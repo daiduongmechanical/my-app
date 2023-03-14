@@ -1,0 +1,46 @@
+.wrapper{
+width: 100%;
+min-height: calc(100vh - 60px);
+padding-right: 10px;
+
+
+& th{
+
+    text-align: center;
+    background-color: rgb(67 186 192);
+    height: 40px;
+}
+
+& td{
+    text-align: center;
+}
+
+}
+
+.table__cover{
+
+    width: 100%;
+    border: 2px solid var(--mainColor); 
+    
+
+}
+
+
+.action{
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 0 10px;
+
+    &:hover{
+        color: red;
+        cursor: pointer;
+    }
+    .row__type{
+        border: none;
+    }
+}
+.color{
+background-color: rgba($color: #fbf4e9, $alpha: 0.7);
+
+}
