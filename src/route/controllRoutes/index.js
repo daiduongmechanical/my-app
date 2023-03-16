@@ -13,6 +13,8 @@ import ManagerUserPage from "../../pages/managerUserPage";
 import ManagerOrderPage from "../../pages/managerOderPage";
 import AboutUsPage from "../../pages/aboutUsPage";
 import DetailDishPage from "../../pages/detailDish";
+import NewdishPage from "../../pages/newdishPage";
+import UpdateDishPage from "../../pages/updateDishPage";
 const PublicRoutes = [
   { path: "/", component: HomePage, layout: MainLayout },
   { path: "/menu", component: MenuPage, layout: MainLayout },
@@ -45,6 +47,16 @@ const AdminRoutes = [
   {
     path: "/admin/manager-menu",
     component: ManagerMenuPage,
+    layout: SidebarLayout,
+  },
+  {
+    path: "/admin/manager-menu/newdish",
+    component: NewdishPage,
+    layout: SidebarLayout,
+  },
+  {
+    path: "/admin/manager-menu/updatedish",
+    component: UpdateDishPage,
     layout: SidebarLayout,
   },
   {

@@ -12,9 +12,10 @@ const InputField = ({
   notice,
   type,
   action,
+  value,
 }) => {
   const cx = classNames.bind(style);
-  const [data, setData] = useState("");
+  const [data, setData] = useState(value && value);
   const [Check, setCheck] = useState(true);
   const [eyes, setEyes] = useState(true);
   const [target, setTarget] = useState(false);
@@ -41,6 +42,11 @@ const InputField = ({
     }
   };
 
+  useEffect(() => {
+    if (value) {
+      setData(value);
+    }
+  }, [value]);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("input__cover")}>
@@ -78,7 +84,9 @@ const InputField = ({
           success: Check && data !== "",
         })}
       >
-        {!Check && data !== "" && <p className={cx("notice")}>{notice}</p>}
+        {regex && !Check && data !== "" && (
+          <p className={cx("notice")}>{notice}</p>
+        )}
         {required && data === "" && target && (
           <p className={cx("notice")}>{name} can't blank</p>
         )}

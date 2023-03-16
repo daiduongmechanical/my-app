@@ -17,6 +17,7 @@ const DetailDishPage = () => {
   const [info, setInfo] = useState(true);
   const [hidden, setHidden] = useState(false);
   const [loginNotice, setLoginNotice] = useState(false);
+  const [number, setNumber] = useState(1);
 
   //get dish context
   const getDishContext = useContext(DishContext);
@@ -114,7 +115,12 @@ const DetailDishPage = () => {
               <form className={cx("action__form")} ref={formRef}>
                 <div className={cx("action__input")}>
                   <h5>Number : </h5>
-                  <input type="number" name="quantity" />
+                  <input
+                    type="number"
+                    name="quantity"
+                    value={number}
+                    onChange={(e) => setNumber(e.target.value)}
+                  />
                 </div>
                 <div className={cx("action__cart")}>
                   <MyButton action={handleAdd} golden>

@@ -3,10 +3,10 @@ import style from "./sidebarLayout.module.scss";
 import { motion } from "framer-motion";
 import Header from "../components/header";
 import Footer from "../components/footer";
-import { Fragment, useContext } from "react";
+
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
+
 import SideBar from "../components/sidebar";
 
 const SidebarLayout = ({ children }) => {
@@ -16,7 +16,7 @@ const SidebarLayout = ({ children }) => {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
     exit: "out",
-    transition: { duration: 4 },
+    transition: { duration: 1 },
   };
 
   return (
