@@ -23,7 +23,7 @@ const ProductSlider = ({ data }) => {
     autoplay: true,
     autoplaySpeed: 3000,
     initialSlide: 0,
-    arrows: true,
+    arrows: false,
     className: "slides",
     nextArrow: <FontAwesomeIcon icon={faAngleRight} />,
     prevArrow: <FontAwesomeIcon icon={faAngleLeft} />,

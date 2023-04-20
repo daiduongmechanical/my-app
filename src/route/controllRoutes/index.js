@@ -15,16 +15,22 @@ import AboutUsPage from "../../pages/aboutUsPage";
 import DetailDishPage from "../../pages/detailDish";
 import NewdishPage from "../../pages/newdishPage";
 import UpdateDishPage from "../../pages/updateDishPage";
+import CurrentOrderPage from "../../pages/currentOrderPage";
+import SalePage from "../../pages/managerSale";
+import OverViewPage from "../../pages/overViewPage";
 const PublicRoutes = [
   { path: "/", component: HomePage, layout: MainLayout },
   { path: "/menu", component: MenuPage, layout: MainLayout },
   { path: "/signup", component: SigUpnPage, layout: MainLayout },
   { path: "/login", component: LoginPage, layout: MainLayout },
   { path: "/about-us", component: AboutUsPage, layout: MainLayout },
-  { path: "/cart", component: CartPage, layout: MainLayout },
+  { path: "/cart/:userID", component: CartPage, layout: MainLayout },
   { path: "/profile", component: ProfilePage, layout: SidebarLayout },
-  { path: "/detail-dish", component: DetailDishPage, layout: MainLayout },
-  { path: "/menu/detail-dish", component: DetailDishPage, layout: MainLayout },
+  {
+    path: "/detail-dish/:dishID",
+    component: DetailDishPage,
+    layout: MainLayout,
+  },
 
   {
     path: "/profile/reset-password",
@@ -34,6 +40,11 @@ const PublicRoutes = [
   {
     path: "/profile/previous-orders",
     component: PreviousOderPage,
+    layout: SidebarLayout,
+  },
+  {
+    path: "/profile/current-orders",
+    component: CurrentOrderPage,
     layout: SidebarLayout,
   },
   {
@@ -52,8 +63,29 @@ const AdminRoutes = [
   {
     path: "/admin/manager-menu/newdish",
     component: NewdishPage,
+    layout: MainLayout,
+  },
+  {
+    path: "/admin/manager-discount",
+    component: SalePage,
+    layout: MainLayout,
+  },
+  {
+    path: "/admin/overview",
+    component: OverViewPage,
     layout: SidebarLayout,
   },
+  {
+    path: "/admin/manager-discount/new-discount",
+    component: ManagerMenuPage,
+    layout: MainLayout,
+  },
+  {
+    path: "/admin/manager-discount/update/:discountID",
+    component: ManagerMenuPage,
+    layout: MainLayout,
+  },
+
   {
     path: "/admin/manager-menu/updatedish",
     component: UpdateDishPage,
@@ -62,7 +94,7 @@ const AdminRoutes = [
   {
     path: "/admin/manager-order",
     component: ManagerOrderPage,
-    layout: SidebarLayout,
+    layout: MainLayout,
   },
   {
     path: "/admin/manager-user",

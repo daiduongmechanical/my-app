@@ -3,10 +3,13 @@ import style from "./cartpage.module.scss";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import CartItem from "../pageComponents/cartItem";
-import { useRef, useEffect, useState, useContext } from "react";
+import { useRef, useEffect, useState } from "react";
 import MyButton from "../pageComponents/myButton";
 import cartURL from "../../config/cartURL";
-import { AccountDetailContext } from "../../route";
+import orderURL from "../../config/orderURL";
+import HidenNotice from "../pageComponents/noticeHidden";
+import discountURL from "../../config/discountURL";
+import { useParams, useLocation } from "react-router-dom";
 
 const CartPage = () => {
   const cx = classNames.bind(style);
@@ -14,30 +17,49 @@ const CartPage = () => {
   const [emptyCart, setEmptyCart] = useState(false);
   const [action, setAction] = useState(0);
   const [bill, setBill] = useState(0);
+  const [show, setShow] = useState(false);
+  const [info, setInfo] = useState("");
+  const [delivery, setDelivery] = useState(true);
+  const FormRef = useRef();
+  const [sale, setSale] = useState([]);
+  const { userID } = useParams();
+  const location = useLocation();
 
-  let delivery = 2;
-  //get accounts details context
-  const getAccountDetailContext = useContext(AccountDetailContext);
-  const accountDetail = getAccountDetailContext[0];
+  let deliveryCost = delivery ? 2 : 0;
+  let calArr = [];
 
   useEffect(() => {
-    let x = listCart.reduce((total, x) => total + x.quantity * x.dishprice, 0);
+    listCart.forEach((e) => {
+      let check = 0;
+      sale.forEach((s) => {
+        if (s.DishID === e.dishid) {
+          calArr = [
+            ...calArr,
+            {
+              quantity: e.quantity,
+              price:
+                e.dishprice - (e.dishprice * Number(s.DiscountAmount)) / 100,
+            },
+          ];
+          check++;
+        }
+      });
+      if (check === 0) {
+        calArr = [...calArr, { quantity: e.quantity, price: e.dishprice }];
+      }
+    });
+
+    let x = calArr.reduce((total, x) => total + x.quantity * x.price, 0);
     setBill(x);
   }, [listCart, action]);
 
-  console.log(accountDetail);
-
+  //get list cart
   useEffect(() => {
-    if (accountDetail === undefined) {
-      return;
-    }
     cartURL
-      .get(`/${accountDetail.id}`)
+      .get(`/${userID}`)
       .then((response) => {
-        console.log(response);
         if (response.data.length === 0) {
           setEmptyCart(true);
-          delivery = 0;
         }
         setListCart(response.data);
       })
@@ -45,12 +67,56 @@ const CartPage = () => {
         setEmptyCart(true);
         console.log(error);
       });
-  }, [action, accountDetail]);
+  }, [action, show]);
+
+  //get list sale
+  useEffect(() => {
+    discountURL
+      .get("/")
+      .then((response) => {
+        if (response.data.length !== 0) {
+          setSale(response.data);
+        }
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const handleAction = (data) => setAction((pre) => (pre += data));
 
+  const handleOrder = (e) => {
+    e.preventDefault();
+
+    let data = new FormData(FormRef.current);
+    data.append("userid", userID);
+    data.append("totalCost", bill);
+
+    if (bill === 0 || (bill === 2 && delivery)) {
+      return;
+    }
+
+    orderURL
+      .post("/", data)
+      .then((response) => {
+        if (response.data.length !== 0) {
+          setShow(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // render
   return (
     <div className={cx("wrapper")}>
+      {show && (
+        <HidenNotice
+          nt2={"your order was send"}
+          bt1={"check your order"}
+          l1="/profile/current-orders"
+          l2={location.pathname}
+        />
+      )}
       <Row sm={1} xs={1} md={2} lg={2}>
         <Col sm={12} xs={12} md={8} lg={8}>
           {emptyCart ? (
@@ -64,7 +130,7 @@ const CartPage = () => {
             <div className={cx("list")}>
               {listCart.map((e) => (
                 <div key={e.dishid}>
-                  <CartItem action={handleAction} data={e}></CartItem>
+                  <CartItem sale={sale} action={handleAction} data={e} />
                 </div>
               ))}
             </div>
@@ -72,38 +138,78 @@ const CartPage = () => {
         </Col>
         <Col sm={12} xs={12} md={4} lg={4}>
           <div className={cx("bill")}>
-            <h3>{listCart.length + " DISH "}</h3>
-            <hr></hr>
-            <h5>You have vouchers ?</h5>
-            <form className={cx("voucher__form")}>
-              <input
-                type="text"
-                placeholder="Enter your voucher "
-                className={cx("bill__voucher")}
-              />
-              <MyButton goldenfit>USE</MyButton>
+            <form ref={FormRef} onSubmit={handleOrder}>
+              <h3>{listCart.length + " DISH "}</h3>
+
+              <hr></hr>
+              <div className={cx("bill__pay")}>
+                <div className={cx("total__bill")}>
+                  <span>Total bill</span>
+                  <span>${parseFloat(bill).toFixed(2)}</span>
+                </div>
+                <div className={cx("total__bill")}>
+                  <span>delivery</span>
+                  <span>${parseFloat(deliveryCost).toFixed(2)}</span>
+                </div>
+                <div className={cx("total__bill")}>
+                  <h5>Total pay</h5>
+                  <h5>${parseFloat(bill + deliveryCost).toFixed(2)}</h5>
+                </div>
+              </div>
+              <p className={cx("select__type")}>
+                <input
+                  required
+                  type="radio"
+                  value={"table"}
+                  name={"type"}
+                  onClick={() => setDelivery(false)}
+                />{" "}
+                Book a table
+              </p>
+              <p className={cx("select__type")}>
+                <input
+                  required
+                  type="radio"
+                  value={"delivery"}
+                  name={"type"}
+                  onClick={() => setDelivery(true)}
+                />
+                Delivery
+              </p>
+
+              <div className={cx("more__infomation--cover")}>
+                {delivery ? (
+                  <div className={cx("more__infomation")}>
+                    <p>Enter location delivery</p>
+                    <input
+                      name="detail"
+                      type="text"
+                      required
+                      value={info}
+                      onChange={(e) => setInfo(e.target.value)}
+                    />
+                  </div>
+                ) : (
+                  <div className={cx("more__infomation")}>
+                    <p>Enter your day you place</p>
+                    <input
+                      name="detail"
+                      type="datetime-local"
+                      min={new Date().toISOString()}
+                      required
+                      value={info}
+                      onChange={(e) => setInfo(e.target.value)}
+                    />
+                  </div>
+                )}
+              </div>
+              <MyButton full red disabled={info.trim() === ""}>
+                <div className={cx("pay__btn")}>
+                  <h5>Pay</h5>
+                  <h5>${parseFloat(bill + 2).toFixed(2)}</h5>
+                </div>
+              </MyButton>
             </form>
-            <hr></hr>
-            <div className={cx("bill__pay")}>
-              <div className={cx("total__bill")}>
-                <span>Total bill</span>
-                <span>${parseFloat(bill).toFixed(2)}</span>
-              </div>
-              <div className={cx("total__bill")}>
-                <span>delivery</span>
-                <span>${parseFloat(delivery).toFixed(2)}</span>
-              </div>
-              <div className={cx("total__bill")}>
-                <h5>Total pay</h5>
-                <h5>${parseFloat(bill + 2).toFixed(2)}</h5>
-              </div>
-            </div>
-            <MyButton full red>
-              <div className={cx("pay__btn")}>
-                <h5>Pay</h5>
-                <h5>${parseFloat(bill + 2).toFixed(2)}</h5>
-              </div>
-            </MyButton>
           </div>
         </Col>
       </Row>

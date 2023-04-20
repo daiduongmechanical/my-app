@@ -1,68 +1,78 @@
 import classNames from "classnames/bind";
-import MenuList from "../pageComponents/menuList";
 import style from "./menu.module.scss";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
 import dishURL from "../../config/dishURL";
+// import discountURL from "../../config/discountURL";
+import { Link } from "react-router-dom";
 
 const MenuPage = () => {
   const cx = classNames.bind(style);
   const [list, setList] = useState([]);
+  // const [listSale, setListSale] = useState([]);
 
-  let main = [];
-  let drinks = [];
-  let dessert = [];
-  let start = [];
+  // // get list dis count
+  // useEffect(() => {
+  //   discountURL
+  //     .get("/")
+  //     .then((response) => {
+  //       if (response.statusText === "OK") {
+  //         setListSale(response.data);
+  //       }
+  //     })
+  //     .catch((error) => console.log(error));
+  // }, []);
 
+  // get list dish
   useEffect(() => {
     dishURL
       .get("/")
       .then((response) => {
-        console.log(response);
-        setList(response.data);
+        let recive = response.data;
+        const groupedByDishID = recive.reduce((result, dish) => {
+          if (!result[dish.dishid]) {
+            result[dish.dishid] = [];
+          }
+          result[dish.dishid].push(dish);
+          return result;
+        }, {});
+        const resultArray = Object.values(groupedByDishID);
+        setList(resultArray);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
-  if (list.lenth !== 0) {
-    list.forEach((e) => {
-      switch (e.type) {
-        case "dessert":
-          dessert = [...dessert, e];
-          break;
-        case "drink":
-          drinks = [...drinks, e];
-          break;
-        case "start":
-          start = [...start, e];
-          break;
-        default:
-          main = [...main, e];
-          break;
-      }
-    });
-  }
-
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("header")}></div>
-      <Row sm={1} xs={1} md={2} lg={2}>
-        <Col>
-          <MenuList data={start} header="starter" />
-        </Col>
-        <Col>
-          <MenuList data={main} header="main dish" />
-        </Col>
-
-        <Col>
-          <MenuList data={dessert} header="dessert" />
-        </Col>
-        <Col>
-          <MenuList data={drinks} header="drink" />
-        </Col>
+      <div className={cx("header")}>
+        <span className={cx("header__icon")}>cupcake</span>
+        <span className={cx("header__icon")}>tiramisu</span>
+        <span className={cx("header__icon")}>donuts</span>
+        <span className={cx("header__icon")}>Cheesecake</span>
+      </div>
+      <Row sm={2} xs={3} md={3} lg={4}>
+        {list.map((e, index) => (
+          <Col key={index}>
+            <Link to={`/detail-dish/${e[0].dishid}`}>
+              <div className={cx("item")}>
+                <div className={cx("item__img")}>
+                  <img src={e[0].imageURL} alt="error" />
+                </div>
+                <div className={cx("item__type")}>
+                  <span>{e[0].type}</span>
+                </div>
+                <div className={cx("item__info")}>
+                  <h4>{e[0].dishname}</h4>
+                  <h4>${parseFloat(e[0].dishprice).toFixed(2)}</h4>
+                </div>
+              </div>
+            </Link>
+          </Col>
+        ))}
       </Row>
     </div>
   );

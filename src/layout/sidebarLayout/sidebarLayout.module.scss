@@ -8,5 +8,7 @@
 
     width: 100%;
    padding: 70px 10px 10px 10px;
+   padding-top: calc(var(--headerSize) + 10px);
+   min-height: 100vh;
 }
 

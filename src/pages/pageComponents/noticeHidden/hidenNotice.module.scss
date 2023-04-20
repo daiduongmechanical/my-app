@@ -1,0 +1,29 @@
+.hidden__notice{
+
+    width: 380px;
+    height: 200px;
+    background-color: black;
+    border-radius: 10px;
+    left: 33%;
+    bottom: 30vh;
+    position: absolute;
+    padding: 20px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    & h4{
+        color: var(--mainColor);
+        text-transform: capitalize;
+        text-align: center;
+    }
+    
+}
+
+.hidden__notice--text{
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    color: var(--mainColor);
+}

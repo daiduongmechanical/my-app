@@ -4,7 +4,8 @@ import MyButton from "../pageComponents/myButton";
 import style from "./loginpage.module.scss";
 import { useState, useRef, useContext } from "react";
 import Images from "../../asset/image";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, redirect } from "react-router-dom";
+
 import FormData from "form-data";
 import userURL from "../../config/userURL";
 import {
@@ -48,16 +49,20 @@ const LoginPage = () => {
     userURL
       .post("/login", data)
       .then(function (response) {
-        if (response.data.length === 0) {
+        console.log(response);
+        if (response.message === "Request failed with status code 401") {
           setLoginError(true);
-        } else {
+        }
+        if (response.data.user.manage === 1) {
+          window.location.href = "http://localhost:8000";
+        }
+        if (response.data.user.manage === 0) {
           handleLogin(true);
           setCookie("jwt", response.data.authorisation.token, 1);
           handleAccountDetail(response.data.user);
           history("/");
-          response.data.user.manage === "0"
-            ? handleAccountType(false)
-            : handleAccountType(true);
+
+          handleAccountType(false);
         }
       })
       .catch(function (error) {

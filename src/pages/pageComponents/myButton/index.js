@@ -13,6 +13,7 @@ const MyButton = ({
   goldenfit,
   icon,
   fit,
+  green,
 }) => {
   const cx = classNames.bind(style);
 
@@ -32,6 +33,7 @@ const MyButton = ({
         icon,
         disabled__icon,
         fit,
+        green,
       })}
       disabled={disabled}
       to={to}

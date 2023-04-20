@@ -38,6 +38,7 @@
      flex-direction: column;
      justify-content: center;
      padding-left: 40px;
+     text-transform: uppercase;
      
     
         & div{
@@ -86,4 +87,11 @@
 
     .noaction{
         color: gray;
+    }
+
+    .special__require{
+        border: 1px solid var(--mainColor);
+        outline: none;
+        margin-top: 20px;
+        width: 100%;
     }

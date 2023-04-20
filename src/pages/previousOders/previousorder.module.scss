@@ -1,0 +1,82 @@
+.wrapper{
+
+    width: 100%;
+    min-height: 100vh;
+    padding: 10px;
+}
+
+.order__item{
+
+    width: 100%;
+    height:auto;
+border: 1.5px solid var(--mainColor);
+    display: flex;
+    justify-content: space-between;
+
+    padding: 10px;
+    box-shadow: 3px 3px 3px gray;
+    margin-bottom: 10px;
+}
+.dish__detail{
+    display: block;
+    width: 50%;
+    height: 100%;
+}
+.bill__detail{
+    width: 50%;
+    height: 100%;
+  
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-right: 20px;
+    justify-content: flex-end;
+}
+.order__item--list{
+    text-transform:lowercase;
+    margin-bottom: 10px;
+
+
+    & span{
+        margin: 0 10px ;
+        
+    }
+}
+
+.order__status{
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: var(--grayText);
+}
+
+.status__field{
+    font-size: 18px;
+    margin-left: 5px;
+    color: green;
+}
+
+.total__cost{
+    font-size: 20px;
+    color: var(--grayText);
+
+    & b{
+        margin-left: 5px;
+        font-size: 18px;
+        color: black;;
+    }
+}
+
+.waiting{
+
+    color: #ffae00;
+}
+.accept{
+  color:green;
+
+}
+
+
+.delivery{
+
+    color: #003171;
+}

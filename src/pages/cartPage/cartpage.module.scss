@@ -59,6 +59,11 @@ box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
     align-items: center;
     justify-content: space-between;
     margin: 2px;
+
+    & h5{
+        font-weight: 600;
+        margin-top: 10px;
+    }
 }
 
 .pay__btn{
@@ -72,3 +77,36 @@ box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
 h5{
     margin: 0;
 }
+
+
+
+
+
+.select__type{
+font-size: 18px;
+
+& input{
+    margin-right: 20px;
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+}
+
+.more__infomation--cover{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.more__infomation{
+    width: 100%;
+    font-size: 18px;
+
+    & input{
+        width: 100%;
+        outline: none;
+        border: 1px solid var(--mainColor);
+    }
+}
+

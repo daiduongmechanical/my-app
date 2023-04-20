@@ -1,7 +1,7 @@
 .wrapper{
 width: 100%;
-min-height: calc(100vh - 60px);
-padding-right: 10px;
+min-height: calc(100vh - 80px);
+padding:15px;
 
 
 
@@ -14,6 +14,7 @@ padding-right: 10px;
 
 & td{
     text-align: center;
+    text-transform: lowercase;
 }
 
 }
@@ -27,7 +28,19 @@ padding-right: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    & .header__btn{
+        display: flex;
+        height: 100%;
+        align-items: center;
+
+        & div{
+            margin: 0 5px;
+        }
+    }
 }
+
+
 
 .header__add{
     font-size: 16px;
@@ -88,11 +101,12 @@ color: var(--mainColor);
 }
 
 
+
 .action{
     font-size: 18px;
     font-weight: bold;
     text-decoration: underline;
-    margin: 0 10px;
+    margin: 0 20px;
 
     &:hover{
         color: red;
@@ -105,4 +119,68 @@ color: var(--mainColor);
 .color{
 background-color: rgba($color: #fbf4e9, $alpha: 1);
 
+}
+
+.row__type{
+    
+    height: 40px;
+}
+.row__head{
+    height: 40px;
+}
+
+
+.main__cover{
+    width:100%;
+    display: flex;
+
+
+.half{
+    width: 50%;
+    height: fit-content;
+}
+}
+.sale__form{
+    width: 50%;
+    padding: 20px 20px;
+    border: 1px solid var(--mainColor);
+    margin-left: 10px;
+ & .input__cover{
+        width: 100%;
+        
+       & p{
+            font-size: 14px;
+                color: var(--grayText);
+                margin-bottom: -24px;
+                margin-top: -12px;
+                text-transform: capitalize;
+        }
+    }
+}
+
+.select__zone{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    justify-content: space-between;
+    
+   & .select__zone--icon{
+    font-size: 25px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover{
+        color: red;
+    }
+   }
+
+    & .select__zone--left{
+        display: flex;
+
+        & span{
+            font-weight: 500;
+            margin-right: 10px;
+        }
+    }
 }

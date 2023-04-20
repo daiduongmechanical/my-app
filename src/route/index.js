@@ -4,36 +4,29 @@ import { createContext, useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import GoToTop from "../layout/components/gototop";
 import userURL from "../config/userURL";
+import { Cookies } from "react-cookie";
+import adminURL from "../config/adminURL";
+import useSound from "use-sound";
+import boopSfx from "../asset/sound/Law And Order Sound.mp3";
 
 export const StatusLoginContext = createContext();
 export const AccountTypeContext = createContext();
 export const AccountDetailContext = createContext();
 export const DishContext = createContext();
+export const NewOrderContext = createContext();
 
 const WrapperRoutes = () => {
   const [statusLogin, setStatusLogins] = useState(false);
   const [type, setType] = useState(false);
   const [accountDetail, setAccountDetail] = useState();
   const [dish, setDish] = useState([]);
+  const [newOrder, setNewOrder] = useState(false);
   let usingRoles = [...PublicRoutes];
+  const cookies = new Cookies();
+  let location = useLocation();
 
-  //get cockie
-  function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(";");
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) === " ") {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) === 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
-
+  //play sound
+  const [play] = useSound(boopSfx);
   //set cokie
   const setCookie = (cname, cvalue, exdays) => {
     const d = new Date();
@@ -42,11 +35,11 @@ const WrapperRoutes = () => {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   };
 
+  //refresh token
   useEffect(() => {
-    let jwt = getCookie("jwt");
     userURL
       .post("/refresh", [], {
-        headers: { Authorization: `Bearer ${jwt}` },
+        headers: { Authorization: `Bearer ${cookies.get("jwt")}` },
       })
       .then((response) => {
         if (response.data.status === "success") {
@@ -63,10 +56,47 @@ const WrapperRoutes = () => {
       });
   }, []);
 
+  //get notice new order
+  const getdata = () => {
+    let currentTotal = localStorage.getItem("total");
+
+    adminURL
+      .get("/order/count", {
+        headers: { Authorization: `Bearer ${cookies.get("jwt")}` },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          if (response.data !== Number(currentTotal)) {
+            localStorage.setItem("total", response.data);
+            setNewOrder(true);
+            play();
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const reload = () =>
+    setInterval(() => {
+      getdata();
+    }, 30000);
+
+  useEffect(() => {
+    if (type) {
+      reload();
+    }
+
+    return clearInterval(reload);
+  }, [type]);
+
   if (type) {
     usingRoles = [...usingRoles, ...AdminRoutes];
   }
-  let location = useLocation();
+
+  // giao dien
+
   return (
     <AnimatePresence exitBeforeEnter>
       <GoToTop>
@@ -75,7 +105,6 @@ const WrapperRoutes = () => {
             let Layout = route.layout;
 
             const Page = route.component;
-
             return (
               <Route
                 key={index}
@@ -89,9 +118,13 @@ const WrapperRoutes = () => {
                         <StatusLoginContext.Provider
                           value={[statusLogin, setStatusLogins]}
                         >
-                          <Layout>
-                            <Page />
-                          </Layout>
+                          <NewOrderContext.Provider
+                            value={[newOrder, setNewOrder]}
+                          >
+                            <Layout>
+                              <Page />
+                            </Layout>
+                          </NewOrderContext.Provider>
                         </StatusLoginContext.Provider>
                       </AccountDetailContext.Provider>
                     </AccountTypeContext.Provider>

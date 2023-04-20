@@ -1,0 +1,37 @@
+.slick-dots {
+  display: flex;
+  justify-content: center;
+  padding: 5px 0 0 0;
+}
+
+.slick-dots li {
+  margin: 0 10px;
+  width: 65px;
+  height: 65px;
+
+  cursor: pointer;
+}
+
+.slick-dots ul {
+ margin-bottom: 0;
+
+}
+
+.slick-dots li.slick-active {
+  border: solid 1px var(--mainColor);
+}
+
+.slick-dots li img {
+width: 65px;
+height: 65px;
+  display: block;
+  margin: auto;
+
+
+}
+
+.slick__main--image{
+  width: 100%;
+  aspect-ratio: 1/0.8;
+
+}

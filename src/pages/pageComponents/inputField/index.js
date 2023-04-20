@@ -13,9 +13,14 @@ const InputField = ({
   type,
   action,
   value,
+  readOnly,
+  pattern,
+  compare,
+  get,
+  wrong,
 }) => {
   const cx = classNames.bind(style);
-  const [data, setData] = useState(value && value);
+  const [data, setData] = useState(value ? value : "");
   const [Check, setCheck] = useState(true);
   const [eyes, setEyes] = useState(true);
   const [target, setTarget] = useState(false);
@@ -28,16 +33,22 @@ const InputField = ({
   //handel onchange
   const handleChange = (e) => {
     setData(e.target.value);
+    if (get) {
+      action(e.target.value);
+    }
 
     //xu ly regex
     if (regex) {
       if (regex.test(e.target.value)) {
         setCheck(true, e.target.value);
-
-        action(true);
+        if (!get) {
+          action(true);
+        }
       } else {
         setCheck(false);
-        action(false);
+        if (!get) {
+          action(false);
+        }
       }
     }
   };
@@ -47,6 +58,7 @@ const InputField = ({
       setData(value);
     }
   }, [value]);
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("input__cover")}>
@@ -56,11 +68,13 @@ const InputField = ({
           value={data}
           name={name}
           className={cx("form__input")}
-          type={name === "password" ? show : type}
+          type={type === "password" ? show : type}
           required={required}
           placeholder={content}
+          readOnly={readOnly}
+          pattern={pattern}
         />
-        {name === "password" && (
+        {type === "password" && (
           <Fragment>
             {eyes ? (
               <FontAwesomeIcon
@@ -89,6 +103,14 @@ const InputField = ({
         )}
         {required && data === "" && target && (
           <p className={cx("notice")}>{name} can't blank</p>
+        )}
+        {compare && data !== compare && data !== "" && (
+          <p className={cx("notice")}>
+            {name} Repassword must be same with password
+          </p>
+        )}
+        {wrong === 0 && data !== "" && (
+          <p className={cx("notice")}>Password wrong. Please check again</p>
         )}
       </div>
     </div>

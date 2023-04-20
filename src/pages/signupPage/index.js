@@ -2,10 +2,11 @@ import classNames from "classnames/bind";
 import InputField from "../pageComponents/inputField";
 import style from "./signuppage.module.scss";
 import MyButton from "../pageComponents/myButton";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import FormData from "form-data";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { StatusLoginContext, AccountDetailContext } from "../../route";
 
 const SignUpPage = () => {
   const cx = classNames.bind(style);
@@ -16,6 +17,15 @@ const SignUpPage = () => {
   const [disabled, setDisabled] = useState(false);
   const formRef = useRef();
   let history = useNavigate();
+
+  //get data from    StatusLoginContext
+
+  const getStatusLoginContext = useContext(StatusLoginContext);
+  let handleLogin = getStatusLoginContext[1];
+
+  //get account detail context
+  const getAccountDetailContext = useContext(AccountDetailContext);
+  let handleAccountDetail = getAccountDetailContext[1];
 
   const nameAction = (data) => setNameData(data);
   const emailAction = (data) => setEmailData(data);
@@ -29,7 +39,10 @@ const SignUpPage = () => {
     axios
       .post("http://localhost:8000/api/register", data)
       .then(function (response) {
-        console.log(response);
+        if (response.status === "success") {
+          handleAccountDetail(response.user);
+          handleLogin(true);
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -68,7 +81,7 @@ const SignUpPage = () => {
 
           <InputField
             content="Enter your phone number"
-            name="Phone"
+            name="phone"
             type="number"
             regex={/^[0-9\-\+]{9,15}$/}
             notice="Phone must be 9-13 numbers"

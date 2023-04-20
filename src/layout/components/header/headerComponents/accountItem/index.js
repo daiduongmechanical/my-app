@@ -1,12 +1,16 @@
 import { faShopify } from "@fortawesome/free-brands-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames/bind";
 import NavItem from "../navItiem";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css"; // optional
 import style from "./accountitem.module.scss";
-import { AccountTypeContext } from "../../../../../route";
+import {
+  AccountTypeContext,
+  NewOrderContext,
+  AccountDetailContext,
+} from "../../../../../route";
 import { useContext } from "react";
 
 const AccountItem = ({ statusLogin }) => {
@@ -16,10 +20,35 @@ const AccountItem = ({ statusLogin }) => {
   const getAccountTypeContext = useContext(AccountTypeContext);
   let type = getAccountTypeContext[0];
 
+  //get new order context
+
+  const getOrderContext = useContext(NewOrderContext);
+  const newNotice = getOrderContext[0];
+  const setNewNotice = getOrderContext[1];
   let typeRoute = type ? "/admin" : "/profile";
+
+  //get account detail context
+
+  const getDetailContext = useContext(AccountDetailContext);
+  const userData = getDetailContext[0];
+
   return (
     <div className={cx("wrapper")}>
-      <NavItem normal to="/cart">
+      {type && (
+        <NavItem normal to="/admin/manager-order">
+          <Tippy content="cart">
+            <div onClick={() => setNewNotice(false)} className={cx("icon")}>
+              {newNotice && <div className={cx("icon__notice")}></div>}
+              <FontAwesomeIcon icon={faBell} />
+            </div>
+          </Tippy>
+        </NavItem>
+      )}
+
+      <NavItem
+        normal
+        to={userData === undefined ? "/cart" : `/cart/${userData.id}`}
+      >
         <Tippy content="cart">
           <div className={cx("icon")}>
             <FontAwesomeIcon icon={faShopify} />

@@ -3,7 +3,7 @@ import style from "./menulist.module.scss";
 
 import MenuItem from "../menuItem";
 
-const MenuList = ({ data, header }) => {
+const MenuList = ({ data, header, sale }) => {
   const cx = classNames.bind(style);
 
   return (
@@ -12,7 +12,7 @@ const MenuList = ({ data, header }) => {
 
       {data.map((e, index) => (
         <div key={index}>
-          <MenuItem data={e} />
+          <MenuItem data={e} sale={sale} />
         </div>
       ))}
       {/* end item */}

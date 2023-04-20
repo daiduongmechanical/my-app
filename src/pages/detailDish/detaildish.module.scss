@@ -1,34 +1,12 @@
 .wrapper {
 width: 100%;
-
-padding: 10px 20px ;
+padding: 15px 20px ;
+min-height: 100vh;
 
 }
 
 
-.hidden__notice{
 
-    width: 400px;
-    height: 200px;
-    background-color: black;
-    border-radius: 10px;
-    left: 30%;
-    bottom: 30vh;
-    position: absolute;
-    padding: 20px 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-}
-
-.hidden__notice--text{
-    font-size: 22px;
-    font-weight: bold;
-    text-align: center;
-    color: var(--mainColor);
-}
 
 .dish__cover{
 
@@ -39,12 +17,12 @@ padding: 10px 20px ;
 }
 
 
+
 .dish{
 width: 80%;
-border-radius: 10px;
 display: flex;
 justify-content: center;
-box-shadow: 5px 5px 5px var(--mainColor);
+box-shadow: 3px 3px 3px var(--mainColor);
 
 
 }
@@ -60,14 +38,58 @@ padding: 0 20px;
     width: 100%;
     text-align: center;
     color: black;
-    margin: 20px 0;
-    text-transform: lowercase;
+    text-transform: capitalize
+
+ 
+}
+
+.slider__cover{
+    width: 100% ;
+    height: 50%;
+
+}
+
+.main__image--slick{
+    width: 40px;
+  height: 40px;
+}
+.small__image--slick{
+    width: 90%;
+aspect-ratio: 1/1;
+}
+
+.discount__info{
+    margin-left: 10px;
+    font-weight: 600;
+    border-radius: 5px;
+
+ 
+    & span{
+        font-size: 16px;
+        box-sizing: none;
+        padding: 5px;
+        color: white;
+        text-transform: capitalize;
+   
+
+        background-color:rgb(222 4 0)
+    }
+    & .discount__info--name{
+        color: black;
+    }
 }
 
 .action__price{
 
     font-size: 22px;
     margin: 10 0;
+    width: 100%;
+    text-align: center;
+
+    & input{
+        border: none;
+        outline: none;
+    }
 }
 
 .action__icon{
@@ -104,14 +126,17 @@ margin-left: 100px;
         text-align: center;
     }
 }
+.slider__cover{
+    width: 100%;
+  
+}
 
 .infomation{
     width: 100%;
     height: calc(100vh - 80px);
-    border-radius: 10px;
-    box-shadow: 5px 5px 5px var(--mainColor);
+    box-shadow: 3px 3px 3px var(--mainColor);
 
-    border: 2px solid  #c49b63 ;
+    border: 1.5px solid  #c49b63 ;
 }
 
 .infomation__show{
@@ -124,7 +149,7 @@ margin-left: 100px;
     width: 100%;
     display: flex;
     align-items: center;
-    border-bottom:2px solid  #c49b63 ;
+    border-bottom:1.5px solid  #c49b63 ;
     height: 40px;
    
 

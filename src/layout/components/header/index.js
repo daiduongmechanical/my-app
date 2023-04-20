@@ -13,6 +13,7 @@ const Header = () => {
   const getStatusLoginContext = useContext(StatusLoginContext);
   let statusLogin = getStatusLoginContext[0];
 
+  console.log(statusLogin);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("left__location")}>

@@ -1,0 +1,124 @@
+.wrapper{
+    width: 100%;
+    min-height: calc(100vh - 100px);
+    padding: 10px 20px;
+}
+
+.header{
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & input{
+        outline: none;
+        border: 0.5px solid var(--mainColor);
+        text-align: center;
+    }
+
+    & .header__left{
+        display: flex;
+        align-items: center;
+    }
+  
+    & h4{
+        margin-bottom: 0;
+    }
+    
+
+    & select{
+        outline: none;
+        margin-left: 10px;
+    border: none;
+    }
+}
+
+
+
+.main{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.main__item{
+    width: 30%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+
+    padding: 10px 20px;
+    border-radius: 5px;
+     & p{
+        color: var(--grayText);
+     }
+
+}
+
+.main__item--revenue{
+    background-color: #ececff;
+}
+.main__item--order{
+    background-color: #f5f1da;
+}
+.main__item--view{
+    background-color:#eef1f6;
+}
+
+
+.income__icon{
+    font-size: 30px;
+    background-color: #ffffff;
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+
+
+}
+
+.detail{
+    width: 100%;
+    margin-top: 20px;
+}
+
+.detail__item{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px;
+    background-color: #f6f6f8;
+    border: 0.5px solid var(--mainColor);
+    border-radius: 8px;
+
+
+    & img{
+        height: 80px;
+        width: 80px;
+        border-radius: 5px;
+    }
+    
+    & .detail__item--detail{
+        width: 25%;
+        height: 80px;
+        padding: 5px;
+        padding-left: 10px;
+
+        & p{
+            margin-bottom: 10px;
+            color: var(--mainColor);
+            font-size: 16px;
+        }
+        & h5 {
+            font-size: 14px;
+        }
+    }
+}
