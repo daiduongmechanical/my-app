@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.0933452f.css",
-    "main.js": "/static/js/main.a2023d0c.js",
+    "main.js": "/static/js/main.ae72b59d.js",
     "static/js/845.d21fc75c.chunk.js": "/static/js/845.d21fc75c.chunk.js",
     "static/js/787.28cb0dcd.chunk.js": "/static/js/787.28cb0dcd.chunk.js",
     "static/media/Law And Order Sound.mp3": "/static/media/Law And Order Sound.ff2c0751f3d05d6876a7.mp3",
@@ -13,12 +13,12 @@
     "static/media/facebook.svg": "/static/media/facebook.f1b483f6c1162a19dbcbb41c476cc7ab.svg",
     "index.html": "/index.html",
     "main.0933452f.css.map": "/static/css/main.0933452f.css.map",
-    "main.a2023d0c.js.map": "/static/js/main.a2023d0c.js.map",
+    "main.ae72b59d.js.map": "/static/js/main.ae72b59d.js.map",
     "845.d21fc75c.chunk.js.map": "/static/js/845.d21fc75c.chunk.js.map",
     "787.28cb0dcd.chunk.js.map": "/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0933452f.css",
-    "static/js/main.a2023d0c.js"
+    "static/js/main.ae72b59d.js"
   ]
 }
