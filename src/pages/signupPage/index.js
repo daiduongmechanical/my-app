@@ -85,7 +85,7 @@ const SignUpPage = () => {
             type="number"
             regex={/^[0-9\-\+]{9,15}$/}
             notice="Phone must be 9-13 numbers"
-            require
+            required
             action={phoneAction}
           />
 

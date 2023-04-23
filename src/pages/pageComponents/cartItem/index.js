@@ -133,6 +133,7 @@ const CartItem = ({ data, action, sale }) => {
               )}
             </h4>
           </div>
+
           <input
             className={cx("special__require")}
             type="text"

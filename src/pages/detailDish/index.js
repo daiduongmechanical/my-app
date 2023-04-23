@@ -8,26 +8,28 @@ import { AccountDetailContext, StatusLoginContext } from "../../route";
 import rateURL from "../../config/rateURL";
 import HidenNotice from "../pageComponents/noticeHidden";
 import "./slick.css";
+import { Rating } from "react-simple-star-rating";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import "tippy.js/dist/tippy.css"; // optional
 import { useState, useEffect, useContext, useRef, Fragment } from "react";
-import Comment from "../pageComponents/comment";
 import dishURL from "../../config/dishURL";
 import discountURL from "../../config/discountURL";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
+import ShowInfo from "../pageComponents/showInfo/ShowInfo";
 
 const DetailDishPage = () => {
   const cx = classNames.bind(style);
-  const [info, setInfo] = useState(true);
   const [hidden, setHidden] = useState(false);
   const [loginNotice, setLoginNotice] = useState(false);
-  const [number, setNumber] = useState(1);
   const [comment, setComment] = useState([]);
-  const [list, setList] = useState([]);
   const [data, setData] = useState([]);
   const [sale, setSale] = useState([]);
+  const [quantity, setQuantity] = useState(1);
   const { dishID } = useParams();
+  const [showDescription, setShowDescription] = useState(false);
   const formRef = useRef();
 
   //get status login context
@@ -40,7 +42,7 @@ const DetailDishPage = () => {
 
   const renderPaging = (i) => (
     <div>
-      <img src={data[i].imageURL} alt={`image-${i}`} />
+      <img src={data.dishimages[i].imageurl} alt={`image-${i}`} />
     </div>
   );
 
@@ -60,11 +62,20 @@ const DetailDishPage = () => {
     customPaging: (i) => renderPaging(i),
   };
 
+  const handleMinus = () => {
+    if (quantity === 1) {
+      return;
+    } else {
+      setQuantity((pre) => (pre -= 1));
+    }
+  };
+
   // get detail dish
   useEffect(() => {
     dishURL
       .get("/" + dishID)
       .then((response) => {
+        console.log(response);
         if (response.data.length !== 0) {
           setData(response.data);
         }
@@ -73,7 +84,7 @@ const DetailDishPage = () => {
         console.log(err);
       });
   }, []);
-
+  <img src="" alt="" />;
   //get sale data
   useEffect(() => {
     discountURL
@@ -96,7 +107,7 @@ const DetailDishPage = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [list]);
+  }, [data]);
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -130,9 +141,15 @@ const DetailDishPage = () => {
   const resetNotice = (x) => {
     setHidden(x);
   };
-
+  if (data.length === 0) {
+    return;
+  }
+  console.log(data);
   return (
     <div className={cx("wrapper")}>
+      <div className={cx("sidemap")}>
+        <p>home/menu/detail-dish</p>
+      </div>
       {hidden && (
         <Fragment>
           {loginNotice ? (
@@ -151,90 +168,105 @@ const DetailDishPage = () => {
           )}
         </Fragment>
       )}
-      <Row sm={1} xs={1} md={2} lg={2}>
-        <Col lg={5}>
+      <Row sm={1} xs={2} md={2} lg={2}>
+        <Col sm={12} xs={6} md={6} lg={6}>
           <div className={cx("dish__cover")}>
             <div className={cx("slider__cover")}>
               <Slider {...settings}>
-                {data.map((e, index) => (
+                {data.dishimages.map((e, index) => (
                   <div key={index}>
-                    <img className="slick__main--image" src={e.imageURL} />
+                    <img className="slick__main--image" src={e.imageurl} />
                   </div>
                 ))}
               </Slider>
             </div>
-            <div className={cx("action")}>
-              <h3 className={cx("action__name")}>
-                <span> {list.dishname}</span>
-                {sale.length !== 0 && (
-                  <span className={cx("discount__info")}>
-                    <span className={cx("discount__info--name")}>
-                      {sale[0].DiscountName}
-                    </span>
-                    <span>sale {Number(sale[0].DiscountAmount)}%</span>
+          </div>
+        </Col>
+        <Col sm={12} xs={6} md={6} lg={6}>
+          <div className={cx("action")}>
+            <h3 className={cx("action__name")}>
+              <span> {data.dishname}</span>
+              {sale.length !== 0 && (
+                <span className={cx("discount__info")}>
+                  <span className={cx("discount__info--name")}>
+                    {sale[0].DiscountName}
                   </span>
-                )}
-              </h3>
-              <form className={cx("action__form")} ref={formRef}>
-                <h5 className={cx("action__name")}>{`${
-                  data.length === 0 ? "" : data[0].dishname
-                }`}</h5>
-                <h5 className={cx("action__price")}>
-                  $
-                  {sale.length === 0
-                    ? parseFloat(
-                        data.length === 0 ? "" : Number(data[0].dishprice)
-                      ).toFixed(2)
-                    : parseFloat(
-                        Number(data[0].dishprice) -
-                          Number(data[0].dishprice) *
-                            Number(sale[0].DiscountAmount / 100)
-                      ).toFixed(2)}
-                </h5>
+                  <span>sale {Number(sale[0].DiscountAmount)}%</span>
+                </span>
+              )}
+            </h3>
+            <form className={cx("action__form")} ref={formRef}>
+              <h1 className={cx("action__name")}>{`${
+                data.length === 0 ? "" : data.dishname
+              }`}</h1>
+              <span className={cx("action__price")}>
+                $
+                {sale.length === 0
+                  ? parseFloat(
+                      data.length === 0 ? "" : Number(data.dishprice)
+                    ).toFixed(2)
+                  : parseFloat(
+                      Number(data[0].dishprice) -
+                        Number(data[0].dishprice) *
+                          Number(sale[0].DiscountAmount / 100)
+                    ).toFixed(2)}
+              </span>
+              <div className={cx("action__rating")}>
+                <Rating size={20} initialValue={3} allowHover={false} />
+                <h5>20 reviews</h5>
+              </div>
 
-                <div className={cx("action__input")}>
-                  <h5>Number : </h5>
+              <div className={cx("action--quantity")}>
+                <div className={cx("action--quantity__main")}>
+                  <FontAwesomeIcon
+                    className={cx("quantity__icon")}
+                    icon={faMinus}
+                    onClick={handleMinus}
+                  />
                   <input
                     type="number"
                     name="quantity"
-                    value={number}
-                    onChange={(e) => setNumber(e.target.value)}
+                    readOnly
+                    value={quantity}
+                    min={1}
+                  />
+
+                  <FontAwesomeIcon
+                    className={cx("quantity__icon")}
+                    icon={faPlus}
+                    onClick={() => setQuantity((quantity) => (quantity += 1))}
                   />
                 </div>
-                <div className={cx("action__cart")}>
-                  <MyButton action={handleAdd} golden>
-                    Add to cart
-                  </MyButton>
-                  <MyButton golden>Add to your favorite</MyButton>
-                </div>
-              </form>
-            </div>
-          </div>
-        </Col>
-        <Col lg={7}>
-          <div className={cx("infomation")}>
-            <div className={cx("header")}>
-              <div
-                onClick={() => setInfo(true)}
-                className={cx("header__item", { active: info })}
-              >
-                <span> Descriptiion</span>
+                <MyButton action={handleAdd} red>
+                  Add to cart
+                </MyButton>
               </div>
-              <div
-                onClick={() => setInfo(false)}
-                className={cx("header__item", { active: !info })}
-              >
-                <span> Comment</span>
-              </div>
+            </form>
+            <div className={cx("description")}>
+              <span>description</span>
+              <FontAwesomeIcon
+                className={cx("description__icon")}
+                onClick={() => setShowDescription((pre) => !pre)}
+                icon={showDescription ? faMinus : faPlus}
+              />
             </div>
-            <div className={cx("infomation__show")}>
-              {info ? (
-                <p className={cx("description")}>
-                  {data.length === 0 ? "" : data[0].description}
-                </p>
-              ) : (
-                <Comment data={comment} />
-              )}
+            <ShowInfo show={showDescription}>
+              <span className={cx("description__text")}>
+                {data.description}
+                <h3>What’s Included</h3>
+
+                <ul>
+                  <li>25-30cm Strawberry donut cake with rainbow sprinkles</li>
+                  <li>Filled with musk sticks and sour straps</li>
+                </ul>
+              </span>
+            </ShowInfo>
+            <div className={cx("description")}>
+              <span>Reviews</span>
+              <FontAwesomeIcon
+                className={cx("description__icon")}
+                icon={faPlus}
+              />
             </div>
           </div>
         </Col>

@@ -45,7 +45,7 @@ const MenuPage = () => {
         console.log(error);
       });
   }, []);
-
+  console.log(list);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
@@ -60,7 +60,7 @@ const MenuPage = () => {
             <Link to={`/detail-dish/${e[0].dishid}`}>
               <div className={cx("item")}>
                 <div className={cx("item__img")}>
-                  <img src={e[0].imageURL} alt="error" />
+                  <img src={e[0].dishimages[0].imageurl} alt="error" />
                 </div>
                 <div className={cx("item__type")}>
                   <span>{e[0].type}</span>

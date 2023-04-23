@@ -54,7 +54,12 @@ const LoginPage = () => {
           setLoginError(true);
         }
         if (response.data.user.manage === 1) {
-          window.location.href = "http://localhost:8000";
+          // window.location.href = "http://localhost:8000";
+          handleLogin(true);
+          setCookie("jwt", response.data.authorisation.token, 1);
+          handleAccountDetail(response.data.user);
+          handleAccountType(true);
+          history("/");
         }
         if (response.data.user.manage === 0) {
           handleLogin(true);
