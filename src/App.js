@@ -5,7 +5,7 @@ function App() {
   // mang chua cac route do vao layout
 
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter>
       <div>
         <WrapperRoutes />
       </div>
