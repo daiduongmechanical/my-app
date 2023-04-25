@@ -42,6 +42,7 @@ const SignUpPage = () => {
         if (response.status === "success") {
           handleAccountDetail(response.user);
           handleLogin(true);
+          history("/");
         }
       })
       .catch(function (error) {

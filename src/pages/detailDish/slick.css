@@ -1,73 +1,76 @@
-.slick-slider {
-    position: relative;
-    display: flex;
-    flex-direction: row-reverse;
-    box-sizing: border-box;
-    -webkit-user-select: none;
-    user-select: none;
-    -webkit-touch-callout: none;
-    -khtml-user-select: none;
-    touch-action: pan-y;
-    -webkit-tap-highlight-color: transparent;
-    width: 100%;
- 
-}
 
 
-.slick-dots {
-  width: 20%;
-  display: flex;
-  flex-direction: column;
- justify-content: flex-start;
 
-
- 
- 
-}
-.slick-list {
+ .detaildish_slider__cover__kTRei .slick-slider {
   position: relative;
-  display: block;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
+  display: flex;
+  flex-direction: row-reverse;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -khtml-user-select: none;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
   width: 100%;
+
+}
+
+
+.detaildish_slider__cover__kTRei .slick-dots {
+width: 20%;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+
+
+
+
+}
+.detaildish_slider__cover__kTRei .slick-list {
+position: relative;
+display: block;
+overflow: hidden;
+margin: 0;
+padding: 0;
+width: 100%;
 height: 100%;
 
 }
 
-.slick-dots li {
+.detaildish_slider__cover__kTRei .slick-dots li {
 
-  width: 90px;
-  height: 90px;
-
-
-
-  cursor: pointer;
-}
-
-.slick-dots ul {
- padding: 0;
-
-
-}
-
-.slick-dots li.slick-active {
-  border: solid 2px var(--mainColor);
-}
-
-.slick-dots li img {
 width: 90px;
 height: 90px;
-  display: block;
- 
+
+
+
+cursor: pointer;
+}
+
+.detaildish_slider__cover__kTRei .slick-dots ul {
+padding: 0;
+
+
+}
+
+.detaildish_slider__cover__kTRei .slick-dots li.slick-active {
+border: solid 2px var(--mainColor);
+}
+
+.detaildish_slider__cover__kTRei .slick-dots li img {
+width: 90px;
+height: 90px;
+display: block;
+
 
 
 
 }
 
-.slick__main--image{
-  width: 100%;
-  aspect-ratio: 1/0.8;
-  border-radius: 10px;
+.detaildish_slider__cover__kTRei .slick__main--image{
+width: 100%;
+aspect-ratio: 1/0.8;
+border-radius: 10px;
 
 }

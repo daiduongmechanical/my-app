@@ -3,13 +3,14 @@ import style from "./cartpage.module.scss";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import CartItem from "../pageComponents/cartItem";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useContext } from "react";
 import MyButton from "../pageComponents/myButton";
 import cartURL from "../../config/cartURL";
 import orderURL from "../../config/orderURL";
 import HidenNotice from "../pageComponents/noticeHidden";
 import discountURL from "../../config/discountURL";
 import { useParams, useLocation } from "react-router-dom";
+import { AccountDetailContext } from "../../route";
 
 const CartPage = () => {
   const cx = classNames.bind(style);
@@ -25,9 +26,13 @@ const CartPage = () => {
   const { userID } = useParams();
   const location = useLocation();
 
+  //get account detail context
+  const getcontext = useContext(AccountDetailContext);
+  let userAddress = getcontext[0].address;
+
   let deliveryCost = delivery ? 2 : 0;
   let calArr = [];
-
+  // calculate total cost for bill
   useEffect(() => {
     listCart.forEach((e) => {
       let check = 0;
@@ -36,7 +41,7 @@ const CartPage = () => {
           calArr = [
             ...calArr,
             {
-              quantity: e.quantity,
+              quantity: e.carts[0].quantity,
               price:
                 e.dishprice - (e.dishprice * Number(s.DiscountAmount)) / 100,
             },
@@ -45,7 +50,10 @@ const CartPage = () => {
         }
       });
       if (check === 0) {
-        calArr = [...calArr, { quantity: e.quantity, price: e.dishprice }];
+        calArr = [
+          ...calArr,
+          { quantity: e.carts[0].quantity, price: e.dishprice },
+        ];
       }
     });
 
@@ -58,6 +66,7 @@ const CartPage = () => {
     cartURL
       .get(`/${userID}`)
       .then((response) => {
+        console.log(response);
         if (response.data.length === 0) {
           setEmptyCart(true);
         }
@@ -163,8 +172,9 @@ const CartPage = () => {
                   value={"table"}
                   name={"type"}
                   onClick={() => setDelivery(false)}
-                />{" "}
-                Book a table
+                  defaultChecked
+                />
+                Using your address
               </p>
               <p className={cx("select__type")}>
                 <input
@@ -174,34 +184,21 @@ const CartPage = () => {
                   name={"type"}
                   onClick={() => setDelivery(true)}
                 />
-                Delivery
+                Using another address
               </p>
 
               <div className={cx("more__infomation--cover")}>
-                {delivery ? (
-                  <div className={cx("more__infomation")}>
-                    <p>Enter location delivery</p>
-                    <input
-                      name="detail"
-                      type="text"
-                      required
-                      value={info}
-                      onChange={(e) => setInfo(e.target.value)}
-                    />
-                  </div>
-                ) : (
-                  <div className={cx("more__infomation")}>
-                    <p>Enter your day you place</p>
-                    <input
-                      name="detail"
-                      type="datetime-local"
-                      min={new Date().toISOString()}
-                      required
-                      value={info}
-                      onChange={(e) => setInfo(e.target.value)}
-                    />
-                  </div>
-                )}
+                <div className={cx("more__infomation")}>
+                  <p>Enter your day you place</p>
+                  <input
+                    name="detail"
+                    type="text"
+                    placeholder="Enter location delivery address"
+                    required
+                    value={delivery ? info : userAddress}
+                    onChange={(e) => setInfo(e.target.value)}
+                  />
+                </div>
               </div>
               <MyButton full red disabled={info.trim() === ""}>
                 <div className={cx("pay__btn")}>

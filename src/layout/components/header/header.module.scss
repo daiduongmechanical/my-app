@@ -2,15 +2,19 @@
     .wrapper {
 width: 100%;
 height: var(--headerSize);
-background: white;
+background-color: #fba1a1;
 display: flex;
 align-items: center;
 justify-content: space-between;
+font-size: 25px;
 box-sizing: border-box;
 padding: 0 20px;
-border-bottom: 0.5px solid var(--mainColor);
+font-family: 'Dancing Script', cursive;
 position: fixed;
 z-index: 999;
+
+
+
 
 
 
@@ -19,6 +23,17 @@ z-index: 999;
    .left__location{
 display: flex;
 align-items: center;
+width: 10%;
 
    }
-      
+
+   .righr__location{
+    width: 10%;
+   }
+      .logo{
+        width: 110px;
+        height: 110px;
+        margin: 0 20px;
+        margin-top: 30px;
+    
+    }

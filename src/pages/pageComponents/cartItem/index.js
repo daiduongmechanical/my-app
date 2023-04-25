@@ -9,7 +9,7 @@ import useDebounce from "../../../hook/useDebouse";
 
 const CartItem = ({ data, action, sale }) => {
   const cx = classNames.bind(style);
-  const [quantity, setQuantity] = useState(Number(data.quantity));
+  const [quantity, setQuantity] = useState(Number(data.carts[0].quantity));
   const total = useRef(0);
   const formRef = useRef();
   const [change, setChange] = useState(1);
@@ -34,7 +34,7 @@ const CartItem = ({ data, action, sale }) => {
     let datasend = new FormData(formRef.current);
     datasend.append("_method", "PUT");
     cartURL
-      .post("/" + data.id, datasend, {
+      .post(`/${data.carts[0].cartid}`, datasend, {
         headers: { "Content-type": "multipart/form-data" },
       })
       .then((response) => {
@@ -56,7 +56,7 @@ const CartItem = ({ data, action, sale }) => {
 
   const handleDelete = () => {
     cartURL
-      .delete("/" + data.id)
+      .delete("/" + data.carts[0].cartid)
       .then((response) => {
         setChange((pre) => (pre += 1));
         action(change);
@@ -77,7 +77,7 @@ const CartItem = ({ data, action, sale }) => {
         <div className={cx("list-item--info")}>
           <img
             className={cx("list-item__img")}
-            src={data.dishimage}
+            src={data.dish_images[0].imageurl}
             alt="error"
           />
           <div className={cx("list-item__name")}>

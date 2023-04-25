@@ -13,18 +13,16 @@ const Header = () => {
   const getStatusLoginContext = useContext(StatusLoginContext);
   let statusLogin = getStatusLoginContext[0];
 
-  console.log(statusLogin);
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("left__location")}>
-        <span>logo website</span>
-        <NavBar>
-          <NavItem to="/">home</NavItem>
-          <NavItem to="/menu">Menu</NavItem>
-          <NavItem to="/about-us">About Us</NavItem>
-        </NavBar>
-      </div>
-
+      <div className={cx("left__location")}></div>
+      <NavBar>
+        <NavItem to="/">home</NavItem>
+        <NavItem to="/menu">menu</NavItem>
+        <img className={cx("logo")} src="/logomain.png" alt="error" />
+        <NavItem to="/about-us">About Us</NavItem>
+        <NavItem to="/contact">contact</NavItem>
+      </NavBar>
       <div className={cx("right__location")}>
         <AccountItem statusLogin={statusLogin} />
       </div>

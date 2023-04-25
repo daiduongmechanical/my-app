@@ -16,7 +16,7 @@ import "tippy.js/dist/tippy.css"; // optional
 import { useState, useEffect, useContext, useRef, Fragment } from "react";
 import dishURL from "../../config/dishURL";
 import discountURL from "../../config/discountURL";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import Slider from "react-slick";
 import ShowInfo from "../pageComponents/showInfo/ShowInfo";
 
@@ -29,8 +29,10 @@ const DetailDishPage = () => {
   const [sale, setSale] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const { dishID } = useParams();
-  const [showDescription, setShowDescription] = useState(false);
+  const [showDescription, setShowDescription] = useState(true);
   const formRef = useRef();
+  const location = useLocation();
+  let path = location.pathname.split("/");
 
   //get status login context
   const getStatusLoginContext = useContext(StatusLoginContext);
@@ -84,7 +86,7 @@ const DetailDishPage = () => {
         console.log(err);
       });
   }, []);
-  <img src="" alt="" />;
+
   //get sale data
   useEffect(() => {
     discountURL
@@ -116,6 +118,7 @@ const DetailDishPage = () => {
       let datasend = new FormData(formRef.current);
       datasend.append("userid", accountDetail.id);
       datasend.append("dishid", dishID);
+
       if (sale.length === 0) {
         datasend.append("discount", 0);
       } else {
@@ -127,6 +130,7 @@ const DetailDishPage = () => {
           headers: { "Content-type": "multipart/form-data" },
         })
         .then((response) => {
+          console.log(response);
           setHidden(true);
         })
         .catch(function (error) {
@@ -142,13 +146,17 @@ const DetailDishPage = () => {
     setHidden(x);
   };
   if (data.length === 0) {
-    return;
+    return <div className={cx("wrapper")}></div>;
   }
-  console.log(data);
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("sidemap")}>
-        <p>home/menu/detail-dish</p>
+        <p>
+          {path.map((e) => (
+            <Link></Link>
+          ))}
+        </p>
       </div>
       {hidden && (
         <Fragment>
@@ -184,8 +192,7 @@ const DetailDishPage = () => {
         </Col>
         <Col sm={12} xs={6} md={6} lg={6}>
           <div className={cx("action")}>
-            <h3 className={cx("action__name")}>
-              <span> {data.dishname}</span>
+            {/* <h3 className={cx("action__name")}>
               {sale.length !== 0 && (
                 <span className={cx("discount__info")}>
                   <span className={cx("discount__info--name")}>
@@ -194,7 +201,7 @@ const DetailDishPage = () => {
                   <span>sale {Number(sale[0].DiscountAmount)}%</span>
                 </span>
               )}
-            </h3>
+            </h3> */}
             <form className={cx("action__form")} ref={formRef}>
               <h1 className={cx("action__name")}>{`${
                 data.length === 0 ? "" : data.dishname
