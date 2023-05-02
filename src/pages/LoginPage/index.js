@@ -2,9 +2,9 @@ import classNames from "classnames/bind";
 import InputField from "../pageComponents/inputField";
 import MyButton from "../pageComponents/myButton";
 import style from "./loginpage.module.scss";
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import Images from "../../asset/image";
-import { Link, useNavigate, redirect } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import FormData from "form-data";
 import userURL from "../../config/userURL";
@@ -22,6 +22,8 @@ const LoginPage = () => {
   const [disabled, setDisabled] = useState(true);
   const [loginError, setLoginError] = useState(false);
   const formRef = useRef();
+
+  const location = useLocation();
 
   //get data from    StatusLoginContext
 
@@ -54,12 +56,11 @@ const LoginPage = () => {
           setLoginError(true);
         }
         if (response.data.user.manage === 1) {
-          window.location.href = "http://localhost:8000";
           handleLogin(true);
-          // setCookie("jwt", response.data.authorisation.token, 1);
-          // handleAccountDetail(response.data.user);
-          // handleAccountType(true);
-          // history("/");
+          setCookie("jwt", response.data.authorisation.token, 1);
+          handleAccountDetail(response.data.user);
+          handleAccountType(true);
+          window.location.href = "http://localhost:8000";
         }
         if (response.data.user.manage === 0) {
           handleLogin(true);
@@ -88,6 +89,61 @@ const LoginPage = () => {
     }
   }
 
+  const loginGoogle = () => {
+    userURL
+      .get("/google-login", {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      })
+      .then((response) => {
+        if (response.statusText === "OK") {
+          window.location.replace(response.data.url);
+        }
+      })
+      .catch((error) => console.error(error));
+  };
+
+  //get data after redirect from goodle
+  useEffect(() => {
+    userURL
+      .get(`/google-callback${location.search}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        handleAccountDetail(response.data.user);
+        setCookie("jwt", response.data.jwt_token, 1);
+        handleLogin(true);
+        history("/");
+      })
+      .catch((error) => console.log(error));
+  }, []);
+  //get data after redirect from facebook
+  useEffect(() => {
+    userURL
+      .get(`/facebook-callback${location.search}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      })
+      .then((response) => {
+        if (response.statusText === "OK") {
+          handleAccountDetail(response.data.user);
+          setCookie("jwt", response.data.jwt_token, 1);
+          handleLogin(true);
+          history("/");
+        }
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  //render
   return (
     <div className={cx("wrapper")}>
       <div className={cx("show__side")}></div>
@@ -130,19 +186,23 @@ const LoginPage = () => {
               </MyButton>
             </div>
             <h5>Can you sign in with :</h5>
-            <MyButton full action={handle}>
-              <div className={cx("content__btn")}>
-                <img src={Images.facebook.default} alt="error" />
-                <h3>Login with facebook</h3>
-              </div>
-            </MyButton>
-            <MyButton full action={handle} red>
-              <div className={cx("content__btn")}>
-                <img src={Images.google.default} alt="error" />
-                <h3>Login with google</h3>
-              </div>
-            </MyButton>
           </form>
+          <MyButton full>
+            <a
+              className={cx("content__btn")}
+              href={"http://localhost:8000/api/facebook-login"}
+            >
+              <img src={Images.facebook.default} alt="error" />
+              <h3>Login with facebook</h3>
+            </a>
+          </MyButton>
+
+          <MyButton full red>
+            <div className={cx("content__btn")} onClick={loginGoogle}>
+              <img src={Images.google.default} alt="error" />
+              <h3>Login with google</h3>
+            </div>
+          </MyButton>
 
           <p className={cx("to__signin")}>
             If you don't have an account ?{" "}

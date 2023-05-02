@@ -36,11 +36,11 @@ const DetailOrder = ({ action, data, changeData, tiny }) => {
         console.log(err);
       });
   };
-
+  console.log(data[0].order_dishes);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
-        <h3>OrderID : {data[0].OrderID}</h3>
+        <h3>OrderID : {data[0].orderid}</h3>
 
         <FontAwesomeIcon
           icon={faXmark}
@@ -73,15 +73,15 @@ const DetailOrder = ({ action, data, changeData, tiny }) => {
 
       <div className={cx("bill", { bill__tiny: tiny })}>
         <div className={cx("bill__item")}>
-          {data.map((e, index) => (
+          {data[0].order_dishes.map((e, index) => (
             <div key={index} className={cx("detail__dish")}>
-              <img src={e.dishimage} alt="error" />
+              <img src={e.dish.dishimages[0].imageurl} alt="error" />
               <div className={cx("detail__info")}>
                 <div className={cx("location")}>
-                  <p className={cx("detail__name")}>{e.dishname}</p>
+                  <p className={cx("detail__name")}>{e.dish.dishname}</p>
                   <p className={cx("detail__require")}>
                     special require :
-                    {e.require === "null" ? "no require" : e.require}
+                    {e.require === "null" ? "no require" : e.dish.require}
                   </p>
                 </div>
                 <div className={cx("location")}>

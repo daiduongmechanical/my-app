@@ -58,8 +58,6 @@ const CurrentOrderPage = () => {
       });
   };
 
-  console.log(list);
-
   return (
     <div className={cx("wrapper")}>
       {detail.length === 0 ? (
@@ -67,7 +65,7 @@ const CurrentOrderPage = () => {
           {list.map((e, index) => (
             <div key={index} className={cx("order__item")}>
               <div className={cx("dish__detail")}>
-                <h4>OrderID : #{e[0].OrderID}</h4>
+                <h4>OrderID : #{e[0].orderid}</h4>
                 <p className={cx("order__status")}>
                   status :
                   <b
@@ -82,7 +80,7 @@ const CurrentOrderPage = () => {
                 </p>
 
                 <p className={cx("total__cost")}>
-                  Total Cost : <b>${e[0].TotalCost}</b>
+                  Total Cost : <b>${parseFloat(e[0].totalcost).toFixed(2)}</b>
                 </p>
               </div>
               <div className={cx("bill__detail")}>

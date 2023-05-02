@@ -39,7 +39,8 @@ const SignUpPage = () => {
     axios
       .post("http://localhost:8000/api/register", data)
       .then(function (response) {
-        if (response.status === "success") {
+        console.log(response);
+        if (response.data.status === "success") {
           handleAccountDetail(response.user);
           handleLogin(true);
           history("/");

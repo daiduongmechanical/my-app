@@ -48,7 +48,8 @@ const SideBar = () => {
         headers: { Authorization: `Bearer ${jwt}` },
       })
       .then((response) => {
-        if (response.data.status === "success") {
+        console.log(response);
+        if (response.statusText === "OK") {
           handleContext(false);
         }
       })
@@ -60,11 +61,7 @@ const SideBar = () => {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("avatar__cover")}>
-        <img
-          className={cx("avatar")}
-          src="https://i.pinimg.com/280x280_RS/86/4b/70/864b70ac3cf273c2a2ded0a420d5ec21.jpg"
-          alt="error"
-        />
+        <img className={cx("avatar")} src={account.avatar} alt="error" />
         <p className={cx("avatar__username")}>
           {account.name}
           {type && "  ( Admin )"}

@@ -77,7 +77,7 @@ const CartItem = ({ data, action, sale }) => {
         <div className={cx("list-item--info")}>
           <img
             className={cx("list-item__img")}
-            src={data.dish_images[0].imageurl}
+            src={data.dishimages[0].imageurl}
             alt="error"
           />
           <div className={cx("list-item__name")}>

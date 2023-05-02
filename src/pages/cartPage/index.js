@@ -28,7 +28,7 @@ const CartPage = () => {
 
   //get account detail context
   const getcontext = useContext(AccountDetailContext);
-  let userAddress = getcontext[0].address;
+  let userAddress = getcontext[0];
 
   let deliveryCost = delivery ? 2 : 0;
   let calArr = [];
@@ -189,20 +189,26 @@ const CartPage = () => {
 
               <div className={cx("more__infomation--cover")}>
                 <div className={cx("more__infomation")}>
-                  <p>Enter your day you place</p>
+                  <p>Enter your address</p>
                   <input
                     name="detail"
                     type="text"
                     placeholder="Enter location delivery address"
                     required
-                    value={delivery ? info : userAddress}
+                    value={delivery ? info : userAddress.address}
                     onChange={(e) => setInfo(e.target.value)}
                   />
                 </div>
               </div>
-              <MyButton full red disabled={info.trim() === ""}>
+              <MyButton full disabled={info.trim() === "" && delivery}>
                 <div className={cx("pay__btn")}>
-                  <h5>Pay</h5>
+                  <h5>Pay when recieve</h5>
+                  <h5>${parseFloat(bill + 2).toFixed(2)}</h5>
+                </div>
+              </MyButton>
+              <MyButton full red disabled={info.trim() === "" && !delivery}>
+                <div className={cx("pay__btn")}>
+                  <h5>Pay with momo</h5>
                   <h5>${parseFloat(bill + 2).toFixed(2)}</h5>
                 </div>
               </MyButton>
