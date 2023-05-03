@@ -30,7 +30,7 @@ const ProductSlider = ({ data }) => {
   };
 
   return (
-    <div className={cx("wrapper")}>
+    <div className="wrapper__slider--main">
       <Slider {...settings}>
         {data.map((e, index) => (
           <div key={index} className={cx("item__cover")}>

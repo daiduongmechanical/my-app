@@ -1,4 +1,8 @@
-
+.wrapper__slider--main.slick-slider
+{
+display: flex;
+flex-direction: column;
+}
 
 .slick-dots.slick-thumb {
   display: flex;
@@ -22,13 +26,13 @@
   width: 24px;
 }
 
- .slick-dots { position: static; }
+.slick-dots { position: static; }
 
- .slides {
+.slides {
   position: relative;
 
  }
-  .slick-prev, .slick-next {
+ .slick-prev, .slick-next {
     position: absolute;
     top: 50%;
   }
@@ -54,6 +58,6 @@
     height: 50px;
     z-index: 5;
   }
-.slick-next:hover{
+  .slick-next:hover{
   color: yellow;
 }
