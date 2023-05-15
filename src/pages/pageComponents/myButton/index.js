@@ -14,6 +14,7 @@ const MyButton = ({
   icon,
   fit,
   green,
+  black,
 }) => {
   const cx = classNames.bind(style);
 
@@ -34,6 +35,7 @@ const MyButton = ({
         disabled__icon,
         fit,
         green,
+        black,
       })}
       disabled={disabled}
       to={to}

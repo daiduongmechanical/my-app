@@ -14,14 +14,14 @@ const RateDish = ({ data, action }) => {
 
   useEffect(() => {
     rateURL
-      .get(`/${data[0].OrderID}`)
+      .get(`/${data.orderid}`)
       .then((response) => {
         if (response.statusText === "OK") {
           let dataCompare = response.data;
           data.forEach((e) => {
             let check = 0;
             dataCompare.forEach((item) => {
-              if (e.dishid === item.dishID) {
+              if (e.dishid === item.dishid) {
                 check++;
               }
             });

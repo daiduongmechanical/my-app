@@ -3,17 +3,27 @@ import style from "./cartpage.module.scss";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import CartItem from "../pageComponents/cartItem";
-import { useRef, useEffect, useState, useContext } from "react";
+import { useRef, useEffect, useState, useContext, Fragment } from "react";
 import MyButton from "../pageComponents/myButton";
 import cartURL from "../../config/cartURL";
 import orderURL from "../../config/orderURL";
 import HidenNotice from "../pageComponents/noticeHidden";
 import discountURL from "../../config/discountURL";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { AccountDetailContext } from "../../route";
+import axios from "axios";
+import userURL from "../../config/userURL";
 
 const CartPage = () => {
   const cx = classNames.bind(style);
+
+  const location = useLocation();
+  let history = useNavigate();
+  let statusPayment = location.state;
+  //get account detail context
+  const getcontext = useContext(AccountDetailContext);
+  let userAddress = getcontext[0];
+
   const [listCart, setListCart] = useState([]);
   const [emptyCart, setEmptyCart] = useState(false);
   const [action, setAction] = useState(0);
@@ -24,14 +34,23 @@ const CartPage = () => {
   const FormRef = useRef();
   const [sale, setSale] = useState([]);
   const { userID } = useParams();
-  const location = useLocation();
-
-  //get account detail context
-  const getcontext = useContext(AccountDetailContext);
-  let userAddress = getcontext[0];
+  const addressRef = useRef("");
 
   let deliveryCost = delivery ? 2 : 0;
   let calArr = [];
+
+  useEffect(() => {
+    console.log(statusPayment);
+    if (statusPayment === "ok") {
+      setShow(true);
+    }
+  }, [statusPayment]);
+
+  useEffect(() => {
+    if (userAddress !== undefined) {
+      setInfo(userAddress.address);
+    }
+  }, [delivery, userAddress]);
   // calculate total cost for bill
   useEffect(() => {
     listCart.forEach((e) => {
@@ -92,16 +111,12 @@ const CartPage = () => {
 
   const handleAction = (data) => setAction((pre) => (pre += data));
 
-  const handleOrder = (e) => {
-    e.preventDefault();
+  // order pay when recieve
 
+  const handleOrder = (e) => {
     let data = new FormData(FormRef.current);
     data.append("userid", userID);
     data.append("totalCost", bill);
-
-    if (bill === 0 || (bill === 2 && delivery)) {
-      return;
-    }
 
     orderURL
       .post("/", data)
@@ -110,21 +125,85 @@ const CartPage = () => {
           setShow(true);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   };
+
+  //thanh toan bang vnpay
+  const vnpayOrder = async (e) => {
+    e.preventDefault();
+
+    let data = new FormData(FormRef.current);
+    data.append("userid", userID);
+    data.append("totalCost", bill);
+
+    axios
+      .post("http://localhost:8000/api/vnpay-checkout", data)
+      .then((response) => {
+        window.location.replace(response.data.data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  //after redirect vnpay order
+  useEffect(() => {
+    let dataOrder = new FormData(FormRef.current);
+    let data = {};
+    let query = window.location.search.substring(1);
+    let vars = query.split("&");
+    for (let i = 0; i < vars.length; i++) {
+      let pair = vars[i].split("=");
+      data[pair[0]] = pair[1];
+    }
+    if (Object.keys(data).length > 1) {
+      let addressUes = data.vnp_OrderInfo.replace(/\+/g, " ");
+      dataOrder.append("userid", userID);
+      dataOrder.append("totalCost", data.vnp_Amount);
+      dataOrder.set("detail", addressUes);
+      dataOrder.append("type", "delivery");
+
+      orderURL
+        .post("/", dataOrder)
+        .then((response) => {
+          if (response.data.length !== 0) {
+            data["orderid"] = response.data.orderid;
+            userURL
+              .post("/bill/add", data)
+              .then((response) => {
+                console.log(response);
+                if (response.status === 201) {
+                  history(`/cart/${userID}`, { state: "ok" });
+                }
+              })
+              .catch((error) => console.log(error));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, []);
+
+  if (userAddress === undefined) {
+    return;
+  }
 
   // render
   return (
     <div className={cx("wrapper")}>
       {show && (
-        <HidenNotice
-          nt2={"your order was send"}
-          bt1={"check your order"}
-          l1="/profile/current-orders"
-          l2={location.pathname}
-        />
+        <Fragment>
+          {statusPayment === "ok" ? (
+            <HidenNotice notify={true} nt1={"payment success"} time={1000} />
+          ) : (
+            <HidenNotice
+              success
+              nt2={"order successfully"}
+              bt1={"check your order"}
+              l1="/profile/current-orders"
+              l2={location.pathname}
+            />
+          )}
+        </Fragment>
       )}
       <Row sm={1} xs={1} md={2} lg={2}>
         <Col sm={12} xs={12} md={8} lg={8}>
@@ -147,7 +226,7 @@ const CartPage = () => {
         </Col>
         <Col sm={12} xs={12} md={4} lg={4}>
           <div className={cx("bill")}>
-            <form ref={FormRef} onSubmit={handleOrder}>
+            <form ref={FormRef}>
               <h3>{listCart.length + " DISH "}</h3>
 
               <hr></hr>
@@ -169,7 +248,7 @@ const CartPage = () => {
                 <input
                   required
                   type="radio"
-                  value={"table"}
+                  value={userAddress.manage === 0 ? "delivery" : "store"}
                   name={"type"}
                   onClick={() => setDelivery(false)}
                   defaultChecked
@@ -180,7 +259,7 @@ const CartPage = () => {
                 <input
                   required
                   type="radio"
-                  value={"delivery"}
+                  value={userAddress.manage === 0 ? "delivery" : "store"}
                   name={"type"}
                   onClick={() => setDelivery(true)}
                 />
@@ -191,24 +270,36 @@ const CartPage = () => {
                 <div className={cx("more__infomation")}>
                   <p>Enter your address</p>
                   <input
-                    name="detail"
                     type="text"
+                    name="detail"
+                    ref={addressRef}
+                    value={delivery ? info : userAddress.address}
                     placeholder="Enter location delivery address"
                     required
-                    value={delivery ? info : userAddress.address}
                     onChange={(e) => setInfo(e.target.value)}
                   />
                 </div>
               </div>
-              <MyButton full disabled={info.trim() === "" && delivery}>
-                <div className={cx("pay__btn")}>
+              <MyButton
+                red
+                full
+                disabled={
+                  addressRef.current.value === "" || listCart.length === 0
+                }
+              >
+                <div className={cx("pay__btn")} onClick={handleOrder}>
                   <h5>Pay when recieve</h5>
                   <h5>${parseFloat(bill + 2).toFixed(2)}</h5>
                 </div>
               </MyButton>
-              <MyButton full red disabled={info.trim() === "" && !delivery}>
-                <div className={cx("pay__btn")}>
-                  <h5>Pay with momo</h5>
+              <MyButton
+                full
+                disabled={
+                  addressRef.current.value === "" || listCart.length === 0
+                }
+              >
+                <div onClick={vnpayOrder} className={cx("pay__btn")}>
+                  <h5>Pay with VNpay</h5>
                   <h5>${parseFloat(bill + 2).toFixed(2)}</h5>
                 </div>
               </MyButton>

@@ -65,7 +65,9 @@ const SignUpPage = () => {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("show__side")}></div>
+      <div className={cx("show__side")}>
+        <img src="/background.jpg" alt="error" />
+      </div>
 
       {/* login form */}
       <div className={cx("login__side")}>

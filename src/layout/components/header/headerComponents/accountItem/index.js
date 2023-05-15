@@ -11,11 +11,34 @@ import {
   NewOrderContext,
   AccountDetailContext,
 } from "../../../../../route";
-import { useContext } from "react";
+import cartURL from "../../../../../config/cartURL";
+import { useContext, useEffect, useState, useRef } from "react";
 
 const AccountItem = ({ statusLogin }) => {
   const cx = classNames.bind(style);
+  const [cartQuantity, setCartQuantity] = useState();
+  const quantityRef = useRef("");
 
+  //get account detail context
+
+  const getDetailContext = useContext(AccountDetailContext);
+  const userData = getDetailContext[0];
+  //get list cart
+
+  useEffect(() => {
+    if (userData !== undefined) {
+      cartURL
+        .get(`/${userData.id}`)
+        .then((response) => {
+          if (response.data.length !== quantityRef.current)
+            setCartQuantity(response.data.length);
+          quantityRef.current = response.data.length;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }, [userData]);
   //get Account type context
   const getAccountTypeContext = useContext(AccountTypeContext);
   let type = getAccountTypeContext[0];
@@ -27,10 +50,7 @@ const AccountItem = ({ statusLogin }) => {
   const setNewNotice = getOrderContext[1];
   let typeRoute = type ? "/admin" : "/profile";
 
-  //get account detail context
-
-  const getDetailContext = useContext(AccountDetailContext);
-  const userData = getDetailContext[0];
+  console.log(userData);
 
   return (
     <div className={cx("wrapper")}>
@@ -51,7 +71,10 @@ const AccountItem = ({ statusLogin }) => {
       >
         <Tippy content="cart">
           <div className={cx("icon")}>
-            <FontAwesomeIcon icon={faShopify} />
+            <img src="/cart.png" alt="error" />
+            <div className={cx("quantity")}>
+              <span>{cartQuantity}</span>
+            </div>
           </div>
         </Tippy>
       </NavItem>

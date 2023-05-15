@@ -77,8 +77,8 @@ const ManagerOrderPage = () => {
         console.log(error);
       });
   }, [updateStatus, daySearch, typeSearch, page, idSearch, refresh]);
-  //accept order
 
+  //accept order
   const handleAccept = (id, status) => {
     if (status === "cancel" || status === "accept" || status === "finished") {
       return;
@@ -137,13 +137,17 @@ const ManagerOrderPage = () => {
     searchRef.current.value = "";
     setRefresh(!refresh);
   };
+
+  console.log(list);
+
+  //render
   return (
     <div className={cx("wrapper")}>
       {show && (
         <div className={cx("hidden__modal")}>
           <div className={cx("hidden__notice")}>
             <p className={cx("hidden__notice--text")}>
-              do you really want deletr this dish??
+              do you really want delete this dish??
             </p>
             <MyButton full golden>
               <p> YES</p>
@@ -232,8 +236,8 @@ const ManagerOrderPage = () => {
                         color: index % 2 !== 0 ? true : false,
                       })}
                     >
-                      <td>{e.OrderID}</td>
-                      <td>{e.name}</td>
+                      <td>{e.orderid}</td>
+                      <td>{e.user.name}</td>
                       <td>
                         <TimeType time={e.created_at} />
                       </td>
@@ -255,7 +259,11 @@ const ManagerOrderPage = () => {
                               <span>{e.status}</span>
                             </div>
                           </td>
-                          <td>${e.TotalCost}</td>
+                          <td>
+                            {`$ ${parseFloat(e.totalcost / 23000 / 100).toFixed(
+                              2
+                            )}`}
+                          </td>
 
                           <td>
                             <Tippy
@@ -277,7 +285,7 @@ const ManagerOrderPage = () => {
                                   })}
                                   icon={faSquareCheck}
                                   onClick={() =>
-                                    handleAccept(e.OrderID, e.status)
+                                    handleAccept(e.orderid, e.status)
                                   }
                                 />
                               </span>
@@ -287,7 +295,7 @@ const ManagerOrderPage = () => {
                               <span className={cx("action")}>
                                 <FontAwesomeIcon
                                   className={cx("icon")}
-                                  onClick={() => handleView(e.OrderID)}
+                                  onClick={() => handleView(e.orderid)}
                                   icon={faEye}
                                 />
                               </span>

@@ -1,25 +1,26 @@
 .wrapper{
 width: 100%;
 min-height: calc(100vh - 60px);
-padding:0 10px;
+
 display: flex;
 
 
 }
 
 .show__side{
-
-width: 48%;
-
 width: 50%;
-
 height: 100vh;
 background-color: red;
+
+& img{
+    width: 100%;
+    height: 100%;
+}
 
 }
 .login__side{
 
-width: 52%;
+
 
 width: 50%;
 

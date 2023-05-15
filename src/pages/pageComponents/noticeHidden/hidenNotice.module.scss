@@ -5,7 +5,7 @@
     background-color: black;
     border-radius: 10px;
     left: 33%;
-    bottom: 30vh;
+    bottom: 35vh;
     position: absolute;
     padding: 20px 50px;
     display: flex;
@@ -15,16 +15,26 @@
     z-index: 999;
 
     & h4{
-        color: var(--mainColor);
+      
         text-transform: capitalize;
         text-align: center;
     }
     
 }
 
+
+
 .hidden__notice--text{
     font-size: 22px;
     font-weight: bold;
     text-align: center;
-    color: var(--mainColor);
+ 
 }
+
+.success{
+    background-color: #fba1a1;
+    color: #0b2e13;
+    text-transform: capitalize;
+    font-size: 20px;
+box-shadow: 5px 5px 5px black;
+  }

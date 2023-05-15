@@ -35,7 +35,7 @@ const CurrentOrderPage = () => {
               return result;
             }, {});
             const resultArray = Object.values(groupedByAge);
-            setList(resultArray);
+            setList(resultArray[0]);
           }
         })
         .catch((error) => {
@@ -44,10 +44,10 @@ const CurrentOrderPage = () => {
     }
   }, [userData, changeStatus]);
 
-  const cancelOrder = (orderID, status) => {
+  const cancelOrder = (orderid, status) => {
     let valueUpdate = status === "delivery" ? "finished" : "cancel";
     orderURL
-      .post(`/${orderID}`, { type: valueUpdate, _method: "PUT" })
+      .post(`/${orderid}`, { type: valueUpdate, _method: "PUT" })
       .then((response) => {
         if (response.data === 1) {
           setChangeStatus((pre) => !pre);
@@ -65,31 +65,31 @@ const CurrentOrderPage = () => {
           {list.map((e, index) => (
             <div key={index} className={cx("order__item")}>
               <div className={cx("dish__detail")}>
-                <h4>OrderID : #{e[0].orderid}</h4>
+                <h4>OrderID : #{e.orderid}</h4>
                 <p className={cx("order__status")}>
                   status :
                   <b
                     className={cx("status__field", {
-                      accept: e[0].status === "accept",
-                      waiting: e[0].status === "waiting",
-                      delivery: e[0].status === "delivery",
+                      accept: e.status === "accept",
+                      waiting: e.status === "waiting",
+                      delivery: e.status === "delivery",
                     })}
                   >
-                    {e[0].status}
+                    {e.status}
                   </b>
                 </p>
 
                 <p className={cx("total__cost")}>
-                  Total Cost : <b>${parseFloat(e[0].totalcost).toFixed(2)}</b>
+                  Total Cost : <b>${parseFloat(e.totalcost).toFixed(2)}</b>
                 </p>
               </div>
               <div className={cx("bill__detail")}>
                 <MyButton
-                  red={e[0].status !== "delivery"}
-                  green={e[0].status === "delivery"}
+                  red={e.status !== "delivery"}
+                  green={e.status === "delivery"}
                 >
-                  <span onClick={() => cancelOrder(e[0].OrderID, e[0].status)}>
-                    {e[0].status === "delivery"
+                  <span onClick={() => cancelOrder(e.orderid, e.status)}>
+                    {e.status === "delivery"
                       ? "conirm recieved"
                       : "Cancel Order"}
                   </span>

@@ -76,17 +76,12 @@ const SideBar = () => {
           <NavItem space to={"/admin/overview"}>
             Over View
           </NavItem>
-          <NavItem space to={"/admin/manager-user"}>
-            Manager User
-          </NavItem>
-          <NavItem space to={"/admin/manager-menu"}>
-            Manager Menu
-          </NavItem>
+
           <NavItem space to={"/admin/manager-order"}>
             Manager Order
           </NavItem>
           <NavItem space to={"/admin/manager-discount"}>
-            Manager discount
+            Manager Warehouse
           </NavItem>
         </Fragment>
       ) : (

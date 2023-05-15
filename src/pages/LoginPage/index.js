@@ -55,6 +55,15 @@ const LoginPage = () => {
         if (response.message === "Request failed with status code 401") {
           setLoginError(true);
         }
+        //login with employee
+        if (response.data.user.manage === 2) {
+          handleLogin(true);
+          setCookie("jwt", response.data.authorisation.token, 1);
+          handleAccountDetail(response.data.user);
+          handleAccountType(true);
+          history("/");
+        }
+        //login with manageer
         if (response.data.user.manage === 1) {
           handleLogin(true);
           setCookie("jwt", response.data.authorisation.token, 1);
@@ -62,6 +71,7 @@ const LoginPage = () => {
           handleAccountType(true);
           window.location.href = "http://localhost:8000";
         }
+        //login with customer
         if (response.data.user.manage === 0) {
           handleLogin(true);
           setCookie("jwt", response.data.authorisation.token, 1);
@@ -146,7 +156,9 @@ const LoginPage = () => {
   //render
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("show__side")}></div>
+      <div className={cx("show__side")}>
+        <img src="/background.jpg" alt="error" />
+      </div>
 
       {/* login form */}
       <div className={cx("login__side")}>
@@ -205,7 +217,7 @@ const LoginPage = () => {
           </MyButton>
 
           <p className={cx("to__signin")}>
-            If you don't have an account ?{" "}
+            If you don't have an account ?
             <Link className={cx("to__signin--link")} to="/signup">
               {" "}
               Sign up

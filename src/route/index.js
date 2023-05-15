@@ -46,7 +46,7 @@ const WrapperRoutes = () => {
           setCookie("jwt", response.data.authorisation.token, 1);
           setStatusLogins(true);
           setAccountDetail(response.data.user);
-          if (response.data.user.manage === "1") {
+          if (response.data.user.manage === 2) {
             setType(true);
           }
         }

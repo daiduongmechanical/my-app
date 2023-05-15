@@ -25,20 +25,9 @@ const PreviousOderPage = () => {
       orderURL
         .get(`/${userData.id}?all=0`)
         .then((response) => {
-          console.log(response.data);
-          let recive = response.data;
-          if (recive.length !== 0) {
-            const groupedByAge = recive.reduce((result, person) => {
-              if (!result[person.OrderID]) {
-                result[person.OrderID] = [];
-              }
-              result[person.OrderID].push(person);
-              return result;
-            }, {});
-            const resultArray = Object.values(groupedByAge);
-            setList(resultArray);
-          }
+          setList(response.data);
         })
+
         .catch((error) => {
           console.log(error);
         });
@@ -54,6 +43,9 @@ const PreviousOderPage = () => {
     setShowRate(false);
   };
 
+  if (list === undefined) {
+    return;
+  }
   //render
   return (
     <div className={cx("wrapper")}>
@@ -62,13 +54,16 @@ const PreviousOderPage = () => {
           {list.map((e, index) => (
             <div key={index} className={cx("order__item")}>
               <div className={cx("dish__detail")}>
-                <h4>OrderID : #{e[0].OrderID}</h4>
+                <h4>OrderID : #{e.orderid}</h4>
                 <p className={cx("order__status")}>
-                  status :<b className={cx("status__field")}>{e[0].status}</b>
+                  status :<b className={cx("status__field")}>{e.status}</b>
                 </p>
 
                 <p className={cx("total__cost")}>
-                  Total Cost : <b>${e[0].TotalCost}</b>
+                  Total Cost :{" "}
+                  <b>{`$ ${parseFloat(e.totalcost / 23000 / 100).toFixed(
+                    2
+                  )}`}</b>
                 </p>
               </div>
               <div className={cx("bill__detail")}>
