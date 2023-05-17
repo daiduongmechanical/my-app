@@ -34,7 +34,7 @@ const RatingItem = ({ data }) => {
     datasend.append("userID", user.id);
     datasend.append("raiting", rating);
     datasend.append("dishID", data.dishid);
-    datasend.append("orderID", data.OrderID);
+    datasend.append("orderID", data.orderid);
 
     rateURL
       .post("/", datasend)
@@ -66,11 +66,11 @@ const RatingItem = ({ data }) => {
               <div className={cx("item__info")}>
                 <img
                   className={cx("item__info--img")}
-                  src={data.dishimage}
+                  src={data.dish.dishimages[1].imageurl}
                   alt="error"
                 />
                 <h5>{data.dishname}</h5>
-                <p>Price : ${parseFloat(data.dishprice).toFixed(2)}</p>
+                <p>Price : ${parseFloat(data.dish.dishprice).toFixed(2)}</p>
               </div>
               <div className={cx("item__rate")}>
                 <form

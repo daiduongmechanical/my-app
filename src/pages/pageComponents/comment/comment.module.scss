@@ -14,8 +14,9 @@ height: 100%;
 .content{
 
     width: 100%;
-    height: calc(100% - 40px);
     overflow-y: scroll;
+    border: 1px solid var(--mainColor);
+    padding: 10px;
 
 
 }
@@ -42,11 +43,7 @@ padding-left: 20px;
 .item{
 width: 100%;
 height: auto;
-border: 1.5px solid #c49b63;
-padding: 10px;
 margin-bottom: 10px;
-
-
 
 }
 .item__user{
@@ -54,6 +51,7 @@ margin-bottom: 10px;
     align-items: center;
     height: 40px;
     width: 100%;
+
 
 }
 
@@ -70,11 +68,18 @@ padding-left: 15px;
 
 }
 
-.item__content--name{
+.item__user--info{
+    display: flex;
+   align-items: center;
+    width: 50%;
 
+}
+
+.item__content--name{
 font-size: 18px;
 margin-left: 10px;
 font-weight: 600;
+
 }
 
 .item__rate--star{
@@ -108,4 +113,6 @@ margin-left: 10px;
 }
 .item__content--text{
     margin-left: 50px;
-}
+    font-size: 20px;
+
+font-weight: 400;}

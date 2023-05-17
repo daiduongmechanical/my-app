@@ -8,7 +8,7 @@ import FormData from "form-data";
 import MyButton from "../pageComponents/myButton";
 import adminURL from "../../config/adminURL";
 import { Cookies } from "react-cookie";
-import { DishContext } from "../../route";
+
 import dishURL from "../../config/dishURL";
 
 const UpdateDishPage = () => {
@@ -19,51 +19,11 @@ const UpdateDishPage = () => {
   const cookies = new Cookies();
   const [show, setShow] = useState(false);
   const [textArea, setTextArea] = useState("");
-  //get dish context
-  const getDishContext = useContext(DishContext);
-  const dishValue = getDishContext[0];
-  const handleContext = getDishContext[1];
 
   const handleImage = (e) => {
     let file = e.target.files[0];
     setLoad(URL.createObjectURL(file));
   };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const data = new FormData(formRef.current);
-    data.append("_method", "PUT");
-
-    if (imgRef.current.files[0] !== undefined) {
-      data.append("dishimg", imgRef.current.files[0]);
-    }
-    adminURL
-      .post(`/update-dish/${dishValue.dishid}`, data, {
-        headers: { Authorization: `Bearer ${cookies.get("jwt")}` },
-      })
-      .then((response) => {
-        if (response.statusText === "OK") {
-          setShow(true);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    let currentDish = JSON.parse(window.localStorage.getItem("dishid"));
-    dishURL
-      .get(`/${currentDish}`)
-      .then((response) => {
-        handleContext(response.data[0]);
-        setTextArea(response.data[0].description);
-        setLoad(response.data[0].dishimage);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
   return (
     <div className={cx("wrapper")}>
@@ -99,11 +59,7 @@ const UpdateDishPage = () => {
               className={cx("input__img")}
             />
           </div>
-          <div className={cx("btn__cover")}>
-            <MyButton>
-              <span onClick={handleSubmit}>Update dish</span>
-            </MyButton>
-          </div>
+          <div className={cx("btn__cover")}></div>
         </Col>
 
         <Col sm={12} xs={12} md={7} lg={7}>
@@ -118,21 +74,18 @@ const UpdateDishPage = () => {
                 name="dishname"
                 required
                 type="text"
-                value={dishValue.dishname}
               />
               <InputField
                 content="Enter price of dish"
                 name="dishprice"
                 required
                 type="number"
-                value={dishValue.dishprice}
               />
               <InputField
                 content="Enter type of dish"
                 name="dishtype"
                 required
                 type="text"
-                value={dishValue.type}
               />
               <textarea
                 className={cx("form_textarea")}

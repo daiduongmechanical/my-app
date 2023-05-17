@@ -10,35 +10,19 @@ import {
   AccountTypeContext,
   NewOrderContext,
   AccountDetailContext,
+  CartQuantityContext,
 } from "../../../../../route";
 import cartURL from "../../../../../config/cartURL";
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useState, useRef } from "react";
 
 const AccountItem = ({ statusLogin }) => {
   const cx = classNames.bind(style);
-  const [cartQuantity, setCartQuantity] = useState();
-  const quantityRef = useRef("");
 
   //get account detail context
 
   const getDetailContext = useContext(AccountDetailContext);
   const userData = getDetailContext[0];
-  //get list cart
 
-  useEffect(() => {
-    if (userData !== undefined) {
-      cartURL
-        .get(`/${userData.id}`)
-        .then((response) => {
-          if (response.data.length !== quantityRef.current)
-            setCartQuantity(response.data.length);
-          quantityRef.current = response.data.length;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
-  }, [userData]);
   //get Account type context
   const getAccountTypeContext = useContext(AccountTypeContext);
   let type = getAccountTypeContext[0];
@@ -50,7 +34,9 @@ const AccountItem = ({ statusLogin }) => {
   const setNewNotice = getOrderContext[1];
   let typeRoute = type ? "/admin" : "/profile";
 
-  console.log(userData);
+  //get cart quantity context
+  const getCartQuantityContext = useContext(CartQuantityContext);
+  const cartQuantity = getCartQuantityContext[0];
 
   return (
     <div className={cx("wrapper")}>
@@ -89,7 +75,15 @@ const AccountItem = ({ statusLogin }) => {
       ) : (
         <NavItem normal to={typeRoute}>
           <Tippy content="Profile">
-            <img className={cx("avatar")} src={userData.avatar} alt="error" />
+            <img
+              className={cx("avatar")}
+              src={
+                userData === undefined
+                  ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZXpBymHiGfTzS3A6OCNgCE0NrtcFhz7ku4g&usqp=CAU"
+                  : userData.avatar
+              }
+              alt="error"
+            />
           </Tippy>
         </NavItem>
       )}

@@ -8,17 +8,18 @@ import rateURL from "../../../config/rateURL";
 const RateDish = ({ data, action }) => {
   const cx = classNames.bind(style);
   const [dataShow, setDataSHow] = useState([]);
+  const [shouldRender, setShouldRender] = useState(false);
   const closeModal = () => {
     action(false);
   };
 
   useEffect(() => {
     rateURL
-      .get(`/${data.orderid}`)
+      .get(`/${data.orderid}?order=true`)
       .then((response) => {
         if (response.statusText === "OK") {
           let dataCompare = response.data;
-          data.forEach((e) => {
+          data.order_dishes.forEach((e) => {
             let check = 0;
             dataCompare.forEach((item) => {
               if (e.dishid === item.dishid) {
@@ -31,12 +32,15 @@ const RateDish = ({ data, action }) => {
             }
           });
         }
+        setShouldRender(true);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-
+  if (!shouldRender) {
+    return null;
+  }
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
@@ -49,7 +53,7 @@ const RateDish = ({ data, action }) => {
       </div>
       {dataShow.length === 0 ? (
         <div className={cx("finish__notice")}>
-          <img src="http://localhost:8000/images/thankyou.png" alt="error" />
+          <img src="/thankyou.png" alt="error" />
         </div>
       ) : (
         <Fragment>

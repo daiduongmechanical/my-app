@@ -17,21 +17,31 @@ const Comment = ({ data }) => {
     return;
   }
 
+  const disableClick = () => {
+    return;
+  };
   return (
     <div className={cx("wrapper")}>
       <div className={cx("content")}>
-        {data.map((e, index) => (
-          <div key={index} className={cx("item")}>
+        {data.map((e) => (
+          <div key={e.orderid} className={cx("item")}>
             <div className={cx("item__user")}>
-              <img
-                className={cx("item__img")}
-                src="https://i.pinimg.com/280x280_RS/86/4b/70/864b70ac3cf273c2a2ded0a420d5ec21.jpg"
-                alt="error"
-              />
-              <h4 className={cx("item__content--name")}>{e.name}</h4>
-
+              <div className={cx("item__user--info")}>
+                <img
+                  className={cx("item__img")}
+                  src={e.user.avatar}
+                  alt="error"
+                />
+                <span className={cx("item__content--name")}>{e.user.name}</span>
+              </div>
               <div className={cx("item__rate--star")}>
-                <Rating size={20} initialValue={e.mark} allowHover={false} />
+                <Rating
+                  readonly={true}
+                  size={20}
+                  initialValue={e.mark}
+                  allowHover={false}
+                  onClick={disableClick}
+                />
 
                 <div className={cx("btn__cover")}>
                   {Number(e.mark) === 1 && (
@@ -84,6 +94,7 @@ const Comment = ({ data }) => {
             </div>
 
             <p className={cx("item__content--text")}>{e.comment}</p>
+            <hr />
           </div>
         ))}
       </div>

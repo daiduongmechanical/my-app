@@ -13,7 +13,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { DishContext } from "../../route";
+
 import InputField from "../pageComponents/inputField";
 import { useLocation } from "react-router-dom";
 import discountURL from "../../config/discountURL";
@@ -40,9 +40,6 @@ const ManagerMenuPage = () => {
   const [sale, setSale] = useState(
     checkLocation === location.pathname ? true : false
   );
-  //get dish context
-  const getDishContext = useContext(DishContext);
-  const hanleDish = getDishContext[1];
 
   const cookies = new Cookies();
 
@@ -127,7 +124,6 @@ const ManagerMenuPage = () => {
   };
   // handle edit dish infomation
   const handleEdit = (e) => {
-    hanleDish(e);
     localStorage.setItem("dishid", e.dishid);
   };
 

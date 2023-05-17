@@ -120,6 +120,11 @@ aspect-ratio: 1/1;
     align-items: center;
     margin-top: 30px;
 
+    &:hover{
+        cursor: pointer;
+        color: var(--mainColor);
+    }
+
     & h5{
         margin-top: 10px;
         margin-left: 10px;
@@ -258,10 +263,10 @@ top:10px
         margin-bottom: 0;
     }
 
-    
-    
+}
 
-
+.comment__text{
+    width: 100%;
 }
 
 

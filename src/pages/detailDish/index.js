@@ -4,7 +4,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import MyButton from "../pageComponents/myButton";
 import cartURL from "../../config/cartURL";
-import { AccountDetailContext, StatusLoginContext } from "../../route";
+import {
+  AccountDetailContext,
+  StatusLoginContext,
+  CartContext,
+} from "../../route";
 import rateURL from "../../config/rateURL";
 import HidenNotice from "../pageComponents/noticeHidden";
 import "./slick.css";
@@ -16,9 +20,10 @@ import "tippy.js/dist/tippy.css"; // optional
 import { useState, useEffect, useContext, useRef, Fragment } from "react";
 import dishURL from "../../config/dishURL";
 import discountURL from "../../config/discountURL";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Slider from "react-slick";
 import ShowInfo from "../pageComponents/showInfo/ShowInfo";
+import Comment from "../pageComponents/comment";
 
 const DetailDishPage = () => {
   const cx = classNames.bind(style);
@@ -30,9 +35,9 @@ const DetailDishPage = () => {
   const [quantity, setQuantity] = useState(1);
   const { dishID } = useParams();
   const [showDescription, setShowDescription] = useState(true);
+  const [showComment, setShowComment] = useState(false);
   const formRef = useRef();
   const location = useLocation();
-  let path = location.pathname.split("/");
 
   //get status login context
   const getStatusLoginContext = useContext(StatusLoginContext);
@@ -41,6 +46,11 @@ const DetailDishPage = () => {
   //get account details context
   const getAccountDetailContext = useContext(AccountDetailContext);
   const accountDetail = getAccountDetailContext[0];
+  const reviewRef = useRef("");
+
+  //get cart context
+  const getCartContext = useContext(CartContext);
+  const updateStatusCart = getCartContext[1];
 
   const renderPaging = (i) => (
     <div>
@@ -75,9 +85,8 @@ const DetailDishPage = () => {
   // get detail dish
   useEffect(() => {
     dishURL
-      .get("/" + dishID)
+      .get(`/${dishID}?dish=true`)
       .then((response) => {
-        console.log(response);
         if (response.data.length !== 0) {
           setData(response.data);
         }
@@ -102,8 +111,9 @@ const DetailDishPage = () => {
   //get comment list
   useEffect(() => {
     rateURL
-      .get(`/${dishID}`)
+      .get(`/${dishID}?dish=true`)
       .then((response) => {
+        console.log(response);
         setComment(response.data);
       })
       .catch((err) => {
@@ -113,25 +123,24 @@ const DetailDishPage = () => {
 
   const handleAdd = (e) => {
     e.preventDefault();
-
     if (statusLogin) {
       let datasend = new FormData(formRef.current);
       datasend.append("userid", accountDetail.id);
       datasend.append("dishid", dishID);
-
       if (sale.length === 0) {
         datasend.append("discount", 0);
       } else {
         datasend.append("discount", Number(sale[0].DiscountID));
       }
-
       cartURL
         .post("/", datasend, {
           headers: { "Content-type": "multipart/form-data" },
         })
         .then((response) => {
-          console.log(response);
-          setHidden(true);
+          if (response.statusText === "Created") {
+            setHidden(true);
+            updateStatusCart((pre) => !pre);
+          }
         })
         .catch(function (error) {
           console.log(error);
@@ -149,14 +158,28 @@ const DetailDishPage = () => {
     return <div className={cx("wrapper")}></div>;
   }
 
+  const showReviews = () => {
+    reviewRef.current.scrollIntoView({ behavior: "smooth" });
+    setShowComment(true);
+  };
+
+  const calAverageRate = () => {
+    if (comment.length === 0) {
+      return 0;
+    } else {
+      let total = comment.reduce((x, obj) => x + Number(obj.mark), 0);
+      return total / comment.length;
+    }
+  };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("sidemap")}>
-        <p>
+        {/* <p>
           {path.map((e) => (
             <Link></Link>
           ))}
-        </p>
+        </p> */}
       </div>
       {hidden && (
         <Fragment>
@@ -218,9 +241,15 @@ const DetailDishPage = () => {
                           Number(sale[0].DiscountAmount / 100)
                     ).toFixed(2)}
               </span>
-              <div className={cx("action__rating")}>
-                <Rating size={20} initialValue={3} allowHover={false} />
-                <h5>20 reviews</h5>
+              <div onClick={showReviews} className={cx("action__rating")}>
+                <Rating
+                  allowFraction={true}
+                  size={20}
+                  initialValue={calAverageRate()}
+                  readonly={true}
+                  allowHover={false}
+                />
+                <h5>{`${comment.length} reviews`}</h5>
               </div>
 
               <div className={cx("action--quantity")}>
@@ -268,13 +297,19 @@ const DetailDishPage = () => {
                 </ul>
               </span>
             </ShowInfo>
-            <div className={cx("description")}>
+            <div ref={reviewRef} className={cx("description")}>
               <span>Reviews</span>
               <FontAwesomeIcon
                 className={cx("description__icon")}
+                onClick={() => setShowComment((pre) => !pre)}
                 icon={faPlus}
               />
             </div>
+            <ShowInfo show={showComment}>
+              <div className={cx("comment__text")}>
+                <Comment data={comment}></Comment>
+              </div>
+            </ShowInfo>
           </div>
         </Col>
       </Row>

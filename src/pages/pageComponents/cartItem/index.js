@@ -7,7 +7,7 @@ import MyButton from "../myButton";
 import cartURL from "../../../config/cartURL";
 import useDebounce from "../../../hook/useDebouse";
 
-const CartItem = ({ data, action, sale }) => {
+const CartItem = ({ data, action, sale, status }) => {
   const cx = classNames.bind(style);
   const [quantity, setQuantity] = useState(Number(data.carts[0].quantity));
   const total = useRef(0);
@@ -60,6 +60,7 @@ const CartItem = ({ data, action, sale }) => {
       .then((response) => {
         setChange((pre) => (pre += 1));
         action(change);
+        status((pre) => !pre);
       })
       .catch(function (error) {
         console.log(error);

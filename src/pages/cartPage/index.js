@@ -10,7 +10,7 @@ import orderURL from "../../config/orderURL";
 import HidenNotice from "../pageComponents/noticeHidden";
 import discountURL from "../../config/discountURL";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { AccountDetailContext } from "../../route";
+import { AccountDetailContext, CartContext } from "../../route";
 import axios from "axios";
 import userURL from "../../config/userURL";
 
@@ -23,6 +23,10 @@ const CartPage = () => {
   //get account detail context
   const getcontext = useContext(AccountDetailContext);
   let userAddress = getcontext[0];
+
+  //get cart context
+  const getCartContext = useContext(CartContext);
+  const updateCart = getCartContext[1];
 
   const [listCart, setListCart] = useState([]);
   const [emptyCart, setEmptyCart] = useState(false);
@@ -114,15 +118,16 @@ const CartPage = () => {
   // order pay when recieve
 
   const handleOrder = (e) => {
+    e.preventDefault();
     let data = new FormData(FormRef.current);
     data.append("userid", userID);
     data.append("totalCost", bill);
-
     orderURL
       .post("/", data)
       .then((response) => {
         if (response.data.length !== 0) {
           setShow(true);
+          updateCart((pre) => !pre);
         }
       })
       .catch((error) => console.log(error));
@@ -166,6 +171,7 @@ const CartPage = () => {
         .then((response) => {
           if (response.data.length !== 0) {
             data["orderid"] = response.data.orderid;
+            updateCart((pre) => !pre);
             userURL
               .post("/bill/add", data)
               .then((response) => {
@@ -218,7 +224,12 @@ const CartPage = () => {
             <div className={cx("list")}>
               {listCart.map((e) => (
                 <div key={e.dishid}>
-                  <CartItem sale={sale} action={handleAction} data={e} />
+                  <CartItem
+                    status={updateCart}
+                    sale={sale}
+                    action={handleAction}
+                    data={e}
+                  />
                 </div>
               ))}
             </div>

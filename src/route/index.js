@@ -8,18 +8,21 @@ import { Cookies } from "react-cookie";
 import adminURL from "../config/adminURL";
 import useSound from "use-sound";
 import boopSfx from "../asset/sound/Law And Order Sound.mp3";
+import cartURL from "../config/cartURL";
 
 export const StatusLoginContext = createContext();
 export const AccountTypeContext = createContext();
 export const AccountDetailContext = createContext();
-export const DishContext = createContext();
+export const CartContext = createContext();
+export const CartQuantityContext = createContext();
 export const NewOrderContext = createContext();
 
 const WrapperRoutes = () => {
   const [statusLogin, setStatusLogins] = useState(false);
   const [type, setType] = useState(false);
   const [accountDetail, setAccountDetail] = useState();
-  const [dish, setDish] = useState([]);
+  const [cart, setCart] = useState(false);
+  const [cartQuantity, setCartQuantity] = useState(0);
   const [newOrder, setNewOrder] = useState(false);
   let usingRoles = [...PublicRoutes];
   const cookies = new Cookies();
@@ -55,6 +58,21 @@ const WrapperRoutes = () => {
         console.log(error);
       });
   }, []);
+
+  //get list cart
+  useEffect(() => {
+    if (accountDetail !== undefined) {
+      cartURL
+        .get(`/${accountDetail.id}`)
+        .then((response) => {
+          if (response.statusText === "OK")
+            setCartQuantity(response.data.length);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }, [cart, accountDetail]);
 
   //get notice new order
   const getdata = () => {
@@ -110,25 +128,29 @@ const WrapperRoutes = () => {
                 key={index}
                 path={route.path}
                 element={
-                  <DishContext.Provider value={[dish, setDish]}>
-                    <AccountTypeContext.Provider value={[type, setType]}>
-                      <AccountDetailContext.Provider
-                        value={[accountDetail, setAccountDetail]}
-                      >
-                        <StatusLoginContext.Provider
-                          value={[statusLogin, setStatusLogins]}
+                  <CartQuantityContext.Provider
+                    value={[cartQuantity, setCartQuantity]}
+                  >
+                    <CartContext.Provider value={[cart, setCart]}>
+                      <AccountTypeContext.Provider value={[type, setType]}>
+                        <AccountDetailContext.Provider
+                          value={[accountDetail, setAccountDetail]}
                         >
-                          <NewOrderContext.Provider
-                            value={[newOrder, setNewOrder]}
+                          <StatusLoginContext.Provider
+                            value={[statusLogin, setStatusLogins]}
                           >
-                            <Layout>
-                              <Page />
-                            </Layout>
-                          </NewOrderContext.Provider>
-                        </StatusLoginContext.Provider>
-                      </AccountDetailContext.Provider>
-                    </AccountTypeContext.Provider>
-                  </DishContext.Provider>
+                            <NewOrderContext.Provider
+                              value={[newOrder, setNewOrder]}
+                            >
+                              <Layout>
+                                <Page />
+                              </Layout>
+                            </NewOrderContext.Provider>
+                          </StatusLoginContext.Provider>
+                        </AccountDetailContext.Provider>
+                      </AccountTypeContext.Provider>
+                    </CartContext.Provider>
+                  </CartQuantityContext.Provider>
                 }
               />
             );
