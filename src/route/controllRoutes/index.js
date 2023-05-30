@@ -18,6 +18,8 @@ import UpdateDishPage from "../../pages/updateDishPage";
 import CurrentOrderPage from "../../pages/currentOrderPage";
 import SalePage from "../../pages/managerSale";
 import OverViewPage from "../../pages/overViewPage";
+import ImportMaterialPage from "../../pages/makenewdishpage";
+import AddMaterialPage from "../../pages/importMaterialPage";
 const PublicRoutes = [
   { path: "/", component: HomePage, layout: MainLayout },
   { path: "/menu", component: MenuPage, layout: MainLayout },
@@ -73,6 +75,16 @@ const AdminRoutes = [
   {
     path: "/admin/overview",
     component: OverViewPage,
+    layout: SidebarLayout,
+  },
+  {
+    path: "/admin/make-dish",
+    component: ImportMaterialPage,
+    layout: SidebarLayout,
+  },
+  {
+    path: "/admin/import-material",
+    component: AddMaterialPage,
     layout: SidebarLayout,
   },
   {

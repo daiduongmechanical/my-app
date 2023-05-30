@@ -8,11 +8,11 @@ import MyButton from "../pageComponents/myButton";
 import cartURL from "../../config/cartURL";
 import orderURL from "../../config/orderURL";
 import HidenNotice from "../pageComponents/noticeHidden";
-import discountURL from "../../config/discountURL";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { AccountDetailContext, CartContext } from "../../route";
 import axios from "axios";
 import userURL from "../../config/userURL";
+import { useTranslation } from "react-i18next";
 
 const CartPage = () => {
   const cx = classNames.bind(style);
@@ -39,6 +39,7 @@ const CartPage = () => {
   const [sale, setSale] = useState([]);
   const { userID } = useParams();
   const addressRef = useRef("");
+  const { t } = useTranslation();
 
   let deliveryCost = delivery ? 2 : 0;
   let calArr = [];
@@ -57,31 +58,17 @@ const CartPage = () => {
   }, [delivery, userAddress]);
   // calculate total cost for bill
   useEffect(() => {
-    listCart.forEach((e) => {
-      let check = 0;
-      sale.forEach((s) => {
-        if (s.DishID === e.dishid) {
-          calArr = [
-            ...calArr,
-            {
-              quantity: e.carts[0].quantity,
-              price:
-                e.dishprice - (e.dishprice * Number(s.DiscountAmount)) / 100,
-            },
-          ];
-          check++;
-        }
-      });
-      if (check === 0) {
-        calArr = [
-          ...calArr,
-          { quantity: e.carts[0].quantity, price: e.dishprice },
-        ];
-      }
-    });
-
-    let x = calArr.reduce((total, x) => total + x.quantity * x.price, 0);
-    setBill(x);
+    let total = listCart.reduce(
+      (cur, e) =>
+        cur +
+        (e.discount
+          ? (e.dish.dishprice -
+              (e.dish.dishprice * e.discountdata.discountamount) / 100) *
+            e.quantity
+          : e.dish.dishprice * e.quantity),
+      0
+    );
+    setBill(total);
   }, [listCart, action]);
 
   //get list cart
@@ -101,18 +88,6 @@ const CartPage = () => {
       });
   }, [action, show]);
 
-  //get list sale
-  useEffect(() => {
-    discountURL
-      .get("/")
-      .then((response) => {
-        if (response.data.length !== 0) {
-          setSale(response.data);
-        }
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
   const handleAction = (data) => setAction((pre) => (pre += data));
 
   // order pay when recieve
@@ -120,8 +95,17 @@ const CartPage = () => {
   const handleOrder = (e) => {
     e.preventDefault();
     let data = new FormData(FormRef.current);
-    data.append("userid", userID);
-    data.append("totalCost", bill);
+    if (userAddress.manage === 0) {
+      data.append("userid", userID);
+      data.append("totalCost", bill + 2);
+    } else {
+      data.append("userid", userID);
+      data.append("totalCost", bill);
+      data.append("detail", "in store");
+      data.append("type", "store");
+      data.append("status", "finished");
+    }
+
     orderURL
       .post("/", data)
       .then((response) => {
@@ -139,12 +123,17 @@ const CartPage = () => {
 
     let data = new FormData(FormRef.current);
     data.append("userid", userID);
-    data.append("totalCost", bill);
+    data.append("totalCost", bill + 2);
 
     axios
       .post("http://localhost:8000/api/vnpay-checkout", data)
       .then((response) => {
-        window.location.replace(response.data.data);
+        window.location.replace(
+          response.data.data,
+          "_blank",
+          "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400"
+        );
+        window.location.open(response.data.data);
       })
       .catch((error) => console.log(error));
   };
@@ -159,10 +148,11 @@ const CartPage = () => {
       let pair = vars[i].split("=");
       data[pair[0]] = pair[1];
     }
+
     if (Object.keys(data).length > 1) {
       let addressUes = data.vnp_OrderInfo.replace(/\+/g, " ");
       dataOrder.append("userid", userID);
-      dataOrder.append("totalCost", data.vnp_Amount);
+      dataOrder.append("totalCost", data.vnp_Amount / 23000 / 100);
       dataOrder.set("detail", addressUes);
       dataOrder.append("type", "delivery");
 
@@ -199,11 +189,11 @@ const CartPage = () => {
       {show && (
         <Fragment>
           {statusPayment === "ok" ? (
-            <HidenNotice notify={true} nt1={"payment success"} time={1000} />
+            <HidenNotice notify={true} nt1={t("cart.success")} time={1000} />
           ) : (
             <HidenNotice
               success
-              nt2={"order successfully"}
+              nt2={t("cart.order")}
               bt1={"check your order"}
               l1="/profile/current-orders"
               l2={location.pathname}
@@ -238,59 +228,76 @@ const CartPage = () => {
         <Col sm={12} xs={12} md={4} lg={4}>
           <div className={cx("bill")}>
             <form ref={FormRef}>
-              <h3>{listCart.length + " DISH "}</h3>
+              <h3>{`${listCart.length} ${t("cart.dish")} `}</h3>
 
               <hr></hr>
               <div className={cx("bill__pay")}>
                 <div className={cx("total__bill")}>
-                  <span>Total bill</span>
+                  <span>{t("cart.totalbill")}</span>
                   <span>${parseFloat(bill).toFixed(2)}</span>
                 </div>
-                <div className={cx("total__bill")}>
-                  <span>delivery</span>
-                  <span>${parseFloat(deliveryCost).toFixed(2)}</span>
-                </div>
-                <div className={cx("total__bill")}>
-                  <h5>Total pay</h5>
-                  <h5>${parseFloat(bill + deliveryCost).toFixed(2)}</h5>
-                </div>
-              </div>
-              <p className={cx("select__type")}>
-                <input
-                  required
-                  type="radio"
-                  value={userAddress.manage === 0 ? "delivery" : "store"}
-                  name={"type"}
-                  onClick={() => setDelivery(false)}
-                  defaultChecked
-                />
-                Using your address
-              </p>
-              <p className={cx("select__type")}>
-                <input
-                  required
-                  type="radio"
-                  value={userAddress.manage === 0 ? "delivery" : "store"}
-                  name={"type"}
-                  onClick={() => setDelivery(true)}
-                />
-                Using another address
-              </p>
 
-              <div className={cx("more__infomation--cover")}>
-                <div className={cx("more__infomation")}>
-                  <p>Enter your address</p>
-                  <input
-                    type="text"
-                    name="detail"
-                    ref={addressRef}
-                    value={delivery ? info : userAddress.address}
-                    placeholder="Enter location delivery address"
-                    required
-                    onChange={(e) => setInfo(e.target.value)}
-                  />
+                {userAddress.manage === 0 && (
+                  <div className={cx("total__bill")}>
+                    <span>{t("cart.delivery")}</span>
+                    <span>${parseFloat(2).toFixed(2)}</span>
+                  </div>
+                )}
+
+                <div className={cx("total__bill")}>
+                  <h5>{t("cart.totalpay")}</h5>
+                  <h5>
+                    $
+                    {parseFloat(
+                      userAddress.manage === 0 ? bill + 2 : bill
+                    ).toFixed(2)}
+                  </h5>
                 </div>
               </div>
+
+              {userAddress.manage === 0 && (
+                <Fragment>
+                  <p className={cx("select__type")}>
+                    <input
+                      required
+                      type="radio"
+                      value={userAddress.manage === 0 ? "delivery" : "store"}
+                      name={"type"}
+                      onClick={() => setDelivery(false)}
+                      defaultChecked
+                    />
+                    {t("cart.youraddress")}
+                  </p>
+                  <p className={cx("select__type")}>
+                    <input
+                      required
+                      type="radio"
+                      name={"type"}
+                      onClick={() => {
+                        setDelivery(true);
+                        setInfo("");
+                      }}
+                    />
+                    {t("cart.otheraddress")}
+                  </p>
+                  <div className={cx("more__infomation--cover")}>
+                    <div className={cx("more__infomation")}>
+                      <p>
+                        <b>{t("cart.enteraddress")}</b>
+                      </p>
+                      <input
+                        type="text"
+                        name="detail"
+                        ref={addressRef}
+                        value={delivery ? info : userAddress.address}
+                        placeholder="Enter location delivery address"
+                        required
+                        onChange={(e) => setInfo(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </Fragment>
+              )}
               <MyButton
                 red
                 full
@@ -299,21 +306,33 @@ const CartPage = () => {
                 }
               >
                 <div className={cx("pay__btn")} onClick={handleOrder}>
-                  <h5>Pay when recieve</h5>
-                  <h5>${parseFloat(bill + 2).toFixed(2)}</h5>
+                  <h5>{t("cart.recieve")}</h5>
+                  <h5>
+                    $
+                    {parseFloat(
+                      userAddress.manage === 0 ? bill + 2 : bill
+                    ).toFixed(2)}
+                  </h5>
                 </div>
               </MyButton>
-              <MyButton
-                full
-                disabled={
-                  addressRef.current.value === "" || listCart.length === 0
-                }
-              >
-                <div onClick={vnpayOrder} className={cx("pay__btn")}>
-                  <h5>Pay with VNpay</h5>
-                  <h5>${parseFloat(bill + 2).toFixed(2)}</h5>
-                </div>
-              </MyButton>
+              {userAddress.manage === 0 && (
+                <MyButton
+                  full
+                  disabled={
+                    addressRef.current.value === "" || listCart.length === 0
+                  }
+                >
+                  <div onClick={vnpayOrder} className={cx("pay__btn")}>
+                    <h5>{t("cart.vnpay")}</h5>
+                    <h5>
+                      $
+                      {parseFloat(
+                        userAddress.manage === 0 ? bill + 2 : bill
+                      ).toFixed(2)}
+                    </h5>
+                  </div>
+                </MyButton>
+              )}
             </form>
           </div>
         </Col>

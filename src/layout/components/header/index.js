@@ -4,24 +4,43 @@ import AccountItem from "./headerComponents/accountItem";
 import NavBar from "./headerComponents/navBar";
 import NavItem from "./headerComponents/navItiem";
 import { StatusLoginContext } from "../../../route";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const cx = classNames.bind(style);
-
+  const [language, setLanguage] = useState(
+    window.localStorage.getItem("language")
+  );
   //get status login context
   const getStatusLoginContext = useContext(StatusLoginContext);
+  const { t, i18n } = useTranslation();
   let statusLogin = getStatusLoginContext[0];
+
+  const hanleLanguage = (e) => {
+    window.localStorage.setItem("language", e.target.value);
+    setLanguage(e.target.value);
+    i18n.changeLanguage(e.target.value);
+  };
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("left__location")}></div>
+      <div className={cx("left__location")}>
+        <select onChange={hanleLanguage}>
+          <option selected={language === "vi"} value="vi">
+            Tiếng Việt
+          </option>
+          <option selected={language === "en"} value="en">
+            English
+          </option>
+        </select>
+      </div>
       <NavBar>
-        <NavItem to="/">home</NavItem>
-        <NavItem to="/menu">menu</NavItem>
+        <NavItem to="/">{t("header.home")}</NavItem>
+        <NavItem to="/menu">{t("header.menu")}</NavItem>
         <img className={cx("logo")} src="/logomain.png" alt="error" />
-        <NavItem to="/about-us">About Us</NavItem>
-        <NavItem to="/contact">contact</NavItem>
+        <NavItem to="/about-us">{t("header.aboutus")}</NavItem>
+        <NavItem to="/contact">{t("header.contact")}</NavItem>
       </NavBar>
       <div className={cx("right__location")}>
         <AccountItem statusLogin={statusLogin} />

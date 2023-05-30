@@ -1,0 +1,145 @@
+{
+  "header":{
+    "home": "Trang Chủ",
+    "menu": "menu",
+    "aboutus": "Thông tin",
+    "contact": "liên lạc",
+    "cart":"Giỏ hàng",
+    "login": "Đăng nhập",
+    "profile": "Tài khoản"
+  } ,
+  "home": {
+    "newdishes":"món mới",
+    "bestrate": "đánh giá cao nhất"
+  },
+  "menu":{
+    "category": "Loại",
+    "all":"Tất cả",
+    "default":"Mặc định",
+    "groupby":"sắp xếp theo",
+    "downprice":"giá giảm dần",
+    "upprice":"giá tăng dần"
+
+},
+"detaildish":{
+    "review":"Đánh giá",
+    "description":"Mô tả",
+    "add":"Thêm vào giỏ hàng",
+    "login":"Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng",
+    "success":" Đã thêm vào giỏ hàng ",
+    "back":"Trở lại trang menu"
+
+},
+"cart":{
+  "dish":"món",
+  "totalbill":"Tổng đơn hàng ",
+  "delivery":"Phí giao hàng",
+  "totalpay":"Tổng hóa đơn",
+  "youraddress":"Sử dụng địa chỉ của bạn",
+  "otheraddress":"Sử dụng địa chỉ khác",
+  "enteraddress":"Nhập địa chỉ của bạn",
+  "recieve":"Thanh toán khi nhận hàng",
+  "vnpay":"thanh toán với VNpay",
+  "delete":"Xóa",
+  "specical":"yêu cầu đặc biệt",
+  "success":"Thanh toán thành công",
+  "order":"Đơn hàng đẫ được thêm thành công",
+  "ordernotice":"Cảm ơn đã lựa chọn chúng tôi"
+},
+"profile":{
+  "head":"Thông tin tài khoản",
+  "name":"Tên tài khoản",
+  "email":"Địa chỉ email",
+  "phone":"Số điện thoại",
+  "address":"Địa chỉ",
+  "dob":"Sinh nhật",
+  "update":"Cập nhật thông tin tài khoản"
+},
+"sidebar":{
+  "logout":"Đăng xuất",
+  "current":"Dơn hàng hiện tại",
+  "previous":"Đơn hàng đã hoàn thành",
+  "account":"Thông tin tài khoản",
+  "pass":"Dặt lại mật khẩu",
+  "manageorder":"Quản lí đơn hàng",
+  "warehouse":"Làm món mới",
+  "import":"nhập nguyên liệu "
+},
+"order":{
+  "id":"Mã đơn hàng",
+  "status":"Trạng thái ",
+  "total":"tổng đơn hàng",
+  "rate":"đánh giá đơn hàng",
+  "detail":"Chi tiết đơn hàng",
+  "cancel":"Hủy đơn hàng",
+  "confirm":"Đã nhận đơn hàng"
+},
+"password":{
+  "head":"Thay đổi mật khẩu",
+  "current":"Nhập mật khẩu hiện tại",
+  "new":"Nhập mật khẩu mới",
+  "re":"nhập lại mật khẩu mới",
+  "success":"Mật khẩu của bạn đã thay đổi thành công",
+  "mini":"Mật khẩu ít nhất 8 kí tự và 1 số",
+  "btn":"Thay đổi mật khâu"
+
+},
+"login":{
+  "head":"Đăng nhập",
+  "email":"Nhập địa chỉ email",
+  "password":"Nhập mật khẩu của bạn",
+  "with":"Hoặc bạn có thể đăng nhập với",
+  "facebook":"Đăng nhập bằng facebook",
+  "google":"Đăng nhập bằng google",
+  "if":"nếu như bạn chưa có tài khoản :",
+  "signup":"Đăng kí",
+  "error":"Đăng nhập lỗi, vui lòng kiểm tra lại thông tin",
+  "emailerror":"email theo dạng xxx@example.xxx",
+  "passerror":"Mật khẩu ít nhất 8 kí tự và 1 số"
+},
+"signup":{
+  "head":"Đăng kí",
+  "name":"Nhập tên tài khoản",
+  "phone":"Nhập Số điện thoại",
+  "email":"Nhập địa chỉ email",
+  "password":"Nhập mật khẩu của bạn",
+  "if":"nếu bạn đã có tài khoản :",
+  "login":"Đăng nhập",
+  "nameerror":"tên ít nhất 3 kí tự",
+  "phoneerror":"Số điện thoại từ 9-13 số",
+  "emailerror":"email theo dạng xxx@example.xxx",
+  "passerror":"Mật khẩu ít nhất 8 kí tự và 1 số"
+
+},
+"detailorder":{
+  "id":"Mã đơn hàng",
+  "date":"Ngày đặt hàng",
+  "specialty":"Yêu cầu đặc biệt",
+  "info":"Thông tin khách hàng",
+  "name":"Tên khách hàng",
+  "phone":"Số điện thoại",
+  "address":"Địa chỉ khách hàng",
+  "summary":"Thông tin đơn hàng",
+  "sub":"Tổng phí",
+  "delivery":"Giao hàng",
+  "total":"Tổng tiền",
+  "qty":"Số lượng",
+  "print":"In hóa đơn và giao hàng"
+},
+"footer":{
+  "info":"Liên hệ",
+  "share":"Chia sẻ chúng tôi",
+  "address":"Địa chỉ",
+  "phone":"phone",
+  "email":"Email"
+},
+"about": {
+  "story":"Câu chuyện của chúng tôi",
+  "menu":"Ăn bất cứ gì bạn muốn",
+  "product":"Sản phẩm ",
+  "ingredients":"Nguyên liệu"
+
+}
+
+
+}

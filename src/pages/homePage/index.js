@@ -5,11 +5,13 @@ import ShowList from "../pageComponents/showlist";
 import ProductSlider from "../pageComponents/slider";
 import style from "./homePage.module.scss";
 import dishURL from "../../config/dishURL";
-import { faRectangleList } from "@fortawesome/free-solid-svg-icons";
+
+import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
   const [newDishList, setNewDishList] = useState([]);
   const [rateList, setRateList] = useState([]);
+  const { t } = useTranslation();
   let arr = [
     "https://as2.ftcdn.net/v2/jpg/03/77/46/33/1000_F_377463381_M6m89l4h2Ke8ImqNgZKYB1jcR3Tas4X4.jpg",
     "https://img.freepik.com/premium-photo/tiramisu-dessert-with-strawberries-banner-menu-recipe-place-text-top-view_114941-165.jpg",
@@ -50,8 +52,8 @@ const HomePage = () => {
       <div className={cx("slide__cover")}>
         <ProductSlider data={arr} />
       </div>
-      <ShowList header="new dishes" data={newDishList} />
-      <ShowList header="Best rate dishes" data={rateList} />
+      <ShowList header={t("home.newdishes")} data={newDishList} />
+      <ShowList header={t("home.bestrate")} data={rateList} />
     </div>
   );
 };

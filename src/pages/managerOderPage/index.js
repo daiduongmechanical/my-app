@@ -24,7 +24,6 @@ const ManagerOrderPage = () => {
   const [show, setShow] = useState(false);
   const [detail, showDetail] = useState(false);
   const [detailOrder, setDetailOrder] = useState([]);
-  const [currentOrder, setCurrentOrder] = useState("");
   const [updateStatus, setUpdateStatus] = useState(false);
   const [typeSearch, setTypeSearch] = useState("");
   const [daySearch, setDaySearch] = useState("");
@@ -36,25 +35,6 @@ const ManagerOrderPage = () => {
   const pageItem = [];
 
   const cookies = new Cookies();
-
-  //get dtail order
-  useEffect(() => {
-    if (currentOrder !== "") {
-      adminURL
-        .get(`/order/${currentOrder}`, {
-          headers: { Authorization: `Bearer ${cookies.get("jwt")}` },
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.data.length !== 0) {
-            setDetailOrder(response.data);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, [currentOrder]);
 
   //get list order
   useEffect(() => {
@@ -97,15 +77,13 @@ const ManagerOrderPage = () => {
       });
   };
 
-  const handleView = (id) => {
-    setCurrentOrder(id);
-    setDetailOrder([]);
+  const handleView = (data) => {
+    setDetailOrder(data);
     showDetail(true);
   };
 
   const closeDetail = (x) => {
     showDetail(x);
-    setCurrentOrder("");
   };
 
   if (Object.keys(pageCover).length !== 0) {
@@ -137,8 +115,6 @@ const ManagerOrderPage = () => {
     searchRef.current.value = "";
     setRefresh(!refresh);
   };
-
-  console.log(list);
 
   //render
   return (
@@ -259,11 +235,7 @@ const ManagerOrderPage = () => {
                               <span>{e.status}</span>
                             </div>
                           </td>
-                          <td>
-                            {`$ ${parseFloat(e.totalcost / 23000 / 100).toFixed(
-                              2
-                            )}`}
-                          </td>
+                          <td>{`$ ${parseFloat(e.totalcost).toFixed(2)}`}</td>
 
                           <td>
                             <Tippy
@@ -295,7 +267,7 @@ const ManagerOrderPage = () => {
                               <span className={cx("action")}>
                                 <FontAwesomeIcon
                                   className={cx("icon")}
-                                  onClick={() => handleView(e.orderid)}
+                                  onClick={() => handleView(e)}
                                   icon={faEye}
                                 />
                               </span>
@@ -342,6 +314,7 @@ const ManagerOrderPage = () => {
           <div className={cx("detail__dish")}>
             <DetailOrder
               data={detailOrder}
+              specical
               action={closeDetail}
               changeData={setUpdateStatus}
             />

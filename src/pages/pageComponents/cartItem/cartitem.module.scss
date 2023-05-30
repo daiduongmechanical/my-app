@@ -92,6 +92,26 @@
     .special__require{
         border: 1px solid var(--mainColor);
         outline: none;
-        margin-top: 20px;
+     
         width: 100%;
+    }
+
+    .discount__info{
+        margin-left: 10px;
+       
+        border-radius: 5px;
+    
+     
+        & span{
+            font-size: 16px;
+            box-sizing: none;
+            padding: 5px;
+            color: white;
+            text-transform: capitalize;
+     
+            background-color:rgb(222 4 0)
+        }
+        & .discount__info--name{
+            color: black;
+        }
     }

@@ -5,11 +5,13 @@ import MyButton from "../pageComponents/myButton";
 import { AccountDetailContext } from "../../route";
 import orderURL from "../../config/orderURL";
 import DetailOrder from "../pageComponents/detailOrder/detailOrder";
+import { useTranslation } from "react-i18next";
 const CurrentOrderPage = () => {
   const cx = classNames.bind(style);
   const [list, setList] = useState([]);
   const [changeStatus, setChangeStatus] = useState(false);
   const [detail, setDetail] = useState([]);
+  const { t } = useTranslation();
 
   //get account details context
   const getContext = useContext(AccountDetailContext);
@@ -65,9 +67,9 @@ const CurrentOrderPage = () => {
           {list.map((e, index) => (
             <div key={index} className={cx("order__item")}>
               <div className={cx("dish__detail")}>
-                <h4>OrderID : #{e.orderid}</h4>
+                <h4>{`${t("order.id")} : #${e.orderid}`}</h4>
                 <p className={cx("order__status")}>
-                  status :
+                  {`${t("order.status")} :`}
                   <b
                     className={cx("status__field", {
                       accept: e.status === "accept",
@@ -80,7 +82,8 @@ const CurrentOrderPage = () => {
                 </p>
 
                 <p className={cx("total__cost")}>
-                  Total Cost : <b>${parseFloat(e.totalcost).toFixed(2)}</b>
+                  {`${t("order.total")} : `}
+                  <b>${parseFloat(e.totalcost).toFixed(2)}</b>
                 </p>
               </div>
               <div className={cx("bill__detail")}>
@@ -90,12 +93,12 @@ const CurrentOrderPage = () => {
                 >
                   <span onClick={() => cancelOrder(e.orderid, e.status)}>
                     {e.status === "delivery"
-                      ? "conirm recieved"
-                      : "Cancel Order"}
+                      ? t("order.confirm")
+                      : t("order.cancel")}
                   </span>
                 </MyButton>
                 <MyButton golden>
-                  <span onClick={() => setDetail(e)}>Detail Order</span>
+                  <span onClick={() => setDetail(e)}>{t("order.detail")}</span>
                 </MyButton>
               </div>
             </div>

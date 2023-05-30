@@ -5,17 +5,17 @@ import Col from "react-bootstrap/Col";
 import viewURL from "../../config/viewURL";
 
 import { useState, useEffect, useContext, Fragment } from "react";
-import discountURL from "../../config/discountURL";
 import { Link } from "react-router-dom";
 import { AccountDetailContext } from "../../route";
 import dishURL from "../../config/dishURL";
+import { useTranslation } from "react-i18next";
 
 const MenuPage = () => {
   const cx = classNames.bind(style);
-  const [listSale, setListSale] = useState([]);
   const [menu, setMenu] = useState([]);
   const [sortValue, setSortValue] = useState("all");
   const [sortType, setSortType] = useState("asc");
+  const { t } = useTranslation();
 
   // get account detai context
   let getAttributeContext = useContext(AccountDetailContext);
@@ -43,26 +43,16 @@ const MenuPage = () => {
       .catch((err) => console.log(err));
   };
 
-  // get list discount
-  useEffect(() => {
-    discountURL
-      .get("/")
-      .then((response) => {
-        setListSale(response.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
   return (
     <div className={cx("wrapper")}>
       <form className={cx("sortbar")}>
         <div className={cx("sortbar__category")}>
-          <span>Category : </span>
+          <span>{`${t("menu.category")} :`}</span>
           <select
             name="sortvalue"
             onChange={(e) => setSortValue(e.target.value)}
           >
-            <option value="all">All</option>
+            <option value="all">{t("menu.all")}</option>
             <option value="donut">Donut</option>
             <option value="rollcake">Roll cake</option>
             <option value="cupcake">Cup cake</option>
@@ -71,11 +61,12 @@ const MenuPage = () => {
         </div>
         <div className={cx("sortbar__sorting")}>
           <div className={cx("sortbar__category")}>
-            <span>Sorting By : </span>
+            <span>{`${t("menu.groupby")} :`}</span>
             <select name="sortby" onChange={(e) => setSortType(e.target.value)}>
-              <option value="asc">default</option>
+              <option value="asc">{t("menu.default")}</option>
               <option value="desc">z-a</option>
-              <option value="price">Price</option>
+              <option value="price">{t("menu.upprice")}</option>
+              <option value="downprice">{t("menu.downprice")}</option>
             </select>
           </div>
         </div>
@@ -92,17 +83,21 @@ const MenuPage = () => {
               >
                 <div className={"ribbon"}>
                   <div className={cx("item")}>
-                    {listSale.filter((dish) => dish.dishid === e[0].dishid)
-                      .length !== 0 && (
-                      <span className={cx("ribbon6")}>{`Sale ${
-                        listSale[
-                          listSale.findIndex((i) => i.dishid === e[0].dishid)
-                        ].discountamount
-                      }%`}</span>
+                    {e.discount && (
+                      <span className={cx("ribbon6")}>
+                        {`Sale : ${e.discountdata.discountamount}%`}
+                      </span>
                     )}
+
                     <div className={cx("item__img")}>
                       <img
-                        src={e.dishimages[1].imageurl}
+                        src={
+                          e.dishimages[
+                            Math.floor(
+                              Math.random() * (e.dishimages.length - 0) + 0
+                            )
+                          ].imageurl
+                        }
                         alt="error"
                         data-dishid={e.dishid}
                       />
@@ -114,20 +109,15 @@ const MenuPage = () => {
                       <h4>{e.dishname}</h4>
 
                       <h4>
-                        {listSale.length !== 0 &&
-                        listSale.filter((dish) => dish.dishid === e.dishid)
-                          .length !== 0
-                          ? `$${parseFloat(
-                              (e.dishprice *
-                                (100 -
-                                  listSale[
-                                    listSale.findIndex(
-                                      (i) => i.dishid === e.dishid
-                                    )
-                                  ].discountamount)) /
-                                100
-                            ).toFixed(2)}`
-                          : `$${parseFloat(e.dishprice).toFixed(2)}`}
+                        $
+                        {parseFloat(
+                          e.discount
+                            ? e.dishprice -
+                                (e.dishprice *
+                                  Number(e.discountdata.discountamount)) /
+                                  100
+                            : e.dishprice
+                        ).toFixed(2)}
                       </h4>
                     </div>
                   </div>

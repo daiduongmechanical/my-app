@@ -7,6 +7,7 @@ import { AccountDetailContext } from "../../route";
 import userURL from "../../config/userURL";
 import HidenNotice from "../pageComponents/noticeHidden";
 import { Cookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
 
 const ResetPasswordPage = () => {
   const cx = classNames.bind(style);
@@ -17,6 +18,7 @@ const ResetPasswordPage = () => {
   const [notice, setNotice] = useState(false);
   const formRef = useRef();
   const cookies = new Cookies();
+  const { t } = useTranslation();
 
   //get account details context
   const getContext = useContext(AccountDetailContext);
@@ -57,39 +59,31 @@ const ResetPasswordPage = () => {
 
   return (
     <div className={cx("wrapper")}>
-      <h3>Reset Password</h3>
-      {notice && (
-        <HidenNotice
-          notify
-          nt1="The password is changed successfully"
-          time={2000}
-        />
-      )}
+      <h3>{t("password.head")}</h3>
+      {notice && <HidenNotice notify nt1={t("password.success")} time={2000} />}
       <form ref={formRef} onSubmit={handleUbmit} className={cx("form__main")}>
         <InputField
-          content={"enter current password"}
+          content={t("password.current")}
           required
           regex={/^(?=.*\d)[A-Za-z\d]{8,}$/}
-          notice={
-            status === 0 ? "" : "Password minimum 8 characters and one number"
-          }
+          notice={status === 0 ? "" : t("password.mini")}
           type="password"
           name="currentPassword"
           action={getCurrentPassword}
           wrong={status}
         />
         <InputField
-          content={"enter new password"}
+          content={t("password.new")}
           required
           regex={/^(?=.*\d)[A-Za-z\d]{8,}$/}
-          notice=" Password minimum 8 characters and one number"
+          notice={t("password.mini")}
           type="password"
           name="newPassword"
           action={getNewPassword}
           get={true}
         />
         <InputField
-          content={" re-enter current password"}
+          content={t("password.re")}
           type="password"
           name="renewPassword"
           action={getRePassword}
@@ -106,7 +100,7 @@ const ResetPasswordPage = () => {
           red
           full
         >
-          Reset Your Password
+          {t("password.btn")}
         </MyButton>
       </form>
     </div>

@@ -1,0 +1,144 @@
+{
+  "header":{ 
+    "home": "Home",
+    "menu": "menu",
+    "aboutus": "About us",
+    "contact": "Contact",
+    "cart":"Cart",
+    "login": "Login",
+    "profile": "Profile"
+  },
+  "home": {
+    "newdishes":"new dishes",
+    "bestrate": "best rate dishes"
+  },
+  "menu":{
+    "category": "category",
+    "all":"all",
+    "groupby":"Group by",
+    "default":"default",
+    "downprice":"Downing price",
+    "upprice":"Growing price"
+  },
+  "detaildish":{
+    "review":"Reviews",
+    "description":"Description",
+    "add":"Add to cart",
+    "login":"you need to sign in to add dish to your cart",
+    "success":" Add to cart successfully",
+    "back":"Back To Menu"
+},
+"cart":{
+  "dish":"dish",
+  "totalbill":"Total bill",
+  "delivery":"delivery cost",
+  "totalpay":"Total pay",
+  "youraddress":"Using your address",
+  "otheraddress":"Using another address",
+  "enteraddress":"Enter your address",
+  "recieve":"Pay when you receive",
+  "vnpay":"Pay with VNpay",
+  "delete":"Delete",
+  "specical":"special require",
+  "success":"Payment successfully",
+  "order":"order successfully",
+  "ordernotice":"Thank for your order"
+  
+},
+"profile":{
+  "head":"Account Profile",
+  "name":"About name",
+  "email":"Email",
+  "phone":"Phone number",
+  "address":"Address",
+  "dob":"Date of irth",
+  "update":"Update your profile"
+},
+"sidebar":{
+  "logout":"Logout",
+  "current":"Current order",
+  "previous":"Previous order",
+  "account":"Account details",
+  "pass":"Reset password",
+  "manageorder":"Order management",
+  "warehouse":"Make dish",
+  "import":"Import materials "
+},
+"order":{
+  "id":"Order detail",
+  "status":"Status",
+  "total":"Total cost",
+  "rate":"Rate dish",
+  "detail":"Detail order",
+  "cancel":"Cancel order",
+  "confirm":"Confirm recieve order"
+},
+"password":{
+  "head":"reset password",
+  "current":"Enter current password",
+  "new":"Enter new password",
+  "re":"Re-enter password",
+  "success":"Your password is changed successfully",
+  "mini":"Password minimum 8 characters and one number",
+  "btn":"Reset Your Password"
+
+},
+"login":{
+  "head":"Login",
+  "email":"Enter your email address",
+  "password":"Enter your password",
+  "with":"Can you login with :",
+  "facebook":"Login with Facebook",
+  "google":"Login with Google",
+  "if":"If you has an account ?",
+  "signup":"Sign up",
+  "error":"Login fail. please check email and password again",
+  "emailerror":"Email follow type xxx@example.xxx",
+  "passerror":" Password at least 8 characters, and one number"
+
+},
+"signup":{
+  "head":"Sign up",
+  "name":"Enter your name",
+  "phone":"Enter your phone number",
+  "email":"Enter your email address",
+  "password":"Enter your password",
+  "if":"If you readly has an account ?",
+  "login":"Log in",
+  "nameerror":"Name as least 3 characters",
+  "phoneerror":"Phone must be 9-13 numbers",
+  "emailerror":"Email follow type xxx@example.xxx",
+  "passerror":" Password at least 8 characters, and one number"
+
+},
+"detailorder":{
+  "id":"Order ID",
+  "date":"Order Date",
+  "specialty":"Special require",
+  "info":"Customer Infomation",
+  "name":"Customer Name",
+  "phone":"Customer Phone",
+  "address":"Customer Address",
+  "summary":"Order Summary",
+  "sub":"Sub total",
+  "delivery":"Delivery",
+  "total":"Total",
+  "qty":"Quantity",
+  "print":" Print bill and delivery"
+},
+"footer":{
+  "info":"Contact info",
+  "share":"share this page",
+  "address":"Address",
+  "phone":"Phone",
+  "email":"Email"
+},
+"about": {
+  "story":"Our story",
+  "menu":"EAT WHAT YOU LOVE",
+  "product":"our Product",
+  "ingredients":"our Ingredient"
+
+}
+
+}

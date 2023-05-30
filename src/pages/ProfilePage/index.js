@@ -7,6 +7,7 @@ import MyButton from "../pageComponents/myButton";
 import userURL from "../../config/userURL";
 import { Cookies } from "react-cookie";
 import HidenNotice from "../pageComponents/noticeHidden";
+import { useTranslation } from "react-i18next";
 
 const ProfilePage = () => {
   const cx = classNames.bind(style);
@@ -18,6 +19,7 @@ const ProfilePage = () => {
   const [showNotice, setShowNotice] = useState(false);
   let dob;
   const cookies = new Cookies();
+  const { t } = useTranslation();
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -49,7 +51,7 @@ const ProfilePage = () => {
 
   return (
     <div className={cx("wrapper")}>
-      <h3>Profile detail</h3>
+      <h3>{t("profile.head")}</h3>
       {showNotice && (
         <HidenNotice
           nt1={"your profile updated"}
@@ -59,20 +61,20 @@ const ProfilePage = () => {
         />
       )}
       <form className={cx("main__form")} onSubmit={handleUpdate} ref={formRef}>
-        <p>your name</p>
+        <p>{t("profile.name")}</p>
         <InputField value={profile.name} type="tetx" name={"name"} />
-        <p>email</p>
+        <p>{t("profile.email")}</p>
         <InputField value={profile.email} type="tetx" name={"email"} readOnly />
-        <p>phone</p>
+        <p>{t("profile.phone")}</p>
         <InputField value={profile.phone} type="number" name={"phone"} />
-        <p>address</p>
+        <p>{t("profile.address")}</p>
         <InputField
           value={profile.address}
           type="tetx"
           name={"address"}
           content="Enter your address"
         />
-        <p>date of birth</p>
+        <p>{t("profile.dob")}</p>
         <InputField
           type="date"
           name={"dob"}
@@ -81,7 +83,7 @@ const ProfilePage = () => {
         />
 
         <MyButton red full>
-          Update your Profile
+          {t("profile.update")}
         </MyButton>
       </form>
     </div>

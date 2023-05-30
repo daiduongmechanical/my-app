@@ -5,6 +5,8 @@ import { StatusLoginContext } from "../../../route";
 import { Fragment, useContext } from "react";
 import { AccountTypeContext, AccountDetailContext } from "../../../route";
 import userURL from "../../../config/userURL";
+import { useTranslation } from "react-i18next";
+
 const SideBar = () => {
   const cx = classNames.bind(style);
   //get status login context
@@ -18,6 +20,7 @@ const SideBar = () => {
   //get account detail context
   const getAccountDetailContext = useContext(AccountDetailContext);
   const account = getAccountDetailContext[0];
+  const { t } = useTranslation();
 
   //get cockie
   function getCookie(cname) {
@@ -67,7 +70,7 @@ const SideBar = () => {
           {type && "  ( Admin )"}
         </p>
         <NavItem handle to={"/"}>
-          <span onClick={handleLogout}> Log Out</span>
+          <span onClick={handleLogout}> {t("sidebar.logout")}</span>
         </NavItem>
       </div>
 
@@ -78,25 +81,28 @@ const SideBar = () => {
           </NavItem>
 
           <NavItem space to={"/admin/manager-order"}>
-            Manager Order
+            {t("sidebar.manageorder")}
           </NavItem>
-          <NavItem space to={"/admin/manager-discount"}>
-            Manager Warehouse
+          <NavItem space to={"/admin/make-dish"}>
+            {t("sidebar.warehouse")}
+          </NavItem>
+          <NavItem space to={"/admin/import-material"}>
+            {t("sidebar.import")}
           </NavItem>
         </Fragment>
       ) : (
         <Fragment>
           <NavItem space to={"/profile/current-orders"}>
-            CurrentOrders
+            {t("sidebar.current")}
           </NavItem>
           <NavItem space to={"/profile/previous-orders"}>
-            Previous Oders
+            {t("sidebar.previous")}
           </NavItem>
           <NavItem space to={"/profile/account-detail"}>
-            Account Details
+            {t("sidebar.account")}
           </NavItem>
           <NavItem space to={"/profile/reset-password"}>
-            Reset Password
+            {t("sidebar.pass")}
           </NavItem>
         </Fragment>
       )}

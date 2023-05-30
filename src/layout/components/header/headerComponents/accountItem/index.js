@@ -1,4 +1,3 @@
-import { faShopify } from "@fortawesome/free-brands-svg-icons";
 import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames/bind";
@@ -6,17 +5,18 @@ import NavItem from "../navItiem";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css"; // optional
 import style from "./accountitem.module.scss";
+import { useTranslation } from "react-i18next";
 import {
   AccountTypeContext,
   NewOrderContext,
   AccountDetailContext,
   CartQuantityContext,
 } from "../../../../../route";
-import cartURL from "../../../../../config/cartURL";
 import { useContext, useState, useRef } from "react";
 
 const AccountItem = ({ statusLogin }) => {
   const cx = classNames.bind(style);
+  const { t } = useTranslation();
 
   //get account detail context
 
@@ -55,7 +55,7 @@ const AccountItem = ({ statusLogin }) => {
         normal
         to={userData === undefined ? "/cart" : `/cart/${userData.id}`}
       >
-        <Tippy content="cart">
+        <Tippy content={t("header.cart")}>
           <div className={cx("icon")}>
             <img src="/cart.png" alt="error" />
             <div className={cx("quantity")}>
@@ -66,15 +66,15 @@ const AccountItem = ({ statusLogin }) => {
       </NavItem>
       {!statusLogin ? (
         <NavItem normal to="/login">
-          <Tippy content="Login">
+          <Tippy content={t("header.login")}>
             <div className={cx("icon")}>
-              <FontAwesomeIcon icon={faUser} />
+              <FontAwesomeIcon className={cx("icon__login")} icon={faUser} />
             </div>
           </Tippy>
         </NavItem>
       ) : (
         <NavItem normal to={typeRoute}>
-          <Tippy content="Profile">
+          <Tippy content={t("header.prfile")}>
             <img
               className={cx("avatar")}
               src={

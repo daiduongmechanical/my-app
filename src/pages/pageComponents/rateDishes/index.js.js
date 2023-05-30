@@ -19,13 +19,14 @@ const RateDish = ({ data, action }) => {
       .then((response) => {
         if (response.statusText === "OK") {
           let dataCompare = response.data;
-          data.order_dishes.forEach((e) => {
+          data.orderdishes.forEach((e) => {
             let check = 0;
             dataCompare.forEach((item) => {
               if (e.dishid === item.dishid) {
                 check++;
               }
             });
+
             if (check === 0) {
               setDataSHow((pre) => [...pre, e]);
               check = 0;
@@ -41,6 +42,8 @@ const RateDish = ({ data, action }) => {
   if (!shouldRender) {
     return null;
   }
+  console.log(data);
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>

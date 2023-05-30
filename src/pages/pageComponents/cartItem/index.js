@@ -6,10 +6,11 @@ import { useState, useRef, useEffect } from "react";
 import MyButton from "../myButton";
 import cartURL from "../../../config/cartURL";
 import useDebounce from "../../../hook/useDebouse";
+import { useTranslation } from "react-i18next";
 
-const CartItem = ({ data, action, sale, status }) => {
+const CartItem = ({ data, action, status }) => {
   const cx = classNames.bind(style);
-  const [quantity, setQuantity] = useState(Number(data.carts[0].quantity));
+  const [quantity, setQuantity] = useState(Number(data.quantity));
   const total = useRef(0);
   const formRef = useRef();
   const [change, setChange] = useState(1);
@@ -18,23 +19,18 @@ const CartItem = ({ data, action, sale, status }) => {
   total.current = quantity * data.dishprice;
   let debouceValue = useDebounce(rdata, 1200);
   let changeDebounce = useDebounce(quantity, 500);
-  let arr = [];
+  const { t } = useTranslation();
+
   const handleUpdate = (e) => {
     e.preventDefault();
   };
-
-  if (sale.length !== 0) {
-    sale.forEach((e) => {
-      arr = [...arr, Number(e.DishID)];
-    });
-  }
 
   //update data cart
   useEffect(() => {
     let datasend = new FormData(formRef.current);
     datasend.append("_method", "PUT");
     cartURL
-      .post(`/${data.carts[0].cartid}`, datasend, {
+      .post(`/${data.cartid}`, datasend, {
         headers: { "Content-type": "multipart/form-data" },
       })
       .then((response) => {
@@ -56,7 +52,7 @@ const CartItem = ({ data, action, sale, status }) => {
 
   const handleDelete = () => {
     cartURL
-      .delete("/" + data.carts[0].cartid)
+      .delete("/" + data.cartid)
       .then((response) => {
         setChange((pre) => (pre += 1));
         action(change);
@@ -78,22 +74,35 @@ const CartItem = ({ data, action, sale, status }) => {
         <div className={cx("list-item--info")}>
           <img
             className={cx("list-item__img")}
-            src={data.dishimages[0].imageurl}
+            src={data.dish.dishimages[0].imageurl}
             alt="error"
           />
           <div className={cx("list-item__name")}>
-            <h4>{data.dishname}</h4>
+            <h4>{data.dish.dishname}</h4>
+
             <input
               className={cx("list-item__id")}
               type="text"
-              value={data.dishid}
+              value={data.dish.dishid}
               name="dishid"
               readOnly
             />
-            <div onClick={handleDelete}>Delete</div>
+            <div onClick={handleDelete}>{t("cart.delete")}</div>
           </div>
         </div>
         <div>
+          {data.discount && (
+            <h3>
+              <span className={cx("discount__info")}>
+                <span className={cx("discount__info--name")}>
+                  {data.discountdata.discountname}
+                </span>
+                <span>
+                  <b>{`Sale : ${data.discountdata.discountamount}%`}</b>{" "}
+                </span>
+              </span>
+            </h3>
+          )}
           <div className={cx("list-item--quantity")}>
             <MyButton icon>
               <FontAwesomeIcon
@@ -116,23 +125,14 @@ const CartItem = ({ data, action, sale, status }) => {
                 onClick={() => setQuantity((quantity) => (quantity += 1))}
               />
             </MyButton>
-            <h4>
-              {arr.includes(Number(data.dishid)) ? (
-                <span>
-                  $
-                  {parseFloat(
-                    data.dishprice -
-                      (data.dishprice *
-                        Number(
-                          sale[arr.indexOf(Number(data.dishid))].DiscountAmount
-                        )) /
-                        100
-                  ).toFixed(2)}
-                </span>
-              ) : (
-                <span> ${parseFloat(Number(data.dishprice)).toFixed(2)} </span>
-              )}
-            </h4>
+            <h4>{`$${parseFloat(
+              data.discount
+                ? (data.dish.dishprice -
+                    (data.dish.dishprice * data.discountdata.discountamount) /
+                      100) *
+                    quantity
+                : data.dish.dishprice * quantity
+            ).toFixed(2)}`}</h4>
           </div>
 
           <input
@@ -141,7 +141,7 @@ const CartItem = ({ data, action, sale, status }) => {
             value={rdata}
             onChange={(e) => setRdata(e.target.value)}
             name="require"
-            placeholder="Special require"
+            placeholder={t("cart.specical")}
           />
         </div>
       </form>

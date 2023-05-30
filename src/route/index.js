@@ -24,6 +24,7 @@ const WrapperRoutes = () => {
   const [cart, setCart] = useState(false);
   const [cartQuantity, setCartQuantity] = useState(0);
   const [newOrder, setNewOrder] = useState(false);
+
   let usingRoles = [...PublicRoutes];
   const cookies = new Cookies();
   let location = useLocation();
@@ -49,7 +50,7 @@ const WrapperRoutes = () => {
           setCookie("jwt", response.data.authorisation.token, 1);
           setStatusLogins(true);
           setAccountDetail(response.data.user);
-          if (response.data.user.manage === 2) {
+          if (response.data.user.manage === 1) {
             setType(true);
           }
         }

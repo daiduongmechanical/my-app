@@ -6,12 +6,14 @@ import { AccountDetailContext } from "../../route";
 import orderURL from "../../config/orderURL";
 import DetailOrder from "../pageComponents/detailOrder/detailOrder";
 import RateDish from "../pageComponents/rateDishes/index.js";
+import { useTranslation } from "react-i18next";
 const PreviousOderPage = () => {
   const cx = classNames.bind(style);
   const [list, setList] = useState([]);
   const [changeStatus, setChangeStatus] = useState(false);
   const [detail, setDetail] = useState([]);
   const [showRate, setShowRate] = useState(false);
+  const { t } = useTranslation();
 
   //get account details context
   const getContext = useContext(AccountDetailContext);
@@ -54,24 +56,25 @@ const PreviousOderPage = () => {
           {list.map((e, index) => (
             <div key={index} className={cx("order__item")}>
               <div className={cx("dish__detail")}>
-                <h4>OrderID : #{e.orderid}</h4>
+                <h4>{`${t("order.id")} : #${e.orderid}`}</h4>
                 <p className={cx("order__status")}>
-                  status :<b className={cx("status__field")}>{e.status}</b>
+                  {`${t("order.status")} :`}
+                  <b className={cx("status__field")}>{e.status}</b>
                 </p>
 
                 <p className={cx("total__cost")}>
-                  Total Cost :{" "}
-                  <b>{`$ ${parseFloat(e.totalcost / 23000 / 100).toFixed(
-                    2
-                  )}`}</b>
+                  {`${t("order.total")} : `}
+                  <b>{`$ ${parseFloat(e.totalcost).toFixed(2)}`}</b>
                 </p>
               </div>
               <div className={cx("bill__detail")}>
                 <MyButton golden>
-                  <span onClick={() => handleRate(e)}> Rate Dishes </span>
+                  <span onClick={() => handleRate(e)}> {t("order.rate")} </span>
                 </MyButton>
                 <MyButton golden>
-                  <span onClick={() => handleDetail(e)}>Detail Order</span>
+                  <span onClick={() => handleDetail(e)}>
+                    {t("order.detail")}
+                  </span>
                 </MyButton>
               </div>
             </div>

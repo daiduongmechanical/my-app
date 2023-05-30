@@ -80,7 +80,7 @@ aspect-ratio: 1/1;
 
 .discount__info{
     margin-left: 10px;
-    font-weight: 600;
+   
     border-radius: 5px;
 
  
@@ -90,8 +90,7 @@ aspect-ratio: 1/1;
         padding: 5px;
         color: white;
         text-transform: capitalize;
-   
-
+ 
         background-color:rgb(222 4 0)
     }
     & .discount__info--name{
@@ -100,18 +99,22 @@ aspect-ratio: 1/1;
 }
 
 .action__price{
+display: flex;
+align-items: center;
 
-    font-size: 40px;
-    line-height: 40px;
-    font-weight: 400;
-    margin: 10 0;
-    width: 100%;
+    & .action__price--number{
+        font-size: 40px;
+        font-weight: 400;
+        margin-right: 20px;
+        & input{
+            border: none;
+            outline: none;
+        }
+    }
+ 
  
 
-    & input{
-        border: none;
-        outline: none;
-    }
+   
 }
 
 .action__rating{

@@ -7,6 +7,8 @@ import FormData from "form-data";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { StatusLoginContext, AccountDetailContext } from "../../route";
+import { useTranslation } from "react-i18next";
+import HidenNotice from "../pageComponents/noticeHidden";
 
 const SignUpPage = () => {
   const cx = classNames.bind(style);
@@ -15,8 +17,10 @@ const SignUpPage = () => {
   const [phoneData, setphoneData] = useState(false);
   const [passwordData, setpasswordData] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const formRef = useRef();
   let history = useNavigate();
+  const { t } = useTranslation();
 
   //get data from    StatusLoginContext
 
@@ -34,16 +38,19 @@ const SignUpPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    e.preventDefault();
     const data = new FormData(formRef.current);
     axios
       .post("http://localhost:8000/api/register", data)
       .then(function (response) {
-        console.log(response);
         if (response.data.status === "success") {
-          handleAccountDetail(response.user);
-          handleLogin(true);
-          history("/");
+          console.log(response.data);
+          handleAccountDetail(response.data.user);
+          setHidden(true);
+          const count = setInterval(() => {
+            handleLogin(true);
+            history("/");
+            clearInterval(count);
+          }, 3000);
         }
       })
       .catch(function (error) {
@@ -52,12 +59,10 @@ const SignUpPage = () => {
   };
 
   if (nameData && emailData && phoneData && passwordData) {
-    console.log(1);
     if (disabled) {
       setDisabled(false);
     }
   } else {
-    console.log(2);
     if (!disabled) {
       setDisabled(true);
     }
@@ -69,58 +74,64 @@ const SignUpPage = () => {
         <img src="/background.jpg" alt="error" />
       </div>
 
+      {hidden && (
+        <HidenNotice
+          notify
+          time={3000}
+          nt1={"Sign in successfully"}
+        ></HidenNotice>
+      )}
       {/* login form */}
       <div className={cx("login__side")}>
-        <h1 className={cx("header")}>SIGN UP</h1>
+        <h1 className={cx("header")}>{t("signup.head")}</h1>
         <form ref={formRef}>
           <InputField
-            content="Enter your name"
+            content={t("signup.name")}
             name="name"
             type="text"
             regex={/(?=.*[a-z]).{3,}/}
-            notice="Name as least 3 characters"
+            notice={t("signup.nameerror")}
             required
             action={nameAction}
           />
 
           <InputField
-            content="Enter your phone number"
+            content={t("signup.phone")}
             name="phone"
             type="number"
             regex={/^[0-9\-\+]{9,15}$/}
-            notice="Phone must be 9-13 numbers"
+            notice={t("signup.phoneerror")}
             required
             action={phoneAction}
           />
 
           <InputField
-            content="Enter your email"
+            content={t("signup.email")}
             name="email"
             type="text"
             regex={/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/}
-            notice="Email follow type xxx@example.xxx"
+            notice={t("signup.emailerror")}
             required
             action={emailAction}
           />
           <InputField
-            content="Enter your password"
+            content={t("signup.password")}
             name="password"
             type="password"
             regex={/^(?=.*\d)[A-Za-z\d]{8,}$/}
-            notice=" Password minimum 8 characters and one number"
+            notice={t("signup.passerror")}
             required
             action={passwordAction}
           />
 
           <MyButton full action={handleSubmit} disabled={disabled} red>
-            Sign Up
+            {t("signup.head")}
           </MyButton>
         </form>
         <p className={cx("to__signin")}>
-          If you readly have an account ?{" "}
+          {`${t("signup.if")} ?`}
           <Link className={cx("to__signin--link")} to="/login">
-            {" "}
-            log in
+            {t("signup.login")}
           </Link>
         </p>
       </div>

@@ -8,6 +8,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import FormData from "form-data";
 import userURL from "../../config/userURL";
+import { useTranslation } from "react-i18next";
 import {
   StatusLoginContext,
   AccountTypeContext,
@@ -22,6 +23,7 @@ const LoginPage = () => {
   const [disabled, setDisabled] = useState(true);
   const [loginError, setLoginError] = useState(false);
   const formRef = useRef();
+  const { t } = useTranslation();
 
   const location = useLocation();
 
@@ -45,6 +47,8 @@ const LoginPage = () => {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   };
 
+  //login with account
+
   const handle = (e) => {
     e.preventDefault();
     const data = new FormData(formRef.current);
@@ -52,11 +56,11 @@ const LoginPage = () => {
       .post("/login", data)
       .then(function (response) {
         console.log(response);
-        if (response.message === "Request failed with status code 401") {
+        if (response.statusText !== "OK") {
           setLoginError(true);
         }
         //login with employee
-        if (response.data.user.manage === 2) {
+        if (response.data.user.manage === 1) {
           handleLogin(true);
           setCookie("jwt", response.data.authorisation.token, 1);
           handleAccountDetail(response.data.user);
@@ -64,12 +68,8 @@ const LoginPage = () => {
           history("/");
         }
         //login with manageer
-        if (response.data.user.manage === 1) {
-          handleLogin(true);
-          setCookie("jwt", response.data.authorisation.token, 1);
-          handleAccountDetail(response.data.user);
-          handleAccountType(true);
-          window.location.href = "http://localhost:8000";
+        if (response.data.user.manage === 2) {
+          window.location.replace("http://localhost:8000");
         }
         //login with customer
         if (response.data.user.manage === 0) {
@@ -163,41 +163,39 @@ const LoginPage = () => {
       {/* login form */}
       <div className={cx("login__side")}>
         <div className={cx("header")}>
-          <h1>Log In</h1>
-          {loginError && (
-            <p>Login fail. please check email and password again</p>
-          )}
+          <h1> {t("login.head")}</h1>
+          {loginError && <p>{t("login.error")}</p>}
         </div>
         <div className={cx("form__cover")}>
           <form className={cx("form")} ref={formRef}>
             <div className={cx("input__cover")}>
               <InputField
-                content="Enter your email address"
+                content={t("login.email")}
                 name="email"
                 required
                 type="text"
                 action={getEData}
                 regex={/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/}
-                notice="Email follow type xxx@example.xxx"
+                notice={t("login.emailerror")}
               />
             </div>
             <div className={cx("input__cover")}>
               <InputField
-                content="Enter your email password"
+                content={t("login.password")}
                 name="password"
                 required
                 type="password"
                 action={getPData}
                 regex={/^(?=.*\d)[A-Za-z\d]{8,}$/}
-                notice=" Password at least 8 characters, and one number"
+                notice={t("login.paserror")}
               />
             </div>
             <div className={cx("button__cover")}>
               <MyButton full action={handle} disabled={disabled}>
-                Log in
+                {t("login.head")}
               </MyButton>
             </div>
-            <h5>Can you sign in with :</h5>
+            <h5>{t("login.with")}</h5>
           </form>
           <MyButton full>
             <a
@@ -205,22 +203,22 @@ const LoginPage = () => {
               href={"http://localhost:8000/api/facebook-login"}
             >
               <img src={Images.facebook.default} alt="error" />
-              <h3>Login with facebook</h3>
+              <h3>{t("login.facebook")}</h3>
             </a>
           </MyButton>
 
           <MyButton full red>
             <div className={cx("content__btn")} onClick={loginGoogle}>
               <img src={Images.google.default} alt="error" />
-              <h3>Login with google</h3>
+              <h3>{t("login.google")}</h3>
             </div>
           </MyButton>
 
           <p className={cx("to__signin")}>
-            If you don't have an account ?
+            {t("login.if")}
             <Link className={cx("to__signin--link")} to="/signup">
               {" "}
-              Sign up
+              {t("login.signup")}
             </Link>
           </p>
         </div>
