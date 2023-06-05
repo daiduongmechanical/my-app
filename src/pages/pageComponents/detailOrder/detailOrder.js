@@ -39,7 +39,7 @@ const DetailOrder = ({ action, data, changeData, tiny, specical }) => {
     orderURL
       .post(`/${data.orderid}`, { type: textUpdate, _method: "PUT" })
       .then((response) => {
-        if (response.data === 1) {
+        if (response.status === 201) {
           changeData((pre) => !pre);
         }
       })

@@ -68,7 +68,7 @@ const ManagerOrderPage = () => {
       .post(`/${id}`, { type: action, _method: "PUT" })
       .then((response) => {
         console.log(response);
-        if (response.data === 1) {
+        if (response.status === 201) {
           setUpdateStatus((pre) => !pre);
         }
       })
