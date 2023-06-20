@@ -22,10 +22,11 @@ const ProfilePage = () => {
   const [showNotice, setShowNotice] = useState(false);
   const [listDistrict, setListDistrict] = useState([]);
   const [districtCode, setDistrictCode] = useState();
-  const [wardCode, setWardCode] = useState();
+  const [wardCode, setWardCode] = useState([]);
   const [listWard, setListWard] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedWard, setSelectedWard] = useState("");
+  const [makeChange, setMakeChange] = useState(true);
   const streetRef = useRef();
   const [addressInput, setAddressInput] = useState("");
   let dob;
@@ -55,8 +56,10 @@ const ProfilePage = () => {
       axios
         .get(
           `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${
-            districtCode === undefined
+            profile.addresscode !== null
               ? profile.addresscode.split(",")[1]
+              : districtCode === ""
+              ? ""
               : districtCode
           }`,
           { headers: { token: "ec515217-011b-11ee-82fc-92443ce24152" } }
@@ -93,6 +96,10 @@ const ProfilePage = () => {
       });
   };
   const action = (x) => setShowNotice(x);
+  const handleInputStreet = (e) => {
+    setAddressInput(e.target.value);
+    setMakeChange(false);
+  };
 
   //handle selected ware
   const handleWare = (element) => {
@@ -162,8 +169,10 @@ const ProfilePage = () => {
             {listDistrict.map((e) => (
               <option
                 selected={
-                  Number(profile.addresscode.split(",")[1]) ===
-                  Number(e.DistrictID)
+                  profile.addresscode !== null
+                    ? Number(profile.addresscode.split(",")[1]) ===
+                      Number(e.DistrictID)
+                    : false
                 }
                 value={e.DistrictID}
                 key={e.DistrictID}
@@ -177,8 +186,10 @@ const ProfilePage = () => {
             {listWard.map((e) => (
               <option
                 selected={
-                  Number(profile.addresscode.split(",")[2]) ===
-                  Number(e.WardCode)
+                  profile.addresscode !== null
+                    ? Number(profile.addresscode.split(",")[2]) ===
+                      Number(e.WardCode)
+                    : false
                 }
                 value={e.WardCode}
                 key={e.WardName}
@@ -196,9 +207,11 @@ const ProfilePage = () => {
             aria-label="Username"
             aria-describedby="basic-addon1"
             value={
-              addressInput === "" ? profile.address.split(",")[0] : addressInput
+              profile.address !== null && makeChange
+                ? profile.address.split(",")[0]
+                : addressInput
             }
-            onChange={(e) => setAddressInput(e.target.value)}
+            onChange={handleInputStreet}
           />
         </InputGroup>
         <MyButton red full>

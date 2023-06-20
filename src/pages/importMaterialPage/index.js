@@ -8,7 +8,7 @@ import dishURL from "../../config/dishURL";
 import HidenNotice from "../pageComponents/noticeHidden";
 import warehouseURL from "../../config/warehouseURL";
 import { AccountDetailContext } from "../../route";
-
+import { useTranslation } from "react-i18next";
 const AddMaterialPage = () => {
   const cx = classNames.bind(style);
   const [list, setList] = useState([1]);
@@ -19,6 +19,7 @@ const AddMaterialPage = () => {
   const formRef = useRef();
   const [hidden, setHidden] = useState(false);
   const [error, setError] = useState(false);
+  const { t } = useTranslation();
 
   //get account details context
   const getContext = useContext(AccountDetailContext);
@@ -105,18 +106,18 @@ const AddMaterialPage = () => {
 
   return (
     <div className={cx("wrapper")}>
-      <h2>Import material</h2>{" "}
+      <h2>{t("importMaterial.header")}</h2>{" "}
       {hidden && (
         <HidenNotice
           notify
           error={error}
-          time
+          time={error ? false : 3000}
           reset={resetNotice}
-          nt1="Add successfully"
+          nt1={t("importMaterial.success")}
         />
       )}
       <button onClick={handleAdd} className="btn btn-info ">
-        Add more materials
+        {t("importMaterial.add")}
       </button>
       <form className={cx("form__cover")} ref={formRef} onSubmit={handleSubmit}>
         <div className={cx("wrapper__map")}>
@@ -128,7 +129,7 @@ const AddMaterialPage = () => {
                 aria-label="Default select example"
                 className="mr-4 select__ingredient"
               >
-                <option value="0">Select ingredient</option>
+                <option value="0">{t("importMaterial.select")}</option>
                 {listDish.map((e) => (
                   <option
                     disabled={selectValue.includes(e.ingredientcode)}
@@ -144,7 +145,7 @@ const AddMaterialPage = () => {
                 <Form.Control
                   name="mass[]"
                   className="mass__ingredient"
-                  placeholder="Enter mass"
+                  placeholder={t("importMaterial.mass")}
                   aria-label="Recipient's username"
                   aria-describedby="basic-addon2"
                 />
@@ -154,14 +155,14 @@ const AddMaterialPage = () => {
                   id="basic-addon2"
                   className="btn btn-outline-danger text-dark"
                 >
-                  Delete
+                  {t("importMaterial.delete")}
                 </InputGroup.Text>
               </InputGroup>
             </div>
           ))}
         </div>
         <MyButton disabled={disabled} red full>
-          Update material import
+          {t("importMaterial.btn")}
         </MyButton>
       </form>
     </div>

@@ -7,6 +7,7 @@
     "cart":"Cart",
     "login": "Login",
     "profile": "Profile"
+    ,"notice" :"notice"
   },
   "home": {
     "newdishes":"new dishes",
@@ -27,6 +28,7 @@
     "login":"you need to sign in to add dish to your cart",
     "success":" Add to cart successfully",
     "back":"Back To Menu"
+  
 },
 "cart":{
   "dish":"dish",
@@ -59,7 +61,7 @@
   "current":"Current order",
   "previous":"Previous order",
   "account":"Account details",
-  "pass":"Reset password",
+  "pass":"Change password",
   "manageorder":"Order management",
   "warehouse":"Make dish",
   "import":"Import materials "
@@ -74,7 +76,7 @@
   "confirm":"Confirm recieve order"
 },
 "password":{
-  "head":"reset password",
+  "head":"Change password",
   "current":"Enter current password",
   "new":"Enter new password",
   "re":"Re-enter password",
@@ -94,7 +96,9 @@
   "signup":"Sign up",
   "error":"Login fail. please check email and password again",
   "emailerror":"Email follow type xxx@example.xxx",
-  "passerror":" Password at least 8 characters, and one number"
+  "passerror":" Password at least 8 characters, and one number",
+  "block":"Your account has been blocked"
+ 
 
 },
 "signup":{
@@ -108,7 +112,9 @@
   "nameerror":"Name as least 3 characters",
   "phoneerror":"Phone must be 9-13 numbers",
   "emailerror":"Email follow type xxx@example.xxx",
-  "passerror":" Password at least 8 characters, and one number"
+  "passerror":" Password at least 8 characters, and one number",
+  "success":"Account create successfully",
+  "error":"Email is used,please check agian"
 
 },
 "detailorder":{
@@ -124,7 +130,10 @@
   "delivery":"Delivery",
   "total":"Total",
   "qty":"Quantity",
-  "print":" Print bill and delivery"
+  "print":" Print bill and delivery",
+  "finish": "already paid",
+  "mid" : "no 391 st Nam ki khoi nghia dist 3 Ho Chi Minh city"
+
 },
 "footer":{
   "info":"Contact info",
@@ -135,10 +144,54 @@
 },
 "about": {
   "story":"Our story",
+  "storydetails":"Where cake knows no boundaries. Our shop is dedicated to sharing the joy of our delicious creations with everyone, regardless of dietary restrictions. Indulge in pure cake bliss today",
   "menu":"EAT WHAT YOU LOVE",
   "product":"our Product",
-  "ingredients":"our Ingredient"
+  "productdetail":"Savor the exquisite cakes at our shop, crafted with the finest, wholesome ingredients for a delightful and nourishing experience.",
+  "ingredients":"our Ingredient",
+  "ingredientsource":"my ingredients locally sourced, farm-fresh ingredients, straight from nature's bounty",
+  "save":"We take pride in preserving the integrity of our ingredients, ensuring that each cake embodies freshness and natural goodness."
 
+},
+"managementOrder":{
+  "header":"Orders management",
+  "refresh":"Refresh page",
+  "all":"all",
+  "finished":"Finished",
+  "waiting":"Waiting",
+  "cancel":"Cancel",
+  "delivery":"Delivery",
+  "orderid":"OrderID",
+  "usernames":"Username",
+  "date":"Order Date",
+  "type":"Type",
+  "detail":"Detail order",
+  "status":"Status",
+  "totalcost":"Total Cost",
+  "acttion":"Acttion",
+  "next":"Next Page",
+  "previous":"Previous Page",
+  "search":"enter OrderID"
+},
+"newDish":{
+  "header":"Make new dish",
+  "select":"Select dish",
+  "quantity":"Quantity",
+  "id":"EmployeeID",
+  "description":"Description",
+  "btn":"Make new dish",
+  "success":"Add successfully"
+},
+"importMaterial":{
+ 
+    "header":"Management import Material",
+    "add":"Add more material",
+    "select":"Select ingredient",
+    "mass":"Enter mass",
+    "delete":"Delete",
+    "btn":"Update material import",
+    "success":"Import successfully"
+   
 }
 
 }

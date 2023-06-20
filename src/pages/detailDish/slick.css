@@ -1,5 +1,11 @@
+.slider__cover--detail{
+  width: 100% ;
+  height: 50%;
 
-.detaildish_slider__cover__kTRei .slick-slider {
+}
+
+
+.slider__cover--detail .slick-slider {
   position: relative;
   display: flex !important;
   flex-direction: row-reverse;
@@ -16,7 +22,7 @@
 }
 
 
-.detaildish_slider__cover__kTRei  .slick-dots {
+.slider__cover--detail  .slick-dots {
 width: 20%;
 display: flex;
 flex-direction: column;
@@ -26,7 +32,7 @@ justify-content: flex-start;
 
 
 }
-.detaildish_slider__cover__kTRei  .slick-list {
+.slider__cover--detail  .slick-list {
 position: relative;
 display: block;
 overflow: hidden;
@@ -37,7 +43,7 @@ height: 100%;
 
 }
 
-.detaildish_slider__cover__kTRei  .slick-dots li {
+.slider__cover--detail  .slick-dots li {
 
 width: 90px;
 height: 90px;
@@ -53,11 +59,11 @@ padding: 0;
 
 }
 
-.detaildish_slider__cover__kTRei  .slick-dots li.slick-active {
+.slider__cover--detail  .slick-dots li.slick-active {
 border: solid 2px var(--mainColor);
 }
 
-.detaildish_slider__cover__kTRei  .slick-dots li img {
+.slider__cover--detail  .slick-dots li img {
 width: 90px;
 height: 90px;
 display: block;
@@ -67,7 +73,7 @@ display: block;
 
 }
 
-.detaildish_slider__cover__kTRei  .slick__main--image{
+.slider__cover--detail  .slick__main--image{
 width: 100%;
 aspect-ratio: 1/0.8;
 border-radius: 10px;

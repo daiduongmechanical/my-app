@@ -39,7 +39,7 @@ const DetailOrder = ({ action, data, changeData, tiny, specical }) => {
     orderURL
       .post(`/${data.orderid}`, { type: textUpdate, _method: "PUT" })
       .then((response) => {
-        if (response.status === 201) {
+        if (response.status === 200) {
           changeData((pre) => !pre);
         }
       })
@@ -48,6 +48,7 @@ const DetailOrder = ({ action, data, changeData, tiny, specical }) => {
       });
   };
 
+  console.log(data);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
@@ -92,9 +93,10 @@ const DetailOrder = ({ action, data, changeData, tiny, specical }) => {
                   <p className={cx("detail__name")}>{e.dish.dishname}</p>
                   <p className={cx("detail__require")}>
                     {t("detailorder.specialty")}
-                    {e.require === "null" ? "no require" : e.dish.require}
+                    <b>: {e.require === null ? "no require" : e.require} </b>
                   </p>
                 </div>
+
                 <div className={cx("location")}>
                   {e.discount && (
                     <h3>
@@ -130,6 +132,12 @@ const DetailOrder = ({ action, data, changeData, tiny, specical }) => {
         </div>
 
         <div className={cx("bill__detail")} ref={componentRef}>
+          <h3 className={cx("shopname")}>Cake Shop</h3>
+          <div className={cx("cost__sub")}>
+            <p className={cx("title", "addressmid")}>{t("detailorder.mid")}</p>
+          </div>
+          <hr></hr>
+
           <h4>{t("detailorder.info")}</h4>
           <div className={cx("cost__sub")}>
             <p className={cx("title")}>{t("detailorder.name")}</p>
@@ -182,22 +190,26 @@ const DetailOrder = ({ action, data, changeData, tiny, specical }) => {
               )}
             </Fragment>
           ))}
+          {data.type === "delivery" && (
+            <div className={cx("cost__more")}>
+              <p>{t("detailorder.delivery")}</p>
+              <p>${parseFloat(data.feeship).toFixed(2)}</p>
+            </div>
+          )}
+
           <div className={cx("cost__sub")}>
             <p>{t("detailorder.sub")}</p>
             <p>${parseFloat(data.totalcost).toFixed(2)}</p>
           </div>
-          {data.type === "delivery" && (
-            <div className={cx("cost__more")}>
-              <p>{t("detailorder.delivery")}</p>
-              <p>${parseFloat(2).toFixed(2)}</p>
-            </div>
-          )}
 
           <hr></hr>
           <div className={cx("cost__total")}>
             <p>{t("detailorder.total")}</p>
             <p>${parseFloat(data.totalcost).toFixed(2)}</p>
           </div>
+          {data.checkout === 1 && (
+            <div className={cx("thongbao")}>{t("detailorder.finish")}</div>
+          )}
         </div>
       </div>
     </div>

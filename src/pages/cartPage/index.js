@@ -13,6 +13,9 @@ import { AccountDetailContext, CartContext } from "../../route";
 import axios from "axios";
 import userURL from "../../config/userURL";
 import { useTranslation } from "react-i18next";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import { decodeVietnameseURL } from "../../hook/decodeVn";
 
 const CartPage = () => {
   const cx = classNames.bind(style);
@@ -23,7 +26,6 @@ const CartPage = () => {
   //get account detail context
   const getcontext = useContext(AccountDetailContext);
   let userAddress = getcontext[0];
-
   //get cart context
   const getCartContext = useContext(CartContext);
   const updateCart = getCartContext[1];
@@ -34,15 +36,19 @@ const CartPage = () => {
   const [bill, setBill] = useState(0);
   const [show, setShow] = useState(false);
   const [info, setInfo] = useState("");
-  const [delivery, setDelivery] = useState(true);
+  const [delivery, setDelivery] = useState(false);
   const FormRef = useRef();
   const [sale, setSale] = useState([]);
   const { userID } = useParams();
   const addressRef = useRef("");
   const { t } = useTranslation();
+  const [listDistrict, setListDistrict] = useState([]);
+  const [listWard, setListWard] = useState([]);
+  const [districtCode, setDistrictCode] = useState("");
+  const [wardCode, setWardCode] = useState("");
+  const [streetInput, setStreetInput] = useState("");
 
-  let deliveryCost = delivery ? 2 : 0;
-  let calArr = [];
+  let [deliveryCost, setDeliveryCost] = useState(0);
 
   useEffect(() => {
     console.log(statusPayment);
@@ -76,7 +82,6 @@ const CartPage = () => {
     cartURL
       .get(`/${userID}`)
       .then((response) => {
-        console.log(response);
         if (response.data.length === 0) {
           setEmptyCart(true);
         }
@@ -90,6 +95,65 @@ const CartPage = () => {
 
   const handleAction = (data) => setAction((pre) => (pre += data));
 
+  //get list disteict code
+
+  useEffect(() => {
+    axios
+      .get(
+        "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=202",
+        { headers: { token: "ec515217-011b-11ee-82fc-92443ce24152" } }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          setListDistrict(response.data.data);
+        }
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  //get deliverycode
+  useEffect(() => {
+    let dc; //disctric code for api
+    let wc; //ward code for api
+
+    if (delivery) {
+      dc = districtCode;
+      wc = wardCode;
+    } else {
+      if (userAddress !== undefined) {
+        if (userAddress.addresscode !== null) {
+          dc = userAddress.addresscode.split(",")[1];
+          wc = userAddress.addresscode.split(",")[2];
+        }
+      }
+    }
+    axios
+      .get(
+        `https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?shop_id=124491&to_ward_code=${wc}&to_district_id=${dc}&weight=50&height=50&service_type_id=2`,
+        { headers: { token: "ec515217-011b-11ee-82fc-92443ce24152" } }
+      )
+      .then((response) => {
+        setDeliveryCost(
+          parseFloat(response.data.data.total / 23000).toFixed(2)
+        );
+      })
+      .catch((err) => console.log(err));
+  }, [wardCode, userAddress, delivery]);
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${districtCode}`,
+        { headers: { token: "ec515217-011b-11ee-82fc-92443ce24152" } }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          setListWard(response.data.data);
+        }
+      })
+      .catch((error) => console.log(error));
+  }, [districtCode]);
+
   // order pay when recieve
 
   const handleOrder = (e) => {
@@ -97,13 +161,26 @@ const CartPage = () => {
     let data = new FormData(FormRef.current);
     if (userAddress.manage === 0) {
       data.append("userid", userID);
-      data.append("totalCost", bill + 2);
+      data.append("totalCost", bill + Number(deliveryCost));
+      data.append("feeship", Number(deliveryCost));
+      data.append("type", "delivery");
+      if (delivery) {
+        let temWard = listWard.filter((e) => e.WardCode === wardCode)[0]
+          .WardName;
+        let temDistrict = listDistrict.filter(
+          (e) => Number(e.DistrictID) === Number(districtCode)
+        )[0].DistrictName;
+
+        let temAddress = `${streetInput},${temWard},${temDistrict},HCM`;
+        data.append("detail", temAddress);
+      }
     } else {
       data.append("userid", userID);
       data.append("totalCost", bill);
       data.append("detail", "in store");
       data.append("type", "store");
       data.append("status", "finished");
+      data.append("feeship", 0);
     }
 
     orderURL
@@ -120,11 +197,12 @@ const CartPage = () => {
   //thanh toan bang vnpay
   const vnpayOrder = async (e) => {
     e.preventDefault();
-
     let data = new FormData(FormRef.current);
     data.append("userid", userID);
-    data.append("totalCost", bill + 2);
-
+    data.append("totalCost", bill + Number(deliveryCost));
+    data.append("type", "delivery");
+    data.append("feeship", Number(deliveryCost));
+    window.localStorage.setItem("feeship", Number(deliveryCost));
     axios
       .post("http://localhost:8000/api/vnpay-checkout", data)
       .then((response) => {
@@ -148,36 +226,49 @@ const CartPage = () => {
       let pair = vars[i].split("=");
       data[pair[0]] = pair[1];
     }
-
     if (Object.keys(data).length > 1) {
-      let addressUes = data.vnp_OrderInfo.replace(/\+/g, " ");
+      let feeship = window.localStorage.getItem("feeship");
+      let addressUes = decodeVietnameseURL(data.vnp_OrderInfo);
       dataOrder.append("userid", userID);
       dataOrder.append("totalCost", data.vnp_Amount / 23000 / 100);
       dataOrder.set("detail", addressUes);
       dataOrder.append("type", "delivery");
-
-      orderURL
-        .post("/", dataOrder)
-        .then((response) => {
-          if (response.data.length !== 0) {
-            data["orderid"] = response.data.orderid;
-            updateCart((pre) => !pre);
-            userURL
-              .post("/bill/add", data)
-              .then((response) => {
-                console.log(response);
-                if (response.status === 201) {
-                  history(`/cart/${userID}`, { state: "ok" });
-                }
-              })
-              .catch((error) => console.log(error));
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      dataOrder.append("feeship", Number(feeship));
+      if (data.vnp_ResponseCode === "00") {
+        window.localStorage.removeItem("feeship");
+        orderURL
+          .post("/", dataOrder)
+          .then((response) => {
+            if (response.data.length !== 0) {
+              data["orderid"] = response.data.orderid;
+              updateCart((pre) => !pre);
+              userURL
+                .post("/bill/add", data)
+                .then((response) => {
+                  console.log(response);
+                  if (response.status === 201) {
+                    history(`/cart/${userID}`, { state: "ok" });
+                  }
+                })
+                .catch((error) => console.log(error));
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
   }, []);
+  //handle select city
+  const handleSelectCity = (e) => {
+    if (e.target.value === "") {
+      setWardCode("");
+    }
+  };
+  const handleSelectDistrict = (e) => {
+    setDistrictCode(e.target.value);
+    setWardCode("");
+  };
 
   if (userAddress === undefined) {
     return;
@@ -240,7 +331,7 @@ const CartPage = () => {
                 {userAddress.manage === 0 && (
                   <div className={cx("total__bill")}>
                     <span>{t("cart.delivery")}</span>
-                    <span>${parseFloat(2).toFixed(2)}</span>
+                    <span>${parseFloat(deliveryCost).toFixed(2)}</span>
                   </div>
                 )}
 
@@ -248,9 +339,9 @@ const CartPage = () => {
                   <h5>{t("cart.totalpay")}</h5>
                   <h5>
                     $
-                    {parseFloat(
-                      userAddress.manage === 0 ? bill + 2 : bill
-                    ).toFixed(2)}
+                    {userAddress.manage === 0
+                      ? parseFloat(bill + Number(deliveryCost)).toFixed(2)
+                      : parseFloat(bill).toFixed(2)}
                   </h5>
                 </div>
               </div>
@@ -261,8 +352,7 @@ const CartPage = () => {
                     <input
                       required
                       type="radio"
-                      value={userAddress.manage === 0 ? "delivery" : "store"}
-                      name={"type"}
+                      name="typeSelect"
                       onClick={() => setDelivery(false)}
                       defaultChecked
                     />
@@ -272,7 +362,7 @@ const CartPage = () => {
                     <input
                       required
                       type="radio"
-                      name={"type"}
+                      name="typeSelect"
                       onClick={() => {
                         setDelivery(true);
                         setInfo("");
@@ -285,15 +375,81 @@ const CartPage = () => {
                       <p>
                         <b>{t("cart.enteraddress")}</b>
                       </p>
-                      <input
-                        type="text"
-                        name="detail"
-                        ref={addressRef}
-                        value={delivery ? info : userAddress.address}
-                        placeholder="Enter location delivery address"
-                        required
-                        onChange={(e) => setInfo(e.target.value)}
-                      />
+
+                      {!delivery ? (
+                        <input
+                          type="text"
+                          name="detail"
+                          ref={addressRef}
+                          value={delivery ? info : userAddress.address}
+                          placeholder="Enter location delivery address"
+                          required
+                          onChange={(e) => setInfo(e.target.value)}
+                        />
+                      ) : (
+                        <Fragment>
+                          <div className="d-flex">
+                            <Form.Select
+                              className="pr-1"
+                              onChange={handleSelectCity}
+                            >
+                              <option value={""}>Select City</option>
+                              <option selected name="ProvinceID" value={202}>
+                                Hồ Chí Minh
+                              </option>
+                            </Form.Select>
+
+                            <Form.Select
+                              className="pr-1"
+                              onChange={handleSelectDistrict}
+                            >
+                              <option>Select District</option>
+
+                              {listDistrict.map((e) => (
+                                <option
+                                  selected={
+                                    Number(districtCode) ===
+                                    Number(e.DistrictID)
+                                  }
+                                  value={e.DistrictID}
+                                  key={e.DistrictID}
+                                >
+                                  {e.DistrictName}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </div>
+                          <Form.Select
+                            className="pr-1"
+                            onChange={(e) => setWardCode(e.target.value)}
+                          >
+                            <option>Select Ward</option>
+                            {listWard.map((e) => (
+                              <option
+                                selected={
+                                  Number(wardCode) === Number(e.WardCode)
+                                }
+                                value={e.WardCode}
+                                key={e.WardName}
+                              >
+                                {e.WardName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <InputGroup>
+                            <InputGroup.Text id="basic-addon1">
+                              street
+                            </InputGroup.Text>
+                            <Form.Control
+                              value={streetInput}
+                              onChange={(e) => setStreetInput(e.target.value)}
+                              placeholder="Enter your street"
+                              aria-label="Username"
+                              aria-describedby="basic-addon1"
+                            />
+                          </InputGroup>
+                        </Fragment>
+                      )}
                     </div>
                   </div>
                 </Fragment>
@@ -302,7 +458,14 @@ const CartPage = () => {
                 red
                 full
                 disabled={
-                  addressRef.current.value === "" || listCart.length === 0
+                  listCart.length === 0 ||
+                  (!delivery
+                    ? userAddress.address === null
+                      ? true
+                      : false
+                    : wardCode === ""
+                    ? true
+                    : false)
                 }
               >
                 <div className={cx("pay__btn")} onClick={handleOrder}>
@@ -310,7 +473,9 @@ const CartPage = () => {
                   <h5>
                     $
                     {parseFloat(
-                      userAddress.manage === 0 ? bill + 2 : bill
+                      userAddress.manage === 0
+                        ? bill + Number(deliveryCost)
+                        : bill
                     ).toFixed(2)}
                   </h5>
                 </div>
@@ -319,7 +484,14 @@ const CartPage = () => {
                 <MyButton
                   full
                   disabled={
-                    addressRef.current.value === "" || listCart.length === 0
+                    listCart.length === 0 ||
+                    (!delivery
+                      ? userAddress.address === null
+                        ? true
+                        : false
+                      : wardCode === ""
+                      ? true
+                      : false)
                   }
                 >
                   <div onClick={vnpayOrder} className={cx("pay__btn")}>
@@ -327,7 +499,9 @@ const CartPage = () => {
                     <h5>
                       $
                       {parseFloat(
-                        userAddress.manage === 0 ? bill + 2 : bill
+                        userAddress.manage === 0
+                          ? bill + Number(deliveryCost)
+                          : bill
                       ).toFixed(2)}
                     </h5>
                   </div>

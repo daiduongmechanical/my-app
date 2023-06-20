@@ -54,8 +54,8 @@ const MenuPage = () => {
           >
             <option value="all">{t("menu.all")}</option>
             <option value="donut">Donut</option>
-            <option value="rollcake">Roll cake</option>
-            <option value="cupcake">Cup cake</option>
+            <option value="roll cake">Roll cake</option>
+            <option value="cup cake">Cup cake</option>
             <option value="tiramisu">Tiramisu</option>
           </select>
         </div>

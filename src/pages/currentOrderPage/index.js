@@ -51,7 +51,7 @@ const CurrentOrderPage = () => {
     orderURL
       .post(`/${orderid}`, { type: valueUpdate, _method: "PUT" })
       .then((response) => {
-        if (response.data === 1) {
+        if (response.status === 201) {
           setChangeStatus((pre) => !pre);
         }
       })

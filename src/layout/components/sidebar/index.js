@@ -76,10 +76,6 @@ const SideBar = () => {
 
       {type ? (
         <Fragment>
-          <NavItem space to={"/admin/overview"}>
-            Over View
-          </NavItem>
-
           <NavItem space to={"/admin/manager-order"}>
             {t("sidebar.manageorder")}
           </NavItem>

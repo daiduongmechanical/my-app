@@ -36,7 +36,12 @@ const ProductSlider = ({ data }) => {
       <Slider {...settings}>
         {data.map((e, index) => (
           <div key={index} className={cx("item__cover")}>
-            <img className={cx("item")} src={e} key={index} alt="error" />
+            <img
+              className={cx("item")}
+              src={e.banerURL}
+              key={index}
+              alt="error"
+            />
           </div>
         ))}
       </Slider>

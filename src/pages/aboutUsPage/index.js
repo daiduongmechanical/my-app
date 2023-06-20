@@ -13,11 +13,7 @@ const AboutUsPage = () => {
       <div className={cx("story")}>
         <div className={cx("story__text")}>
           <h1>{t("about.story")}</h1>
-          <p>
-            Nisi vitae suscipit tellus mauris a. Lectus proin nibh nisl
-            condimentum. Ultrices neque ornare aenean euismod, ultrices dui
-            sapien eget.
-          </p>
+          <p>{t("about.storydetails")}</p>
         </div>
         <img src={x} alt="error" />
       </div>
@@ -47,10 +43,7 @@ const AboutUsPage = () => {
       <div className={cx("story")}>
         <div className={cx("story__text")}>
           <h1>{t("about.product")}</h1>
-          <p>
-            Far far away, behind the word mountains, far from the countries
-            Vokalia and Consonantia, there live the blind texts.
-          </p>
+          <p>{t("about.productdetail")}</p>
         </div>
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6wgL2DQ3JacFtRt3PfSO70gQ1JJdKX1IToQ&usqp=CAU"
@@ -61,10 +54,7 @@ const AboutUsPage = () => {
       <div className={cx("middle")}>
         <div className={cx("story__text")}>
           <h1>{t("about.ingredients")}</h1>
-          <p>
-            Far far away, behind the word mountains, far from the countries
-            Vokalia and Consonantia, there live the blind texts.
-          </p>
+          <p>{t("about.ingredientsource")}</p>
         </div>
         <img
           src="https://food.unl.edu/newsletters/images/basic-ingredients-for-baking.png"
@@ -73,10 +63,7 @@ const AboutUsPage = () => {
 
         <div className={cx("story__text")}>
           <h1>{t("about.ingredients")}</h1>
-          <p>
-            Far far away, behind the word mountains, far from the countries
-            Vokalia and Consonantia, there live the blind texts.
-          </p>
+          <p>{t("about.save")}</p>
         </div>
       </div>
     </div>

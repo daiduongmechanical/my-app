@@ -11,12 +11,15 @@ import {
   faEye,
   faSearch,
   faSquareCheck,
+  faSquareXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css"; // optional
 import DetailOrder from "../pageComponents/detailOrder/detailOrder";
 import TimeType from "../pageComponents/timeType";
 import orderURL from "../../config/orderURL";
+import { useTranslation } from "react-i18next";
+import { faXbox } from "@fortawesome/free-brands-svg-icons";
 
 const ManagerOrderPage = () => {
   const cx = classNames.bind(style);
@@ -33,6 +36,7 @@ const ManagerOrderPage = () => {
   const [page, setPage] = useState(1);
   const [pageCover, setPageCover] = useState({});
   const pageItem = [];
+  const { t } = useTranslation();
 
   const cookies = new Cookies();
 
@@ -68,7 +72,26 @@ const ManagerOrderPage = () => {
       .post(`/${id}`, { type: action, _method: "PUT" })
       .then((response) => {
         console.log(response);
-        if (response.status === 201) {
+        if (response.status === 200) {
+          setUpdateStatus((pre) => !pre);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+
+  const handleCancel = (id, status) => {
+    if (status !== "delivery" ) {
+      return;
+    }
+    let action ='cancel'
+    orderURL
+      .post(`/${id}`, { type: action, _method: "PUT" })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
           setUpdateStatus((pre) => !pre);
         }
       })
@@ -136,7 +159,7 @@ const ManagerOrderPage = () => {
       )}
 
       <div className={cx("header")}>
-        <h4>Orders management</h4>
+        <h4>{t("managementOrder.header")}</h4>
       </div>
       {!detail && (
         <div className={cx("sort__bar")}>
@@ -145,11 +168,11 @@ const ManagerOrderPage = () => {
             onChange={(e) => setTypeSearch(e.target.value)}
             className={cx("sort__item")}
           >
-            <option value="">All</option>
-            <option value="finished">Finished</option>
-            <option value="waiting">Waiting</option>
-            <option value="cancel">Cancel</option>
-            <option value="delivery">Delivery</option>
+            <option value="">{t("managementOrder.all")}</option>
+            <option value="finished">{t("managementOrder.finished")}</option>
+            <option value="waiting">{t("managementOrder.waiting")}</option>
+            <option value="cancel">{t("managementOrder.cancel")}</option>
+            <option value="delivery">{t("managementOrder.delivery")}</option>
           </select>
 
           <input
@@ -165,7 +188,7 @@ const ManagerOrderPage = () => {
             ref={searchRef}
             className={cx("item__search")}
             type="text"
-            placeholder="search OrderID"
+            placeholder={t("managementOrder.search")}
           />
           <span
             className={cx("search__icon")}
@@ -175,7 +198,7 @@ const ManagerOrderPage = () => {
           </span>
 
           <div onClick={clearSort} className={cx("refresh__button")}>
-            <span>refresh page</span>
+            <span>{t("managementOrder.refresh")}</span>
             <span className={cx("refresh__icon")}>
               <FontAwesomeIcon icon={faArrowsRotate} />
             </span>
@@ -190,16 +213,16 @@ const ManagerOrderPage = () => {
               <table>
                 <tbody>
                   <tr className={cx("row__head")}>
-                    <th>OrderID</th>
-                    <th>UserName</th>
-                    <th>Order date</th>
+                    <th>{t("managementOrder.orderid")}</th>
+                    <th>{t("managementOrder.usernames")}</th>
+                    <th>{t("managementOrder.date")}</th>
                     {!detail && (
                       <Fragment>
-                        <th>Type </th>
-                        <th>Detail </th>
-                        <th>Status </th>
-                        <th>TotalCost</th>
-                        <th>Action</th>
+                        <th>{t("managementOrder.type")}</th>
+                        <th>{t("managementOrder.detail")}</th>
+                        <th>{t("managementOrder.status")}</th>
+                        <th>{t("managementOrder.totalcost")}</th>
+                        <th>{t("managementOrder.acttion")}</th>
                       </Fragment>
                     )}
                   </tr>
@@ -263,6 +286,27 @@ const ManagerOrderPage = () => {
                               </span>
                             </Tippy>
 
+
+                            <Tippy
+                              placement="bottom"
+                              content={
+                              "cancel order"
+                              }
+                            >
+                              <span className={cx("action")}>
+                                <FontAwesomeIcon
+                                  className={cx("icon",'red', {
+                                    disable: e.status!=="delivery",
+                                    toaccept: e.status === "delivery",
+                                  })}
+                                  icon={faSquareXmark}
+                                  onClick={() =>
+                                    handleCancel(e.orderid,e.status)
+                                  }
+                                />
+                              </span>
+                            </Tippy>
+
                             <Tippy placement="bottom" content={"See order"}>
                               <span className={cx("action")}>
                                 <FontAwesomeIcon
@@ -286,7 +330,7 @@ const ManagerOrderPage = () => {
                 className={cx("pagination__special")}
                 onClick={handlePreviousPage}
               >
-                <span> previous page</span>
+                <span>{t("managementOrder.previous")}</span>
               </div>
               <div className={cx("pagination__sub")}>
                 {pageItem.map((e, index) => (
@@ -305,7 +349,7 @@ const ManagerOrderPage = () => {
                 className={cx("pagination__special")}
                 onClick={handleNextPage}
               >
-                <span> next page</span>
+                <span>{t("managementOrder.next")}</span>
               </div>
             </div>
           </div>

@@ -22,6 +22,7 @@ const LoginPage = () => {
   const [pdata, setPdata] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [loginError, setLoginError] = useState(false);
+  const [typeError, setTypeError] = useState("");
   const formRef = useRef();
   const { t } = useTranslation();
 
@@ -56,9 +57,7 @@ const LoginPage = () => {
       .post("/login", data)
       .then(function (response) {
         console.log(response);
-        if (response.statusText !== "OK") {
-          setLoginError(true);
-        }
+
         //login with employee
         if (response.data.user.manage === 1) {
           handleLogin(true);
@@ -69,7 +68,9 @@ const LoginPage = () => {
         }
         //login with manageer
         if (response.data.user.manage === 2) {
-          window.location.replace("http://localhost:8000");
+          window.location.replace(
+            `http://localhost:8000/${response.data.user.id}`
+          );
         }
         //login with customer
         if (response.data.user.manage === 0) {
@@ -82,8 +83,16 @@ const LoginPage = () => {
         }
       })
       .catch(function (error) {
-        setLoginError(true);
-        console.log(error);
+        if (error.response.status === 401) {
+          setLoginError(true);
+
+          setTypeError(t("login.error"));
+        }
+
+        if (error.response.status === 400) {
+          setLoginError(true);
+          setTypeError(t("login.block"));
+        }
       });
   };
   const getEData = (data) => setEdata(data);
@@ -125,8 +134,14 @@ const LoginPage = () => {
         },
       })
       .then((response) => {
-        console.log(response);
-        handleAccountDetail(response.data.user);
+     let userData=response.data.user;
+     userData['address']=null;
+     userData['addresscode']=null;
+     userData['dob']=null;
+
+
+     
+        handleAccountDetail(userData);
         setCookie("jwt", response.data.jwt_token, 1);
         handleLogin(true);
         history("/");
@@ -164,7 +179,7 @@ const LoginPage = () => {
       <div className={cx("login__side")}>
         <div className={cx("header")}>
           <h1> {t("login.head")}</h1>
-          {loginError && <p>{t("login.error")}</p>}
+          {loginError && <p>{typeError}</p>}
         </div>
         <div className={cx("form__cover")}>
           <form className={cx("form")} ref={formRef}>
@@ -187,7 +202,7 @@ const LoginPage = () => {
                 type="password"
                 action={getPData}
                 regex={/^(?=.*\d)[A-Za-z\d]{8,}$/}
-                notice={t("login.paserror")}
+                notice={t("login.passerror")}
               />
             </div>
             <div className={cx("button__cover")}>

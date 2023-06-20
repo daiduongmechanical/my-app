@@ -7,6 +7,7 @@
     "cart":"Giỏ hàng",
     "login": "Đăng nhập",
     "profile": "Tài khoản"
+    ,"notice" :"Thông báo"
   } ,
   "home": {
     "newdishes":"món mới",
@@ -28,6 +29,7 @@
     "login":"Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng",
     "success":" Đã thêm vào giỏ hàng ",
     "back":"Trở lại trang menu"
+  
 
 },
 "cart":{
@@ -43,7 +45,7 @@
   "delete":"Xóa",
   "specical":"yêu cầu đặc biệt",
   "success":"Thanh toán thành công",
-  "order":"Đơn hàng đẫ được thêm thành công",
+  "order":"Đơn hàng đã được thêm thành công",
   "ordernotice":"Cảm ơn đã lựa chọn chúng tôi"
 },
 "profile":{
@@ -60,7 +62,7 @@
   "current":"Dơn hàng hiện tại",
   "previous":"Đơn hàng đã hoàn thành",
   "account":"Thông tin tài khoản",
-  "pass":"Dặt lại mật khẩu",
+  "pass":"Đổi mật khẩu",
   "manageorder":"Quản lí đơn hàng",
   "warehouse":"Làm món mới",
   "import":"nhập nguyên liệu "
@@ -95,7 +97,8 @@
   "signup":"Đăng kí",
   "error":"Đăng nhập lỗi, vui lòng kiểm tra lại thông tin",
   "emailerror":"email theo dạng xxx@example.xxx",
-  "passerror":"Mật khẩu ít nhất 8 kí tự và 1 số"
+  "passerror":"Mật khẩu ít nhất 8 kí tự và 1 số",
+  "block":"tài khoản của bạn đã bị khóa"
 },
 "signup":{
   "head":"Đăng kí",
@@ -108,7 +111,9 @@
   "nameerror":"tên ít nhất 3 kí tự",
   "phoneerror":"Số điện thoại từ 9-13 số",
   "emailerror":"email theo dạng xxx@example.xxx",
-  "passerror":"Mật khẩu ít nhất 8 kí tự và 1 số"
+  "passerror":"Mật khẩu ít nhất 8 kí tự và 1 số",
+  "success":"Tài khoản đăng kí thành công",
+  "error":"email đã tồn tại"
 
 },
 "detailorder":{
@@ -124,7 +129,9 @@
   "delivery":"Giao hàng",
   "total":"Tổng tiền",
   "qty":"Số lượng",
-  "print":"In hóa đơn và giao hàng"
+  "print":"In hóa đơn và giao hàng",
+  "finish": "Đã thanh toán",
+  "mid" : "số 391 đường Nam kì khởi Nghĩa quận 3 TP Hồ Chí Minh "
 },
 "footer":{
   "info":"Liên hệ",
@@ -135,10 +142,53 @@
 },
 "about": {
   "story":"Câu chuyện của chúng tôi",
+  "storydetails":" Nơi bánh không có ranh giới. Cửa hàng của chúng tôi được dành riêng để chia sẻ niềm vui của những sáng tạo ngon miệng của chúng tôi với mọi người, bất kể hạn chế chế độ ăn uống. Đắm chìm trong hạnh phúc bánh ngọt thuần khiết ngay hôm nay",
   "menu":"Ăn bất cứ gì bạn muốn",
   "product":"Sản phẩm ",
-  "ingredients":"Nguyên liệu"
+  "productdetail": "Thưởng thức những chiếc bánh tinh tế tại cửa hàng của chúng tôi, được chế biến từ những nguyên liệu tốt nhất, lành mạnh nhất để có trải nghiệm thú vị và bổ dưỡng.",
+  "ingredients":"Nguyên liệu",
+  "ingredientsource":"Nguyên liệu của tôi có nguồn gốc địa phương, nguyên liệu tươi ngon từ trang trại, trực tiếp từ tiền thưởng của thiên nhiên",
+  "save":"Chúng tôi tự hào trong việc bảo quản tính toàn vẹn của các thành phần của chúng tôi, đảm bảo rằng mỗi chiếc bánh thể hiện sự tươi mới và tốt đẹp tự nhiên."
 
+},
+"managementOrder":{
+  "header":"Quản lý đơn hàng",
+  "refresh":"tải lại trang",
+  "all":"Tất cả",
+  "finished":"Đã hoàn thành",
+  "waiting":"Đợi",
+  "cancel":"Đã hủy",
+  "delivery":"Giao hàng",
+  "orderid":"mã",
+  "usernames":"Username",
+  "date":"Ngày đặt",
+  "type":"kiểu",
+  "detail":"chi tiết",
+  "status":"Trạng thái",
+  "totalcost":"tổng tiền",
+  "acttion":"thao tác",
+  "next":"Trang sau",
+  "previous":"Trang trước",
+  "search":"nhập mã đơn"
+},
+"newDish":{
+  "header":"Làm món mới",
+  "select":"Chọn món ",
+  "quantity":"Số lượng",
+  "id":"Mã nhân viên",
+  "description":"Mô tả",
+  "btn":"Thực hiện",
+  "success":"Thêm thành công"
+},
+"importMaterial":{
+ 
+  "header":"Quản lý nhập nguyên liệu",
+  "add":"Thêm nguyên liệu",
+  "select":"Lựa chọn nguyên liệu",
+  "mass":"Nhập khối lượng",
+  "delete":"Xóa",
+  "btn":"Cập nhập nguyên liệu",
+  "success":"Cập nhập nguyên liệu thành công"
 }
 
 

@@ -9,6 +9,7 @@ import dishURL from "../../config/dishURL";
 import { AccountDetailContext } from "../../route";
 import HidenNotice from "../pageComponents/noticeHidden";
 import warehouseURL from "../../config/warehouseURL";
+import { useTranslation } from "react-i18next";
 
 const ImportMaterialPage = () => {
   const cx = classNames.bind(style);
@@ -20,6 +21,8 @@ const ImportMaterialPage = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const selectRef = useRef();
+  const [description, setDescription] = useState("");
+  const { t } = useTranslation();
 
   //get accounnt detail context
   const getContext = useContext(AccountDetailContext);
@@ -55,15 +58,12 @@ const ImportMaterialPage = () => {
       });
   };
 
-  const updateQuantity = (e) => {
-    console.log(e.target.value);
-    setQuantityVale(e.target.value);
-  };
-
   const resetNotice = (x) => {
     setHidden(x);
     setError(x);
   };
+
+  console.log(status, quantityVale, description);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("main")}>
@@ -71,7 +71,7 @@ const ImportMaterialPage = () => {
           {hidden && (
             <HidenNotice
               notify
-              nt1={error ? errorMessage : "Add successfully"}
+              nt1={error ? errorMessage : t("newDish.success")}
               time={error ? false : 3000}
               reset={resetNotice}
               error={error}
@@ -79,7 +79,7 @@ const ImportMaterialPage = () => {
           )}
           <Card style={{ width: "100%" }} className="mt-5 ">
             <Card.Body>
-              <h2>Make new dish</h2>
+              <h2>{t("newDish.header")}</h2>
               <Form.Select
                 required
                 ref={selectRef}
@@ -88,7 +88,7 @@ const ImportMaterialPage = () => {
                 aria-label="Default select example"
                 className="mb-3"
               >
-                <option disabled={status}>Select dish</option>
+                <option disabled={status}>{t("newDish.select")}</option>
 
                 {dishList.map((e) => (
                   <option key={e.dishid} value={e.dishid}>
@@ -98,12 +98,12 @@ const ImportMaterialPage = () => {
               </Form.Select>
 
               <InputGroup
-                onKeyDown={updateQuantity}
+                onChange={(e) => setQuantityVale(e.target.value)}
                 className="mb-5 "
                 value={quantityVale}
               >
                 <InputGroup.Text id="inputGroup-sizing-default">
-                  Quantity
+                  {t("newDish.quantity")}
                 </InputGroup.Text>
                 <Form.Control
                   aria-label="Default"
@@ -115,7 +115,7 @@ const ImportMaterialPage = () => {
 
               <InputGroup className="mb-5">
                 <InputGroup.Text id="inputGroup-sizing-default">
-                  Employee ID
+                  {t("newDish.id")}
                 </InputGroup.Text>
                 <Form.Control
                   aria-label="Default"
@@ -129,9 +129,11 @@ const ImportMaterialPage = () => {
 
               <InputGroup className="mb-3">
                 <InputGroup.Text id="inputGroup-sizing-default">
-                  Description
+                  {t("newDish.description")}
                 </InputGroup.Text>
                 <Form.Control
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   aria-label="Default"
                   type="text"
                   name="description"
@@ -140,8 +142,12 @@ const ImportMaterialPage = () => {
               </InputGroup>
             </Card.Body>
 
-            <MyButton disabled={!status || quantityVale !== ""} red full>
-              Make this dish
+            <MyButton
+              disabled={!status || quantityVale === "" || description === ""}
+              red
+              full
+            >
+              {t("newDish.btn")}
             </MyButton>
           </Card>
         </form>

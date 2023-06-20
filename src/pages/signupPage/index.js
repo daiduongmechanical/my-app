@@ -21,6 +21,7 @@ const SignUpPage = () => {
   const formRef = useRef();
   let history = useNavigate();
   const { t } = useTranslation();
+  const [error, setError] = useState(false);
 
   //get data from    StatusLoginContext
 
@@ -35,15 +36,15 @@ const SignUpPage = () => {
   const emailAction = (data) => setEmailData(data);
   const phoneAction = (data) => setphoneData(data);
   const passwordAction = (data) => setpasswordData(data);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const data = new FormData(formRef.current);
     axios
       .post("http://localhost:8000/api/register", data)
       .then(function (response) {
+        console.log(response);
         if (response.data.status === "success") {
-          console.log(response.data);
           handleAccountDetail(response.data.user);
           setHidden(true);
           const count = setInterval(() => {
@@ -54,7 +55,8 @@ const SignUpPage = () => {
         }
       })
       .catch(function (error) {
-        console.log(error);
+        setError(true);
+        setHidden(true);
       });
   };
 
@@ -68,19 +70,27 @@ const SignUpPage = () => {
     }
   }
 
+  const resetError = (x) => {
+    setHidden(x);
+  };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("show__side")}>
         <img src="/background.jpg" alt="error" />
       </div>
 
-      {hidden && (
-        <HidenNotice
-          notify
-          time={3000}
-          nt1={"Sign in successfully"}
-        ></HidenNotice>
-      )}
+      {hidden &&
+        (error ? (
+          <HidenNotice
+            notify
+            time={3000}
+            nt1={t("signup.error")}
+            reset={resetError}
+          />
+        ) : (
+          <HidenNotice notify time={3000} nt1={t("signup.success")} />
+        ))}
       {/* login form */}
       <div className={cx("login__side")}>
         <h1 className={cx("header")}>{t("signup.head")}</h1>

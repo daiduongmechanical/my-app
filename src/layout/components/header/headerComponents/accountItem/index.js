@@ -12,7 +12,7 @@ import {
   AccountDetailContext,
   CartQuantityContext,
 } from "../../../../../route";
-import { useContext, useState, useRef } from "react";
+import { useContext } from "react";
 
 const AccountItem = ({ statusLogin }) => {
   const cx = classNames.bind(style);
@@ -42,10 +42,10 @@ const AccountItem = ({ statusLogin }) => {
     <div className={cx("wrapper")}>
       {type && (
         <NavItem normal to="/admin/manager-order">
-          <Tippy content="cart">
+          <Tippy content={t("header.notice")}>
             <div onClick={() => setNewNotice(false)} className={cx("icon")}>
               {newNotice && <div className={cx("icon__notice")}></div>}
-              <FontAwesomeIcon icon={faBell} />
+              <FontAwesomeIcon className={cx("icon__login")} icon={faBell} />
             </div>
           </Tippy>
         </NavItem>
@@ -74,7 +74,7 @@ const AccountItem = ({ statusLogin }) => {
         </NavItem>
       ) : (
         <NavItem normal to={typeRoute}>
-          <Tippy content={t("header.prfile")}>
+          <Tippy content={t("header.profile")}>
             <img
               className={cx("avatar")}
               src={

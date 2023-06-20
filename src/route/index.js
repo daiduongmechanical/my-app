@@ -63,17 +63,21 @@ const WrapperRoutes = () => {
   //get list cart
   useEffect(() => {
     if (accountDetail !== undefined) {
-      cartURL
-        .get(`/${accountDetail.id}`)
-        .then((response) => {
-          if (response.statusText === "OK")
-            setCartQuantity(response.data.length);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      if (!statusLogin) {
+        setCartQuantity(0);
+      } else {
+        cartURL
+          .get(`/${accountDetail.id}`)
+          .then((response) => {
+            if (response.statusText === "OK")
+              setCartQuantity(response.data.length);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
     }
-  }, [cart, accountDetail]);
+  }, [cart, accountDetail, statusLogin]);
 
   //get notice new order
   const getdata = () => {

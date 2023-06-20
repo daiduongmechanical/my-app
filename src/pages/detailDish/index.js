@@ -194,7 +194,7 @@ const DetailDishPage = () => {
       <Row sm={1} xs={2} md={2} lg={2}>
         <Col sm={12} xs={6} md={6} lg={6}>
           <div className={cx("dish__cover")}>
-            <div className={cx("slider__cover")}>
+            <div className={"slider__cover--detail"}>
               <Slider {...settings}>
                 {data.dishimages.map((e, index) => (
                   <div key={index}>
